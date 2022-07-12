@@ -1,0 +1,17 @@
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.exe
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.deps.json
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.runtimeconfig.json
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.dll
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.pdb
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.csproj.AssemblyReference.cache
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.csproj.GenerateResource.cache
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.GeneratedMSBuildEditorConfig.editorconfig
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.AssemblyInfoInputs.cache
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.AssemblyInfo.cs
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.csproj.CoreCompileInputs.cache
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.dll
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\refint\DLPCodeCreater.dll
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.pdb
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.genruntimeconfig.cache
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\ref\DLPCodeCreater.dll
+D:\JasonGit\DLPCodeCreater\DLPCodeCreater\DLPCodeCreater\obj\Debug\net6.0-windows\DLPCodeCreater.Form1.resources
