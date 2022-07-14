@@ -202,7 +202,12 @@ namespace DLPCodeCreater
             ResultMessage("===============2.前端web-api讀取開始================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             var serviceText = fhelper.FileRead(fAreapath + @"\services\web-api.service.ts", program,"}");
-            fhelper.FileWrite(serviceText, false, "web-api.service");
+
+            string fromPath = "/" + cbx_fromarea.Text + "/" + cbx_fromprogram.Text;
+            string tragetPath = "/" + cbx_targetarea.Text + "/" + cbx_targetprogram.Text;
+            List<string> repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).ToList();
+
+            fhelper.FileWrite(repalceServiceText, false, "web-api.service");
             var modelText = fhelper.FileRead(fAreapath + @"\models\web-api.model.ts", program, "}");
             fhelper.FileWrite(modelText, true, "web-api.model");
 
@@ -264,8 +269,8 @@ namespace DLPCodeCreater
         {
             ResultMessage("===============4.後端檔案搬移&地區修改開始================");
             List<string> replace = new List<string>();
-            replace.Add(cbx_fromarea.Text.ToUpper());
-            replace.Add(cbx_targetarea.Text.ToUpper());
+            replace.Add('.' + cbx_fromarea.Text.ToUpper());
+            replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
             //From
             string FromControllersFile = this.tbx_projectpath.Text + String.Format(Controllerspath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -332,8 +337,8 @@ namespace DLPCodeCreater
             List<string> replace = new List<string>();
             List<string> openfiles = new List<string>();
 
-            replace.Add(cbx_fromarea.Text.ToUpper());
-            replace.Add(cbx_targetarea.Text.ToUpper());
+            replace.Add('.' + cbx_fromarea.Text.ToUpper());
+            replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
 
             //處理DTO
@@ -378,8 +383,8 @@ namespace DLPCodeCreater
             List<string> replace = new List<string>();
             List<string> openfiles = new List<string>();
 
-            replace.Add(cbx_fromarea.Text.ToUpper());
-            replace.Add(cbx_targetarea.Text.ToUpper());
+            replace.Add('.' + cbx_fromarea.Text.ToUpper());
+            replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
             //處理Interface
             string FromInterfaceFile = this.tbx_projectpath.Text + String.Format(Interfacepath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -424,8 +429,8 @@ namespace DLPCodeCreater
             List<string> replace = new List<string>();
             List<string> openfiles = new List<string>();
 
-            replace.Add(cbx_fromarea.Text.ToUpper());
-            replace.Add(cbx_targetarea.Text.ToUpper());
+            replace.Add('.'+cbx_fromarea.Text.ToUpper());
+            replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
             //處理Interface
             string FromRepositoriesFile = this.tbx_projectpath.Text + String.Format(Repositoriespath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -503,6 +508,18 @@ namespace DLPCodeCreater
                     btn_getrepository.Enabled = false;
                 }
             }
+        }
+
+        private void cbx_targetarea_Leave(object sender, EventArgs e)
+        {
+            string tempprogram = cbx_targetprogram.Text.ToLower();
+            cbx_targetarea.Text = cbx_targetarea.Text.ToLower();
+            cbx_targetprogram.Text = tempprogram;
+        }
+
+        private void cbx_targetprogram_Leave(object sender, EventArgs e)
+        {
+            cbx_targetprogram.Text = cbx_targetprogram.Text.ToLower();
         }
 
         //Test Button

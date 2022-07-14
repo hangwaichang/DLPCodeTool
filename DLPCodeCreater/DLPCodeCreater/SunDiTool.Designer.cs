@@ -165,6 +165,7 @@
             this.cbx_targetprogram.Name = "cbx_targetprogram";
             this.cbx_targetprogram.Size = new System.Drawing.Size(148, 23);
             this.cbx_targetprogram.TabIndex = 15;
+            this.cbx_targetprogram.Leave += new System.EventHandler(this.cbx_targetprogram_Leave);
             // 
             // lab_targetprogram
             // 
@@ -183,6 +184,7 @@
             this.cbx_targetarea.Size = new System.Drawing.Size(148, 23);
             this.cbx_targetarea.TabIndex = 13;
             this.cbx_targetarea.SelectedIndexChanged += new System.EventHandler(this.cbx_targetarea_SelectedIndexChanged);
+            this.cbx_targetarea.Leave += new System.EventHandler(this.cbx_targetarea_Leave);
             // 
             // lab_targetarea
             // 

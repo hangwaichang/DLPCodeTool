@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\JasonGit\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+      "projectUniqueName": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
       "projectName": "DLPCodeCreater",
-      "projectPath": "D:\\JasonGit\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+      "projectPath": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
       "packagesPath": "C:\\Users\\Jason_Chang\\.nuget\\packages\\",
-      "outputPath": "D:\\JasonGit\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
+      "outputPath": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Jason_Chang\\AppData\\Roaming\\NuGet\\NuGet.Config",
