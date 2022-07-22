@@ -12,16 +12,16 @@ namespace DLPCodeCreater
         //查詢資料夾目錄下所有資料夾名稱
         public List<string> DirSearch(string sDir)
         {
-                List<string> dirlist = new List<string>();
-                //先找出所有目錄 
-                string[] dirs = Directory.GetDirectories(sDir);/*目錄(含路徑)的陣列*/
+            List<string> dirlist = new List<string>();
+            //先找出所有目錄 
+            string[] dirs = Directory.GetDirectories(sDir);/*目錄(含路徑)的陣列*/
 
-                foreach (string item in dirs)
-                {
-                    dirlist.Add(Path.GetFileNameWithoutExtension(item));//走訪每個元素只取得目錄名稱(不含路徑)並加入dirlist集合中
-                }
+            foreach (string item in dirs)
+            {
+                dirlist.Add(Path.GetFileNameWithoutExtension(item));//走訪每個元素只取得目錄名稱(不含路徑)並加入dirlist集合中
+            }
 
-                return dirlist;
+            return dirlist;
         }
 
         //查詢資料夾目錄下所有檔案名稱
@@ -117,18 +117,29 @@ namespace DLPCodeCreater
         public void FileWrite(List<string> Text, Boolean append, string Scope)
         {
             TextWriter txt = new StreamWriter(@".\copy.txt", append);
-            txt.WriteLine("//===================================[" + Scope + "]===================================//");
-            if (Text.Count > 0)
+
+            if (Scope == "Start")
             {
-                foreach (string t in Text)
+                //Clear
+                txt.Write("");
+            }
+            else
+            {
+                txt.WriteLine("//===================================[" + Scope + "]===================================//");
+                if (Text.Count > 0)
                 {
-                    txt.WriteLine(t);
+                    foreach (string t in Text)
+                    {
+                        txt.WriteLine(t);
+                    }
+                }
+                else
+                {
+                    txt.WriteLine("目的地已存在相同檔案!");
+                    txt.WriteLine("請確認是否有填寫 #region 供程式抓取!");
                 }
             }
-            else {
-                txt.WriteLine("檔案已存在，無資料!");
-                txt.WriteLine("請確認是否有 #region");
-            }
+
 
             txt.Close();
         }

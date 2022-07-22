@@ -174,7 +174,7 @@ namespace DLPCodeCreater
 
         }
 
-        public void FileMoveAndReplace(string frompath, string targetpath, string filename, List<string> replace)
+        public void FileMoveAndReplace(string frompath, string targetpath, string filename, List<string> replace_first, List<string> replace_second = null)
         {
             fhelper.CheckDir(targetpath);
 
@@ -183,8 +183,20 @@ namespace DLPCodeCreater
             if (fhelper.FileMove(fpath, tpath))
             {
                 ResultMessage("檔案搬移成功" + tpath);
-                if (fhelper.FileReplace(tpath, replace[0], replace[1])) {
-                    ResultMessage("地區名稱取代成功!");
+                if (fhelper.FileReplace(tpath, replace_first[0], replace_first[1]))
+                {
+                    if (replace_second != null)
+                    {
+                        if (fhelper.FileReplace(tpath, replace_second[0], replace_second[1]))
+                        {
+                            ResultMessage("地區名稱取代成功!");
+                        }
+                    }
+                    else
+                    {
+                        ResultMessage("地區名稱取代成功!");
+                    }
+
                 }
             }
 
@@ -201,7 +213,7 @@ namespace DLPCodeCreater
         {
             ResultMessage("===============2.前端web-api讀取開始================");
             string program = this.cbx_fromprogram.Text.ToUpper();
-            var serviceText = fhelper.FileRead(fAreapath + @"\services\web-api.service.ts", program,"}");
+            var serviceText = fhelper.FileRead(fAreapath + @"\services\web-api.service.ts", program, "}");
 
             string fromPath = "/" + cbx_fromarea.Text + "/" + cbx_fromprogram.Text;
             string tragetPath = "/" + cbx_targetarea.Text + "/" + cbx_targetprogram.Text;
@@ -272,6 +284,12 @@ namespace DLPCodeCreater
             replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
+            //Controller Route
+            List<string> route_replace = new List<string>();
+            route_replace.Add('/' + cbx_fromarea.Text.ToUpper() + '/');
+            route_replace.Add('/' + cbx_targetarea.Text.ToUpper() + '/');
+
+
             //From
             string FromControllersFile = this.tbx_projectpath.Text + String.Format(Controllerspath, cbx_frommodule.Text, cbx_fromarea.Text);
             string FromServicesFile = this.tbx_projectpath.Text + String.Format(Servicespath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -280,7 +298,7 @@ namespace DLPCodeCreater
             string TargetServicesFile = this.tbx_projectpath.Text + String.Format(Servicespath, cbx_targetmodule.Text, cbx_targetarea.Text);
 
             //Controller
-            FileMoveAndReplace(FromControllersFile, TargetControllersFile, cbx_fromprogram.Text.ToUpper() + "Controller.cs", replace);
+            FileMoveAndReplace(FromControllersFile, TargetControllersFile, cbx_fromprogram.Text.ToUpper() + "Controller.cs", replace, route_replace);
             //Service
             FileMoveAndReplace(FromServicesFile, TargetServicesFile, cbx_fromprogram.Text.ToUpper() + "Service.cs", replace);
             ResultMessage("===============後端檔案搬移&地區修改結束================");
@@ -300,7 +318,7 @@ namespace DLPCodeCreater
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
             //SPName.cs
             System.Diagnostics.Process.Start("explorer.exe", TargetStoreProcedureFile);
-            ResultMessage("開啟檔案:"+ TargetStoreProcedureFile);
+            ResultMessage("開啟檔案:" + TargetStoreProcedureFile);
             ResultMessage("===============前端SPName讀取結束================");
         }
 
@@ -317,11 +335,12 @@ namespace DLPCodeCreater
 
             for (int i = 1; i < FileText.Count() - 1; i++)
             {
-                ResultMessage(i+"-"+ FileText[i].Trim().Split(" ")[0]);
+                ResultMessage(i + "-" + FileText[i].Trim().Split(" ")[0]);
                 repository.Add(FileText[i].Trim().Split(" ")[0]);
             }
 
-            if (repository.Count>0) {
+            if (repository.Count > 0)
+            {
                 btn_dto.Enabled = true;
                 btn_repositories.Enabled = true;
                 btn_interface.Enabled = true;
@@ -355,10 +374,11 @@ namespace DLPCodeCreater
                 {
                     openfiles.Add(TargetDTOFile + @"\" + filename);
                     //已存在 抓關鍵字
-                    var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region "+program, "#endregion");
+                    var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region " + program, "#endregion");
                     fhelper.FileWrite(dtoText, true, filename);
                 }
-                else {
+                else
+                {
                     //不存在直接copy
                     FileMoveAndReplace(FromDTOFile, TargetDTOFile, filename, replace);
                 }
@@ -429,7 +449,7 @@ namespace DLPCodeCreater
             List<string> replace = new List<string>();
             List<string> openfiles = new List<string>();
 
-            replace.Add('.'+cbx_fromarea.Text.ToUpper());
+            replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
             //處理Interface
@@ -441,7 +461,7 @@ namespace DLPCodeCreater
 
             foreach (string repo in repository)
             {
-                string filename = repo.Substring(1, repo.Length-1) + ".cs";
+                string filename = repo.Substring(1, repo.Length - 1) + ".cs";
                 if (File.Exists(TargetRepositoriesFile + @"\" + filename))
                 {
                     openfiles.Add(TargetRepositoriesFile + @"\" + filename);
@@ -498,7 +518,8 @@ namespace DLPCodeCreater
                     btn_spname.Enabled = true;
                     btn_getrepository.Enabled = true;
                 }
-                else {
+                else
+                {
                     btn_Move.Enabled = false;
                     btn_webapicopy.Enabled = false;
                     btn_modulecopy.Enabled = false;
