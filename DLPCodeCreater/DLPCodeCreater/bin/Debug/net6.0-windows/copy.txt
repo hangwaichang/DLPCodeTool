@@ -1,3 +1,10 @@
-//===================================[Start]===================================//
-檔案已存在，無資料!
-請確認是否有 #region
+//===================================[md.module]===================================//
+import { Mdb110Component as Mdb110vsComponent } from './vs/mdb110/mdb110.component';
+Mdb110vsComponent,
+//===================================[md-routing.module]===================================//
+import { Mdb110Component as Mdb110vsComponent } from './vs/mdb110/mdb110.component';
+{
+path: 'MDB110VS',
+component: Mdb110vsComponent,
+data: { title: 'MDB110VS', breadcrumb: 'MDB110VS' },
+},

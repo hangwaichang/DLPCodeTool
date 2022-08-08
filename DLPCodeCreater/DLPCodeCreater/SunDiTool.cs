@@ -127,7 +127,10 @@ namespace DLPCodeCreater
             FileMove(fAreapath + @"\api", tAreapath + @"\api", fileName);
             //controls
             fileName = this.cbx_fromprogram.Text + ".control.ts";
-            FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName);
+            if (File.Exists(fAreapath + @"\controls\" + fileName))
+            {
+                FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName);
+            }
             //form.control
             fileName = this.cbx_fromprogram.Text + "-form.control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
@@ -251,7 +254,7 @@ namespace DLPCodeCreater
             lsmodulecopy.Add(String.Format(_importString, program, program, area, componentpath.ToLower()));
             lsmodulecopy.Add(String.Format(_declarations, program, area));
 
-            fhelper.FileWrite(lsmodulecopy, false, "mg.module");
+            fhelper.FileWrite(lsmodulecopy, false, module + ".module");
 
             //routing.module
             lsmodulecopy.Clear();
@@ -264,7 +267,7 @@ namespace DLPCodeCreater
             lsmodulecopy.Add(String.Format("data: {{ title: '{0}', breadcrumb: '{1}' }},", program_area, program_area));
             lsmodulecopy.Add("},");
 
-            fhelper.FileWrite(lsmodulecopy, true, "mg-routing.module");
+            fhelper.FileWrite(lsmodulecopy, true, module + "-routing.module");
 
             //開啟copy.txt
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
@@ -355,10 +358,14 @@ namespace DLPCodeCreater
             string program = this.cbx_fromprogram.Text.ToUpper();
             List<string> replace = new List<string>();
             List<string> openfiles = new List<string>();
+            List<string> replace_udt = new List<string>();
 
             replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
 
+
+            replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
+            replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
             //處理DTO
             string FromDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -375,6 +382,10 @@ namespace DLPCodeCreater
                     openfiles.Add(TargetDTOFile + @"\" + filename);
                     //已存在 抓關鍵字
                     var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region " + program, "#endregion");
+
+                    //UDT物件名稱修正
+                    dtoText = dtoText.Select(s => s.Replace(replace_udt[0], replace_udt[1])).ToList();
+
                     fhelper.FileWrite(dtoText, true, filename);
                 }
                 else
@@ -401,10 +412,14 @@ namespace DLPCodeCreater
             ResultMessage("===============8.處理INTERFACE作業開始================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             List<string> replace = new List<string>();
+            List<string> replace_udt = new List<string>();
             List<string> openfiles = new List<string>();
 
             replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
+
+            replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
+            replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
             //處理Interface
             string FromInterfaceFile = this.tbx_projectpath.Text + String.Format(Interfacepath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -426,7 +441,7 @@ namespace DLPCodeCreater
                 else
                 {
                     //不存在直接copy
-                    FileMoveAndReplace(FromInterfaceFile, TargetInterfaceFile, filename, replace);
+                    FileMoveAndReplace(FromInterfaceFile, TargetInterfaceFile, filename, replace, replace_udt);
                 }
             }
 
@@ -447,10 +462,14 @@ namespace DLPCodeCreater
             ResultMessage("===============9.處理REPOSITORIES作業開始================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             List<string> replace = new List<string>();
+            List<string> replace_udt = new List<string>();
             List<string> openfiles = new List<string>();
 
             replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
+
+            replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
+            replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
             //處理Interface
             string FromRepositoriesFile = this.tbx_projectpath.Text + String.Format(Repositoriespath, cbx_frommodule.Text, cbx_fromarea.Text);
@@ -472,7 +491,7 @@ namespace DLPCodeCreater
                 else
                 {
                     //不存在直接copy
-                    FileMoveAndReplace(FromRepositoriesFile, TargetRepositoriesFile, filename, replace);
+                    FileMoveAndReplace(FromRepositoriesFile, TargetRepositoriesFile, filename, replace, replace_udt);
                 }
             }
 
@@ -553,6 +572,14 @@ namespace DLPCodeCreater
             cbx_targetmodule.Text = "mg";
             cbx_targetarea.Text = "vn";
             cbx_targetprogram.Text = "mgi100";
+        }
+
+        //滾輪至底
+        private void tbx_resultMsg_TextChanged(object sender, EventArgs e)
+        {
+            this.tbx_resultMsg.SelectionStart = this.tbx_resultMsg.Text.Length;
+            this.tbx_resultMsg.SelectionLength = 0;
+            this.tbx_resultMsg.ScrollToCaret();
         }
     }
 }

@@ -157,6 +157,7 @@
             this.tbx_resultMsg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbx_resultMsg.Size = new System.Drawing.Size(767, 157);
             this.tbx_resultMsg.TabIndex = 9;
+            this.tbx_resultMsg.TextChanged += new System.EventHandler(this.tbx_resultMsg_TextChanged);
             // 
             // cbx_targetprogram
             // 
