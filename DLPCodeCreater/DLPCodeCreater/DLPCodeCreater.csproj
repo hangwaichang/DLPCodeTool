@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>aqva5-03ik5-001.ico</ApplicationIcon>
+    <Version>1.0.0-20220811</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -33,6 +33,9 @@ namespace DLPCodeCreater
             btn_dto.Enabled = false;
             btn_repositories.Enabled = false;
             btn_interface.Enabled = false;
+            //ª©¥»¸¹
+            string version = System.Windows.Forms.Application.ProductVersion;
+            this.Text = String.Format("SunDiTool {0}", version);
         }
 
         //From
