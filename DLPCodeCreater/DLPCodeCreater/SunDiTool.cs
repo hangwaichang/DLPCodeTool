@@ -2,6 +2,7 @@ namespace DLPCodeCreater
 {
     public partial class Form1 : Form
     {
+		//TestA
         FileHelper fhelper = new FileHelper();
         public const string AppPortalpath = @"\DLP.Web\DLP.Web.AppPortal\ClientApp\src\app\views\";
         public const string Controllerspath = @"\DLP.WebAPI\DLP.WebAPI.{0}\Controllers\{1}";
