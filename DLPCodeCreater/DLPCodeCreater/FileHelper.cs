@@ -8,7 +8,9 @@ namespace DLPCodeCreater
 {
     internal class FileHelper
     {
+
 //breach A
+
         //查詢資料夾目錄下所有資料夾名稱
         public List<string> DirSearch(string sDir)
         {
