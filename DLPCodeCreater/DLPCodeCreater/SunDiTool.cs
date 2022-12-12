@@ -1,8 +1,23 @@
+using Newtonsoft.Json;
+using System.Collections;
+using System.Data;
+using System.Text.RegularExpressions;
+using Classes;
+using Oracle.ManagedDataAccess.Client;
+
 namespace DLPCodeCreater
 {
     public partial class Form1 : Form
     {
         FileHelper fhelper = new FileHelper();
+        TranslateHelp thelper = new TranslateHelp();
+
+        EipDGDbContext DgDbcontext;
+        EipVSDbContext VsDbcontext;
+        EipVNDbContext VnDbcontext;
+        EipTCDbContext TcDbcontext;
+
+
         public const string AppPortalpath = @"\DLP.Web\DLP.Web.AppPortal\ClientApp\src\app\views\";
         public const string Controllerspath = @"\DLP.WebAPI\DLP.WebAPI.{0}\Controllers\{1}";
         public const string Servicespath = @"\DLP.Model\DLP.Model.{0}Types\Services\{1}";
@@ -37,6 +52,8 @@ namespace DLPCodeCreater
             string version = System.Windows.Forms.Application.ProductVersion;
             this.Text = String.Format("SunDiTool {0}", version);
         }
+
+        #region Tab1
 
         //From
         private void btn_selectpath_Click(object sender, EventArgs e)
@@ -584,5 +601,306 @@ namespace DLPCodeCreater
             this.tbx_resultMsg.SelectionLength = 0;
             this.tbx_resultMsg.ScrollToCaret();
         }
+        #endregion
+
+        #region Tab2
+        private void cbx_tab2_frommodule_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fModulepath = this.tbx_tab2_projectpath.Text + AppPortalpath + this.cbx_tab2_frommodule.Text;
+            //取得地區列表
+            List<string> ds = fhelper.DirSearch(fModulepath);
+            //放入from_area
+            BindingSource bs = new BindingSource();
+            this.cbx_tab2_fromarea.DataSource = ds;
+        }
+
+        private void cbx_tab2_fromarea_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fAreapath = fModulepath + @"\" + this.cbx_tab2_fromarea.Text;
+            //取得程式列表
+            List<string> ds = fhelper.DirSearch(fAreapath);
+            //放入from_program
+            BindingSource bs = new BindingSource();
+            this.cbx_tab2_fromprogram.DataSource = ds;
+        }
+
+        //搜尋繁體中文
+        private void btn_gettranslate_Click(object sender, EventArgs e)
+        {
+            ResultMessageTab2("------------------開始取得程式內部資料!------------------");
+            //clear dgv_tab2_languagetranslate
+            dgv_tab2_languagetranslate.DataSource = null;
+            dgv_tab2_languagetranslate.Rows.Clear();
+            ResultMessageTab2("畫面清除");
+
+            string fileName = "";
+            thelper.languageTranslates_merge = new List<LanguageTranslate>();
+
+            DirectoryInfo Dir;
+            FileInfo[] files;
+
+
+            //ts,css,html
+            ResultMessageTab2("1.掃描ts,css,html");
+            fProgrampath = fAreapath + @"\" + this.cbx_tab2_fromprogram.Text;
+            Dir = new DirectoryInfo(fProgrampath);
+            files = Dir.GetFiles();
+            thelper.mergeTranslate(thelper.getTranslate(files));
+
+            //services
+            ResultMessageTab2("2.掃描services");
+            fileName = this.cbx_tab2_fromprogram.Text + ".service.ts";
+            thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\services\" + fileName));
+            //pop-up.service.ts
+            ResultMessageTab2("3.掃描pop-up.service.ts");
+            fileName = this.cbx_tab2_fromprogram.Text + "-pop-up.service.ts";
+            if (File.Exists(fAreapath + @"\services\" + fileName))
+            {
+                thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\services\" + fileName));
+            }
+            //states
+            ResultMessageTab2("4.掃描states");
+            fileName = this.cbx_tab2_fromprogram.Text + ".state.ts";
+            thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\states\" + fileName));
+            //controls
+            ResultMessageTab2("5.掃描controls");
+            fileName = this.cbx_tab2_fromprogram.Text + ".control.ts";
+            if (File.Exists(fAreapath + @"\controls\" + fileName))
+            {
+                thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\controls\" + fileName));
+            }
+            //form.control
+            ResultMessageTab2("6.掃描form.control");
+            fileName = this.cbx_tab2_fromprogram.Text + "-form.control.ts";
+            if (File.Exists(fAreapath + @"\controls\" + fileName))
+            {
+                thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\controls\" + fileName));
+            }
+            //validations
+            ResultMessageTab2("7.掃描validations");
+            fileName = this.cbx_fromprogram.Text + ".validation.ts";
+            if (File.Exists(fAreapath + @"\validations\" + fileName))
+            {
+                thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\validations\" + fileName));
+            }
+
+            //塞入資料
+            ResultMessageTab2("8.資料翻譯開始");
+            foreach (var lt in thelper.languageTranslates_merge)
+            {
+                this.dgv_tab2_languagetranslate.Rows.Add(lt.TW, lt.ZH, lt.EN, lt.VI);
+            }
+            ResultMessageTab2("------------------取得程式內部資料完成------------------");
+        }
+
+        private void btn_tab2_selectpath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog path = new FolderBrowserDialog();
+            path.ShowDialog();
+            this.tbx_tab2_projectpath.Text = path.SelectedPath;
+            //取得模組列表
+            List<string> ds = fhelper.DirSearch(this.tbx_tab2_projectpath.Text + AppPortalpath);
+
+            BindingSource bs = new BindingSource();
+            //放入from_module
+            this.cbx_tab2_frommodule.DataSource = ds;
+            //放入from_module
+            this.cbx_tab2_frommodule.DataSource = ds;
+        }
+
+        //滾輪至底
+        private void tbx_tab2_resultMsg_TextChanged(object sender, EventArgs e)
+        {
+            this.tbx_tab2_resultMsg.SelectionStart = this.tbx_tab2_resultMsg.Text.Length;
+            this.tbx_tab2_resultMsg.SelectionLength = 0;
+            this.tbx_tab2_resultMsg.ScrollToCaret();
+        }
+        #endregion
+
+
+        private void btn_IMultLanguage_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string sql = "INSERT INTO BASE_MULTI_LANGUAGE(ZH_TW, EN_US, VI_VN, ZH_CN, EXTENSION, IMPORT_TAG)VALUES(:ZH_TW, :EN_US, :VI_VN, :ZH_CN, :EXTENSION, :IMPORT_TAG)";
+
+                foreach (DataGridViewRow row in dgv_tab2_languagetranslate.Rows)
+                {
+                    MultiLanguage ml = new MultiLanguage()
+                    {
+                        ZH_TW = row.Cells["tw"].Value.ToString(),
+                        EN_US = row.Cells["en"].Value.ToString(),
+                        VI_VN = row.Cells["vi"].Value.ToString(),
+                        ZH_CN = row.Cells["zh"].Value.ToString(),
+                    };
+
+                    DbInsert(sql, ml, this.cbx_tab2_fromprogram.Text.ToUpper());
+                }
+
+                ResultMessageTab2("DB-寫入結束!");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        //寫入DB
+        public void DbInsert(string sql, MultiLanguage ml, string program)
+        {
+            try
+            {
+                if (cbx_eipdg.Checked)
+                {
+                    DgDbcontext.Inesrt(sql, ml, program);
+                }
+                if (cbx_eipvn.Checked)
+                {
+                    VnDbcontext.Inesrt(sql, ml, program);
+                }
+                if (cbx_eipvs.Checked)
+                {
+                    VsDbcontext.Inesrt(sql, ml, program);
+                }
+                if (cbx_eiptc.Checked)
+                {
+                    TcDbcontext.Inesrt(sql, ml, program);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ResultErrorMessageTab2(ex.Message);
+            }
+
+
+        }
+
+        //DB Select
+        private void cbx_eipdg_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_eipdg.Checked)
+                {
+                    if (DgDbcontext == null)
+                    {
+                        DgDbcontext = GenericDbFactory<EipDGDbContext>.Create();
+                        DgDbcontext.Connect();
+                        ResultMessageTab2("EIPDG-連線成功!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ResultErrorMessageTab2(ex.Message);
+            }
+
+        }
+
+
+        private void cbx_eipvs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_eipvs.Checked)
+                {
+                    if (VsDbcontext == null)
+                    {
+                        VsDbcontext = GenericDbFactory<EipVSDbContext>.Create();
+                        VsDbcontext.Connect();
+                        ResultMessageTab2("EIPVS-連線成功!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ResultErrorMessageTab2(ex.Message);
+            }
+        }
+
+
+        private void cbx_eipvn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_eipvn.Checked)
+                {
+                    if (VnDbcontext == null)
+                    {
+                        VnDbcontext = GenericDbFactory<EipVNDbContext>.Create();
+                        VnDbcontext.Connect();
+                        ResultMessageTab2("EIPVN-連線成功!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ResultErrorMessageTab2(ex.Message);
+            }
+        }
+
+        private void cbx_eiptc_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_eiptc.Checked)
+                {
+                    if (TcDbcontext == null)
+                    {
+                        TcDbcontext = GenericDbFactory<EipTCDbContext>.Create();
+                        TcDbcontext.Connect();
+                        ResultMessageTab2("EIPTC-連線成功!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ResultErrorMessageTab2(ex.Message);
+            }
+        }
+
+        private void tim_tab2_Tick(object sender, EventArgs e)
+        {
+            if (cbx_tab2_fromarea.Items.Count>0 && cbx_tab2_frommodule.Items.Count > 0 && cbx_tab2_fromprogram.Items.Count > 0)
+            {
+                btn_gettranslate.Enabled = true;
+
+            }
+            else {
+                btn_gettranslate.Enabled = false;
+                btn_IMultLanguage.Enabled = false;
+            }
+
+            if (cbx_eipdg.Checked || cbx_eipvs.Checked || cbx_eipvn.Checked || cbx_eiptc.Checked)
+            {
+                btn_IMultLanguage.Enabled = true;
+            }
+            else {
+                btn_IMultLanguage.Enabled = false;
+            }
+
+        }
+
+        //訊息結果
+        public void ResultErrorMessageTab2(string msg)
+        {
+            ResultMessageTab2("=============Error Meg Start=============");
+            ResultMessageTab2(msg);
+            ResultMessageTab2("=============Error Meg End=============");
+        }
+
+        public void ResultMessageTab2(string msg)
+        {
+            tbx_tab2_resultMsg.Text += Environment.NewLine;
+            tbx_tab2_resultMsg.Text += msg;
+        }
+
     }
+
+
 }

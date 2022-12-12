@@ -5,7 +5,7 @@
   },
   "projects": {
     "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
-      "version": "10.0.0",
+      "version": "2.0.0-20221212",
       "restore": {
         "projectUniqueName": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
         "projectName": "DLPCodeCreater",
@@ -39,6 +39,46 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "Microsoft.Extensions.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Oracle.ManagedDataAccess.Core": {
+              "target": "Package",
+              "version": "[3.21.80, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "System.ServiceModel.Duplex": {
+              "target": "Package",
+              "version": "[4.8.*, )"
+            },
+            "System.ServiceModel.Federation": {
+              "target": "Package",
+              "version": "[4.8.*, )"
+            },
+            "System.ServiceModel.Http": {
+              "target": "Package",
+              "version": "[4.8.*, )"
+            },
+            "System.ServiceModel.NetTcp": {
+              "target": "Package",
+              "version": "[4.8.*, )"
+            },
+            "System.ServiceModel.Security": {
+              "target": "Package",
+              "version": "[4.8.*, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
