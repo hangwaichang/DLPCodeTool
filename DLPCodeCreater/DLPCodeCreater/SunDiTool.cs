@@ -34,6 +34,8 @@ namespace DLPCodeCreater
         public string tAreapath = "";
         public string tProgrampath = "";
 
+        public int rowIndex = 0;
+
 
         List<string> repository = new List<string>();
 
@@ -350,6 +352,7 @@ namespace DLPCodeCreater
             ResultMessage("===============6.取Repository明細開始================");
 
             btn_dto.Enabled = true;
+            repository.Clear();
 
             //從TargetServices取 Repository明細
             string TargetServicesFile = this.tbx_projectpath.Text + String.Format(Servicespath, cbx_targetmodule.Text, cbx_targetarea.Text) + @"\" + cbx_targetprogram.Text.ToUpper() + "Service.cs";
@@ -396,7 +399,10 @@ namespace DLPCodeCreater
 
             foreach (var repo in repository)
             {
-                string filename = repo.Substring(1, 5) + "DTO.cs";
+                int repoIndex = repo.Length - 10;//Repository Length
+                repoIndex -= 1; //起始 'I' 字元長度
+
+                string filename = repo.Substring(1, repoIndex) + "DTO.cs";
                 if (File.Exists(TargetDTOFile + @"\" + filename))
                 {
                     openfiles.Add(TargetDTOFile + @"\" + filename);
@@ -715,7 +721,6 @@ namespace DLPCodeCreater
             this.tbx_tab2_resultMsg.SelectionLength = 0;
             this.tbx_tab2_resultMsg.ScrollToCaret();
         }
-        #endregion
 
 
         private void btn_IMultLanguage_Click(object sender, EventArgs e)
@@ -886,6 +891,25 @@ namespace DLPCodeCreater
 
         }
 
+        //右鍵刪除事件
+        private void dgv_tab2_languagetranslate_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                dgv_tab2_languagetranslate.Rows[e.RowIndex].Selected = true;
+                rowIndex = e.RowIndex;
+                dgv_tab2_languagetranslate.CurrentCell = dgv_tab2_languagetranslate.Rows[rowIndex].Cells[1];
+                cmt_tab2_deleterow.Show(dgv_tab2_languagetranslate, e.Location);
+                cmt_tab2_deleterow.Show(Cursor.Position);
+            }
+        }
+
+        //Delete Row
+        private void cmt_tab2_deleterow_Click(object sender, EventArgs e)
+        {
+            dgv_tab2_languagetranslate.Rows.RemoveAt(this.rowIndex);
+        }
+
         //訊息結果
         public void ResultErrorMessageTab2(string msg)
         {
@@ -900,6 +924,7 @@ namespace DLPCodeCreater
             tbx_tab2_resultMsg.Text += msg;
         }
 
+        #endregion
     }
 
 

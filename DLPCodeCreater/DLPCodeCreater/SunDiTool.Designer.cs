@@ -77,6 +77,10 @@
             this.tbx_tab2_projectpath = new System.Windows.Forms.TextBox();
             this.btn_gettranslate = new System.Windows.Forms.Button();
             this.dgv_tab2_languagetranslate = new System.Windows.Forms.DataGridView();
+            this.tw = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.zh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.en = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.vi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cbx_tab2_fromprogram = new System.Windows.Forms.ComboBox();
             this.lab_tab2_fromprogram = new System.Windows.Forms.Label();
             this.cbx_tab2_fromarea = new System.Windows.Forms.ComboBox();
@@ -84,10 +88,8 @@
             this.cbx_tab2_frommodule = new System.Windows.Forms.ComboBox();
             this.lab_tab2_module = new System.Windows.Forms.Label();
             this.tim_tab2 = new System.Windows.Forms.Timer(this.components);
-            this.tw = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.zh = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.en = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.vi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmt_tab2_deleterow = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.delectRowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbc_main.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnl_tab1.SuspendLayout();
@@ -98,6 +100,7 @@
             this.pnl_tab2.SuspendLayout();
             this.grb_tab2_dbselect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tab2_languagetranslate)).BeginInit();
+            this.cmt_tab2_deleterow.SuspendLayout();
             this.SuspendLayout();
             // 
             // tim_checkinput
@@ -124,7 +127,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(815, 570);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "SunDi";
+            this.tabPage1.Text = "SunDiRo";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // pnl_tab1
@@ -450,7 +453,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(815, 570);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "DoYuSi";
+            this.tabPage2.Text = "DoGoRo";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // pnl_tab2
@@ -603,6 +606,31 @@
             this.dgv_tab2_languagetranslate.RowTemplate.Height = 25;
             this.dgv_tab2_languagetranslate.Size = new System.Drawing.Size(803, 353);
             this.dgv_tab2_languagetranslate.TabIndex = 48;
+            this.dgv_tab2_languagetranslate.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_tab2_languagetranslate_CellMouseUp);
+            // 
+            // tw
+            // 
+            this.tw.HeaderText = "繁體中文";
+            this.tw.Name = "tw";
+            this.tw.Width = 250;
+            // 
+            // zh
+            // 
+            this.zh.HeaderText = "簡體中文";
+            this.zh.Name = "zh";
+            this.zh.Width = 150;
+            // 
+            // en
+            // 
+            this.en.HeaderText = "英文";
+            this.en.Name = "en";
+            this.en.Width = 150;
+            // 
+            // vi
+            // 
+            this.vi.HeaderText = "越南文";
+            this.vi.Name = "vi";
+            this.vi.Width = 150;
             // 
             // cbx_tab2_fromprogram
             // 
@@ -666,29 +694,19 @@
             this.tim_tab2.Interval = 1000;
             this.tim_tab2.Tick += new System.EventHandler(this.tim_tab2_Tick);
             // 
-            // tw
+            // cmt_tab2_deleterow
             // 
-            this.tw.HeaderText = "繁體中文";
-            this.tw.Name = "tw";
-            this.tw.Width = 250;
+            this.cmt_tab2_deleterow.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.delectRowToolStripMenuItem});
+            this.cmt_tab2_deleterow.Name = "cmt_tab2_deleterow";
+            this.cmt_tab2_deleterow.Size = new System.Drawing.Size(140, 26);
+            this.cmt_tab2_deleterow.Click += new System.EventHandler(this.cmt_tab2_deleterow_Click);
             // 
-            // zh
+            // delectRowToolStripMenuItem
             // 
-            this.zh.HeaderText = "簡體中文";
-            this.zh.Name = "zh";
-            this.zh.Width = 150;
-            // 
-            // en
-            // 
-            this.en.HeaderText = "英文";
-            this.en.Name = "en";
-            this.en.Width = 150;
-            // 
-            // vi
-            // 
-            this.vi.HeaderText = "越南文";
-            this.vi.Name = "vi";
-            this.vi.Width = 150;
+            this.delectRowToolStripMenuItem.Name = "delectRowToolStripMenuItem";
+            this.delectRowToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.delectRowToolStripMenuItem.Text = "Delete Row";
             // 
             // Form1
             // 
@@ -714,6 +732,7 @@
             this.grb_tab2_dbselect.ResumeLayout(false);
             this.grb_tab2_dbselect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tab2_languagetranslate)).EndInit();
+            this.cmt_tab2_deleterow.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -777,5 +796,7 @@
         private DataGridViewTextBoxColumn zh;
         private DataGridViewTextBoxColumn en;
         private DataGridViewTextBoxColumn vi;
+        private ContextMenuStrip cmt_tab2_deleterow;
+        private ToolStripMenuItem delectRowToolStripMenuItem;
     }
 }

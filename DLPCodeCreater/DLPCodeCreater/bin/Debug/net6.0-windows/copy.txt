@@ -1,10 +1,15 @@
-//===================================[md.module]===================================//
-import { Mdb110Component as Mdb110vsComponent } from './vs/mdb110/mdb110.component';
-Mdb110vsComponent,
-//===================================[md-routing.module]===================================//
-import { Mdb110Component as Mdb110vsComponent } from './vs/mdb110/mdb110.component';
-{
-path: 'MDB110VS',
-component: Mdb110vsComponent,
-data: { title: 'MDB110VS', breadcrumb: 'MDB110VS' },
-},
+//===================================[MI361DTO.cs]===================================//
+目的地已存在相同檔案!
+請確認是否有填寫 #region 供程式抓取!
+//===================================[MI360DTO.cs]===================================//
+        #region MIV361
+
+        ///
+        public string MI361_COMPANY_NO { get; set; }
+        ///
+        public string MI361_ACC_DATE { get; set; }
+
+        #endregion MIV361
+//===================================[MI640DTO.cs]===================================//
+目的地已存在相同檔案!
+請確認是否有填寫 #region 供程式抓取!

@@ -76,9 +76,8 @@ namespace DLPCodeCreater
                     Match m = regex.Match(lines[i]);
                     if (m.Success == true)
                     {
-                        LanguageTranslate lt = getMutiTranslate(dataNormalization(m.Value));
+                        LanguageTranslate lt = getMutiTranslate(hashtagExchange(dataNormalization(m.Value), "en"));
                         list_lt.Add(lt);
-                        //this.dgv_tab2_languagetranslate.Rows.Add(lt.TW, lt.ZH, lt.EN, lt.VI);
                     }
                 }
             }
@@ -98,30 +97,88 @@ namespace DLPCodeCreater
                 Match m = regex.Match(lines[i]);
                 if (m.Success == true)
                 {
-                    LanguageTranslate lt = getMutiTranslate(dataNormalization(m.Value));
+                    LanguageTranslate lt = getMutiTranslate(hashtagExchange(dataNormalization(m.Value), "en"));
                     list_lt.Add(lt);
-                    //this.dgv_tab2_languagetranslate.Rows.Add(lt.TW, lt.ZH, lt.EN, lt.VI);
                 }
             }
 
             return list_lt;
         }
 
-        //取得多國翻譯 zh,en,vi
+        /// <summary>
+        /// 取得多國翻譯 zh,en,vi
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public LanguageTranslate getMutiTranslate(string input)
         {
             LanguageTranslate ltResult = new LanguageTranslate();
-            ltResult.TW = input;
-            ltResult.ZH = TranslateText("zh-tw", "zh", input);
-            ltResult.EN = TranslateText("zh-tw", "en", input);
-            ltResult.VI = TranslateText("zh-tw", "vi", input);
+            ltResult.TW = hashtagExchange(input, "de");
+            ltResult.ZH = dlpNormalization(hashtagExchange(TranslateText("zh-tw", "zh", input), "de"));
+            ltResult.EN = dlpNormalization(hashtagExchange(TranslateText("zh-tw", "en", input), "de"));
+            ltResult.VI = dlpNormalization(hashtagExchange(TranslateText("zh-tw", "vi", input), "de"));
             return ltResult;
+        }
+
+        /// <summary>
+        /// 井字號轉換(#to@@)
+        /// 因URL遇到#字號會截斷，所以需轉換
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string hashtagExchange(string input, string code)
+        {
+            string strResult = input;
+
+            if (code == "en")
+            {
+                Regex regex = new Regex(@"\s?#\s?[NnTtSs<>&]\s?~\s?");
+                Match m = regex.Match(input);
+                if (m.Success == true)
+                {
+                    strResult = Regex.Replace(input, "#", "@@");
+                }
+            }
+            else if (code == "de")
+            {
+                Regex regex = new Regex(@"\s?@@\s?[NnTtSs<>&]\s?~\s?");
+                Match m = regex.Match(input);
+                if (m.Success == true)
+                {
+                    strResult = Regex.Replace(input, "@@", "#");
+                }
+            }
+
+            return strResult;
+
+        }
+
+        /// <summary>
+        /// 自訂義正則
+        /// EX:換行 (#n~)空格(#s~)縮排 (#t~)< (#<~)> (#>~)& (#&~)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public string dlpNormalization(string input)
+        {
+            string strResult = input;
+
+            Regex regex = new Regex(@"\s?#\s?[NnTtSs<>&]\s?~\s?");
+            Match m = regex.Match(input);
+            if (m.Success == true)
+            {
+                var newChar = Regex.Replace(m.Value, @"\s+", "");
+                strResult = strResult.Replace(m.Value, newChar);
+            }
+            return strResult;
         }
 
         //資料正規化
         public string dataNormalization(string input)
         {
-            string strResult="";
+            string strResult = "";
+
 
             //去單引號
             if (input.StartsWith('\''))
@@ -135,7 +192,7 @@ namespace DLPCodeCreater
 
 
             //去除空白
-            strResult = strResult.Trim();
+            strResult = Regex.Replace(strResult, @"\s", "");
 
             //去重複
             //strResult = dataRepeatClear(strResult, "??");
@@ -144,18 +201,18 @@ namespace DLPCodeCreater
             //符號取代
             dataRepalce(ref strResult, ':', '：');
             dataRepalce(ref strResult, ';', '；');
-            dataRepalce(ref strResult, '`', '、');
+            //dataRepalce(ref strResult, '`', '、');
             dataRepalce(ref strResult, '?', '？');
             dataRepalce(ref strResult, '!', '！');
 
             dataRepalce(ref strResult, '〈', '(');
             dataRepalce(ref strResult, '〉', ')');
-            dataRepalce(ref strResult, '（', '(');
-            dataRepalce(ref strResult, '）', ')');
-            dataRepalce(ref strResult, '〔', '[');
-            dataRepalce(ref strResult, '〕', ']');
-            dataRepalce(ref strResult, '｛', '{');
-            dataRepalce(ref strResult, '｝', '}');
+            //dataRepalce(ref strResult, '（', '(');
+            //dataRepalce(ref strResult, '）', ')');
+            //dataRepalce(ref strResult, '〔', '[');
+            //dataRepalce(ref strResult, '〕', ']');
+            //dataRepalce(ref strResult, '｛', '{');
+            //dataRepalce(ref strResult, '｝', '}');
 
             dataRepalce(ref strResult, '.', '。');
             dataRepalce(ref strResult, ',', '，');

@@ -25,14 +25,15 @@ namespace DLPCodeCreater.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=172.29.1.3)(PORT=1521))(CON" +
-            "NECT_DATA=(SERVICE_NAME=DGPORTAL)));User ID=eipdba;Password=eipdba;")]
-        public string connectionEipDG {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=172.32.1.199)(PORT=1521))(C" +
+            "ONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=VSPORTAL)));password=eipdba;user id=" +
+            "eipdba;")]
+        public string EipVS {
             get {
-                return ((string)(this["connectionEipDG"]));
+                return ((string)(this["EipVS"]));
             }
             set {
-                this["connectionEipDG"] = value;
+                this["EipVS"] = value;
             }
         }
     }

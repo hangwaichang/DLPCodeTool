@@ -42,7 +42,7 @@ namespace DLPCodeCreater
                 cmd.Parameters.Add(":EN_US", ml.EN_US); // 使用參數化填值
                 cmd.Parameters.Add(":VI_VN", ml.VI_VN); // 使用參數化填值
                 cmd.Parameters.Add(":ZH_CN", ml.ZH_CN); // 使用參數化填值
-                cmd.Parameters.Add(":EXTENSION", program); // 使用參數化填值
+                cmd.Parameters.Add(":EXTENSION", "N"); // 使用參數化填值
                 cmd.Parameters.Add(":IMPORT_TAG", "Y"); // 使用參數化填值
 
                 int Ret = cmd.ExecuteNonQuery(); // 回傳為異動筆數

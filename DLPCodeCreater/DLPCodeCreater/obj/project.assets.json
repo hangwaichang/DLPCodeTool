@@ -3341,7 +3341,7 @@
     "C:\\Users\\Jason_Chang\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "2.0.0-20221212",
+    "version": "2.0.0-20230117",
     "restore": {
       "projectUniqueName": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
       "projectName": "DLPCodeCreater",
