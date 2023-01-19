@@ -66,10 +66,11 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pnl_tab2 = new System.Windows.Forms.Panel();
             this.grb_tab2_dbselect = new System.Windows.Forms.GroupBox();
-            this.cbx_eipdg = new System.Windows.Forms.CheckBox();
-            this.cbx_eiptc = new System.Windows.Forms.CheckBox();
-            this.cbx_eipvs = new System.Windows.Forms.CheckBox();
-            this.cbx_eipvn = new System.Windows.Forms.CheckBox();
+            this.cbx_vndb = new System.Windows.Forms.CheckBox();
+            this.cbx_dgdb = new System.Windows.Forms.CheckBox();
+            this.cbx_tcdb = new System.Windows.Forms.CheckBox();
+            this.cbx_vsdb = new System.Windows.Forms.CheckBox();
+            this.cbx_vgdb = new System.Windows.Forms.CheckBox();
             this.btn_IMultLanguage = new System.Windows.Forms.Button();
             this.tbx_tab2_resultMsg = new System.Windows.Forms.TextBox();
             this.lab_tab2_projectpath = new System.Windows.Forms.Label();
@@ -480,10 +481,11 @@
             // 
             // grb_tab2_dbselect
             // 
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_eipdg);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_eiptc);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_eipvs);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_eipvn);
+            this.grb_tab2_dbselect.Controls.Add(this.cbx_vndb);
+            this.grb_tab2_dbselect.Controls.Add(this.cbx_dgdb);
+            this.grb_tab2_dbselect.Controls.Add(this.cbx_tcdb);
+            this.grb_tab2_dbselect.Controls.Add(this.cbx_vsdb);
+            this.grb_tab2_dbselect.Controls.Add(this.cbx_vgdb);
             this.grb_tab2_dbselect.Location = new System.Drawing.Point(151, 76);
             this.grb_tab2_dbselect.Name = "grb_tab2_dbselect";
             this.grb_tab2_dbselect.Size = new System.Drawing.Size(201, 102);
@@ -491,49 +493,60 @@
             this.grb_tab2_dbselect.TabStop = false;
             this.grb_tab2_dbselect.Text = "Select DB";
             // 
-            // cbx_eipdg
+            // cbx_vndb
             // 
-            this.cbx_eipdg.AutoSize = true;
-            this.cbx_eipdg.Location = new System.Drawing.Point(6, 22);
-            this.cbx_eipdg.Name = "cbx_eipdg";
-            this.cbx_eipdg.Size = new System.Drawing.Size(62, 19);
-            this.cbx_eipdg.TabIndex = 56;
-            this.cbx_eipdg.Text = "EipDG";
-            this.cbx_eipdg.UseVisualStyleBackColor = true;
-            this.cbx_eipdg.Click += new System.EventHandler(this.cbx_eipdg_Click);
+            this.cbx_vndb.AutoSize = true;
+            this.cbx_vndb.Location = new System.Drawing.Point(6, 47);
+            this.cbx_vndb.Name = "cbx_vndb";
+            this.cbx_vndb.Size = new System.Drawing.Size(60, 19);
+            this.cbx_vndb.TabIndex = 60;
+            this.cbx_vndb.Text = "VNDB";
+            this.cbx_vndb.UseVisualStyleBackColor = true;
+            this.cbx_vndb.Click += new System.EventHandler(this.cbx_vndb_Click);
             // 
-            // cbx_eiptc
+            // cbx_dgdb
             // 
-            this.cbx_eiptc.AutoSize = true;
-            this.cbx_eiptc.Location = new System.Drawing.Point(98, 22);
-            this.cbx_eiptc.Name = "cbx_eiptc";
-            this.cbx_eiptc.Size = new System.Drawing.Size(59, 19);
-            this.cbx_eiptc.TabIndex = 59;
-            this.cbx_eiptc.Text = "EipTC";
-            this.cbx_eiptc.UseVisualStyleBackColor = true;
-            this.cbx_eiptc.Click += new System.EventHandler(this.cbx_eiptc_Click);
+            this.cbx_dgdb.AutoSize = true;
+            this.cbx_dgdb.Location = new System.Drawing.Point(6, 22);
+            this.cbx_dgdb.Name = "cbx_dgdb";
+            this.cbx_dgdb.Size = new System.Drawing.Size(60, 19);
+            this.cbx_dgdb.TabIndex = 56;
+            this.cbx_dgdb.Text = "DGDB";
+            this.cbx_dgdb.UseVisualStyleBackColor = true;
+            this.cbx_dgdb.Click += new System.EventHandler(this.cbx_dgdb_Click);
             // 
-            // cbx_eipvs
+            // cbx_tcdb
             // 
-            this.cbx_eipvs.AutoSize = true;
-            this.cbx_eipvs.Location = new System.Drawing.Point(6, 72);
-            this.cbx_eipvs.Name = "cbx_eipvs";
-            this.cbx_eipvs.Size = new System.Drawing.Size(59, 19);
-            this.cbx_eipvs.TabIndex = 57;
-            this.cbx_eipvs.Text = "EipVS";
-            this.cbx_eipvs.UseVisualStyleBackColor = true;
-            this.cbx_eipvs.Click += new System.EventHandler(this.cbx_eipvs_Click);
+            this.cbx_tcdb.AutoSize = true;
+            this.cbx_tcdb.Location = new System.Drawing.Point(107, 22);
+            this.cbx_tcdb.Name = "cbx_tcdb";
+            this.cbx_tcdb.Size = new System.Drawing.Size(57, 19);
+            this.cbx_tcdb.TabIndex = 59;
+            this.cbx_tcdb.Text = "TCDB";
+            this.cbx_tcdb.UseVisualStyleBackColor = true;
+            this.cbx_tcdb.Click += new System.EventHandler(this.cbx_tcdb_Click);
             // 
-            // cbx_eipvn
+            // cbx_vsdb
             // 
-            this.cbx_eipvn.AutoSize = true;
-            this.cbx_eipvn.Location = new System.Drawing.Point(6, 47);
-            this.cbx_eipvn.Name = "cbx_eipvn";
-            this.cbx_eipvn.Size = new System.Drawing.Size(62, 19);
-            this.cbx_eipvn.TabIndex = 58;
-            this.cbx_eipvn.Text = "EipVN";
-            this.cbx_eipvn.UseVisualStyleBackColor = true;
-            this.cbx_eipvn.Click += new System.EventHandler(this.cbx_eipvn_Click);
+            this.cbx_vsdb.AutoSize = true;
+            this.cbx_vsdb.Location = new System.Drawing.Point(6, 72);
+            this.cbx_vsdb.Name = "cbx_vsdb";
+            this.cbx_vsdb.Size = new System.Drawing.Size(57, 19);
+            this.cbx_vsdb.TabIndex = 57;
+            this.cbx_vsdb.Text = "VSDB";
+            this.cbx_vsdb.UseVisualStyleBackColor = true;
+            this.cbx_vsdb.Click += new System.EventHandler(this.cbx_vsdb_Click);
+            // 
+            // cbx_vgdb
+            // 
+            this.cbx_vgdb.AutoSize = true;
+            this.cbx_vgdb.Location = new System.Drawing.Point(107, 47);
+            this.cbx_vgdb.Name = "cbx_vgdb";
+            this.cbx_vgdb.Size = new System.Drawing.Size(59, 19);
+            this.cbx_vgdb.TabIndex = 58;
+            this.cbx_vgdb.Text = "VGDB";
+            this.cbx_vgdb.UseVisualStyleBackColor = true;
+            this.cbx_vgdb.Click += new System.EventHandler(this.cbx_vgdb_Click);
             // 
             // btn_IMultLanguage
             // 
@@ -787,10 +800,10 @@
         private TextBox tbx_tab2_resultMsg;
         private Button btn_IMultLanguage;
         private GroupBox grb_tab2_dbselect;
-        private CheckBox cbx_eipdg;
-        private CheckBox cbx_eiptc;
-        private CheckBox cbx_eipvs;
-        private CheckBox cbx_eipvn;
+        private CheckBox cbx_dgdb;
+        private CheckBox cbx_tcdb;
+        private CheckBox cbx_vsdb;
+        private CheckBox cbx_vgdb;
         private System.Windows.Forms.Timer tim_tab2;
         private DataGridViewTextBoxColumn tw;
         private DataGridViewTextBoxColumn zh;
@@ -798,5 +811,6 @@
         private DataGridViewTextBoxColumn vi;
         private ContextMenuStrip cmt_tab2_deleterow;
         private ToolStripMenuItem delectRowToolStripMenuItem;
+        private CheckBox cbx_vndb;
     }
 }

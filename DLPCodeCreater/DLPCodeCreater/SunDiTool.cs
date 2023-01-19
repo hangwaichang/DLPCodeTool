@@ -12,10 +12,11 @@ namespace DLPCodeCreater
         FileHelper fhelper = new FileHelper();
         TranslateHelp thelper = new TranslateHelp();
 
-        EipDGDbContext DgDbcontext;
-        EipVSDbContext VsDbcontext;
-        EipVNDbContext VnDbcontext;
-        EipTCDbContext TcDbcontext;
+        DGDbContext DgDbcontext;
+        VSDbContext VsDbcontext;
+        VNDbContext VnDbcontext;
+        VGDbContext VgDbcontext;
+        TCDbContext TcDbcontext;
 
 
         public const string AppPortalpath = @"\DLP.Web\DLP.Web.AppPortal\ClientApp\src\app\views\";
@@ -757,19 +758,23 @@ namespace DLPCodeCreater
         {
             try
             {
-                if (cbx_eipdg.Checked)
+                if (cbx_dgdb.Checked)
                 {
                     DgDbcontext.Inesrt(sql, ml, program);
                 }
-                if (cbx_eipvn.Checked)
+                if (cbx_vgdb.Checked)
+                {
+                    VgDbcontext.Inesrt(sql, ml, program);
+                }
+                if (cbx_vndb.Checked)
                 {
                     VnDbcontext.Inesrt(sql, ml, program);
                 }
-                if (cbx_eipvs.Checked)
+                if (cbx_vsdb.Checked)
                 {
                     VsDbcontext.Inesrt(sql, ml, program);
                 }
-                if (cbx_eiptc.Checked)
+                if (cbx_tcdb.Checked)
                 {
                     TcDbcontext.Inesrt(sql, ml, program);
                 }
@@ -784,17 +789,17 @@ namespace DLPCodeCreater
         }
 
         //DB Select
-        private void cbx_eipdg_Click(object sender, EventArgs e)
+        private void cbx_dgdb_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cbx_eipdg.Checked)
+                if (cbx_dgdb.Checked)
                 {
                     if (DgDbcontext == null)
                     {
-                        DgDbcontext = GenericDbFactory<EipDGDbContext>.Create();
+                        DgDbcontext = GenericDbFactory<DGDbContext>.Create();
                         DgDbcontext.Connect();
-                        ResultMessageTab2("EIPDG-連線成功!");
+                        ResultMessageTab2("DGDB-連線成功!");
                     }
                 }
             }
@@ -806,18 +811,17 @@ namespace DLPCodeCreater
 
         }
 
-
-        private void cbx_eipvs_Click(object sender, EventArgs e)
+        private void cbx_vsdb_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cbx_eipvs.Checked)
+                if (cbx_vsdb.Checked)
                 {
                     if (VsDbcontext == null)
                     {
-                        VsDbcontext = GenericDbFactory<EipVSDbContext>.Create();
+                        VsDbcontext = GenericDbFactory<VSDbContext>.Create();
                         VsDbcontext.Connect();
-                        ResultMessageTab2("EIPVS-連線成功!");
+                        ResultMessageTab2("VSDB-連線成功!");
                     }
                 }
             }
@@ -828,18 +832,38 @@ namespace DLPCodeCreater
             }
         }
 
-
-        private void cbx_eipvn_Click(object sender, EventArgs e)
+        private void cbx_vndb_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cbx_eipvn.Checked)
+                if (cbx_vndb.Checked)
                 {
                     if (VnDbcontext == null)
                     {
-                        VnDbcontext = GenericDbFactory<EipVNDbContext>.Create();
+                        VnDbcontext = GenericDbFactory<VNDbContext>.Create();
                         VnDbcontext.Connect();
-                        ResultMessageTab2("EIPVN-連線成功!");
+                        ResultMessageTab2("VNDB-連線成功!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ResultErrorMessageTab2(ex.Message);
+            }
+        }
+
+        private void cbx_vgdb_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbx_vgdb.Checked)
+                {
+                    if (VgDbcontext == null)
+                    {
+                        VgDbcontext = GenericDbFactory<VGDbContext>.Create();
+                        VgDbcontext.Connect();
+                        ResultMessageTab2("VGDB-連線成功!");
                     }
                 }
             }
@@ -849,17 +873,17 @@ namespace DLPCodeCreater
             }
         }
 
-        private void cbx_eiptc_Click(object sender, EventArgs e)
+        private void cbx_tcdb_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cbx_eiptc.Checked)
+                if (cbx_tcdb.Checked)
                 {
                     if (TcDbcontext == null)
                     {
-                        TcDbcontext = GenericDbFactory<EipTCDbContext>.Create();
+                        TcDbcontext = GenericDbFactory<TCDbContext>.Create();
                         TcDbcontext.Connect();
-                        ResultMessageTab2("EIPTC-連線成功!");
+                        ResultMessageTab2("TCDB-連線成功!");
                     }
                 }
             }
@@ -881,7 +905,7 @@ namespace DLPCodeCreater
                 btn_IMultLanguage.Enabled = false;
             }
 
-            if (cbx_eipdg.Checked || cbx_eipvs.Checked || cbx_eipvn.Checked || cbx_eiptc.Checked)
+            if (cbx_dgdb.Checked || cbx_vsdb.Checked || cbx_vgdb.Checked || cbx_tcdb.Checked || cbx_vndb.Checked)
             {
                 btn_IMultLanguage.Enabled = true;
             }
@@ -925,6 +949,8 @@ namespace DLPCodeCreater
         }
 
         #endregion
+
+
     }
 
 
