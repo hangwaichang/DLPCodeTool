@@ -146,8 +146,12 @@ namespace DLPCodeCreater
             fileName = this.cbx_fromprogram.Text + ".state.ts";
             FileMove(fAreapath + @"\states", tAreapath + @"\states", fileName);
             //api
+            //20230427 因應前端CRUD新寫法可能沒有api.ts
             fileName = this.cbx_fromprogram.Text + ".api.ts";
-            FileMove(fAreapath + @"\api", tAreapath + @"\api", fileName);
+            if (File.Exists(fAreapath + @"\api\" + fileName))
+            {
+                FileMove(fAreapath + @"\api", tAreapath + @"\api", fileName);
+            }
             //controls
             fileName = this.cbx_fromprogram.Text + ".control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
@@ -241,22 +245,30 @@ namespace DLPCodeCreater
             string program = this.cbx_fromprogram.Text.ToUpper();
             var serviceText = fhelper.FileRead(fAreapath + @"\services\web-api.service.ts", program, "}");
 
-            string fromPath = "/" + cbx_fromarea.Text + "/" + cbx_fromprogram.Text;
-            string tragetPath = "/" + cbx_targetarea.Text + "/" + cbx_targetprogram.Text;
-            List<string> repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).ToList();
+            //20230427 因應前端CRUD新寫法可能不需要複製 這兩個檔案
+            if (serviceText.Count() > 0)
+            {
+                string fromPath = "/" + cbx_fromarea.Text + "/" + cbx_fromprogram.Text;
+                string tragetPath = "/" + cbx_targetarea.Text + "/" + cbx_targetprogram.Text;
+                List<string> repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).ToList();
 
-            fhelper.FileWrite(repalceServiceText, false, "web-api.service");
-            var modelText = fhelper.FileRead(fAreapath + @"\models\web-api.model.ts", program, "}");
-            fhelper.FileWrite(modelText, true, "web-api.model");
+                fhelper.FileWrite(repalceServiceText, false, "web-api.service");
+                var modelText = fhelper.FileRead(fAreapath + @"\models\web-api.model.ts", program, "}");
+                fhelper.FileWrite(modelText, true, "web-api.model");
 
-            //開啟copy.txt
-            System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
+                //開啟copy.txt
+                System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
 
-            //開啟目標web-api.service web-api.model
-            System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\services\web-api.service.ts");
-            System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\models\web-api.model.ts");
-            ResultMessage("開啟檔案:" + tAreapath + @"\services\web-api.service.ts");
-            ResultMessage("開啟檔案:" + tAreapath + @"\models\web-api.model.ts");
+                //開啟目標web-api.service web-api.model
+                System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\services\web-api.service.ts");
+                System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\models\web-api.model.ts");
+                ResultMessage("開啟檔案:" + tAreapath + @"\services\web-api.service.ts");
+                ResultMessage("開啟檔案:" + tAreapath + @"\models\web-api.model.ts");
+            }
+            else {
+                ResultMessage("web-api內沒有程式名稱:"+ program+ " 不須複製!");
+            }
+
 
             ResultMessage("===============前端web-api讀取結束================");
         }
