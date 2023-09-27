@@ -4,6 +4,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using Classes;
 using Oracle.ManagedDataAccess.Client;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DLPCodeCreater
 {
@@ -30,13 +31,16 @@ namespace DLPCodeCreater
         public string fModulepath = "";
         public string fAreapath = "";
         public string fProgrampath = "";
+        public string fProgram = "";
 
         public string tModulepath = "";
         public string tAreapath = "";
         public string tProgrampath = "";
+        public string tProgram = "";
 
         public int rowIndex = 0;
 
+        public Boolean isdiffprogaram = false;
 
         List<string> repository = new List<string>();
 
@@ -131,44 +135,61 @@ namespace DLPCodeCreater
             fProgrampath = fAreapath + @"\" + this.cbx_fromprogram.Text;
             tProgrampath = tAreapath + @"\" + this.cbx_targetprogram.Text;
             string fileName = "";
+            string tfileName = "";
             //ts,css,html
-            GetFileandMove(fProgrampath, tProgrampath);
+            if (isdiffprogaram)
+            {
+                //複製不同程式名稱
+                GetFileandMoveAndReplaceContext(fProgrampath, tProgrampath);
+            }
+            else
+            {
+                GetFileandMove(fProgrampath, tProgrampath);
+            }
+
             //services
             fileName = this.cbx_fromprogram.Text + ".service.ts";
-            FileMove(fAreapath + @"\services", tAreapath + @"\services", fileName);
+            if (isdiffprogaram) tfileName = tProgram + ".service.ts";
+            FileMove(fAreapath + @"\services", tAreapath + @"\services", fileName, tfileName);
             //pop-up.service.ts
             fileName = this.cbx_fromprogram.Text + "-pop-up.service.ts";
+            if (isdiffprogaram) tfileName = tProgram + "-pop-up.service.ts";
             if (File.Exists(fAreapath + @"\services\" + fileName))
             {
-                FileMove(fAreapath + @"\services", tAreapath + @"\services", fileName);
+                FileMove(fAreapath + @"\services", tAreapath + @"\services", fileName, tfileName);
             }
             //states
             fileName = this.cbx_fromprogram.Text + ".state.ts";
-            FileMove(fAreapath + @"\states", tAreapath + @"\states", fileName);
+            if (isdiffprogaram) tfileName = tProgram + ".state.ts";
+            FileMove(fAreapath + @"\states", tAreapath + @"\states", fileName, tfileName);
             //api
             //20230427 因應前端CRUD新寫法可能沒有api.ts
             fileName = this.cbx_fromprogram.Text + ".api.ts";
+            if (isdiffprogaram) tfileName = tProgram + ".api.ts";
             if (File.Exists(fAreapath + @"\api\" + fileName))
             {
-                FileMove(fAreapath + @"\api", tAreapath + @"\api", fileName);
+                FileMove(fAreapath + @"\api", tAreapath + @"\api", fileName, tfileName);
             }
             //controls
             fileName = this.cbx_fromprogram.Text + ".control.ts";
+            if (isdiffprogaram) tfileName = tProgram + ".control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
             {
-                FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName);
+                FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName, tfileName);
             }
             //form.control
             fileName = this.cbx_fromprogram.Text + "-form.control.ts";
+            if (isdiffprogaram) tfileName = tProgram + "-form.control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
             {
-                FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName);
+                FileMove(fAreapath + @"\controls", tAreapath + @"\controls", fileName, tfileName);
             }
             //validations
             fileName = this.cbx_fromprogram.Text + ".validation.ts";
+            if (isdiffprogaram) tfileName = tProgram + ".validation.ts";
             if (File.Exists(fAreapath + @"\validations\" + fileName))
             {
-                FileMove(fAreapath + @"\validations", tAreapath + @"\validations", fileName);
+                FileMove(fAreapath + @"\validations", tAreapath + @"\validations", fileName, tfileName);
             }
             ResultMessage("===============前端檔案搬移結束================");
         }
@@ -191,25 +212,91 @@ namespace DLPCodeCreater
 
         }
 
-        public void FileMove(string frompath, string targetpath, string filename)
+        /// <summary>
+        /// 複製前端檔案並修改內容
+        /// </summary>
+        /// <param name="frompath"></param>
+        /// <param name="targetpath"></param>
+        public void GetFileandMoveAndReplaceContext(string frompath, string targetpath)
+        {
+            List<string> filenames = fhelper.GetFiles(frompath);
+            fhelper.CheckDir(targetpath);
+
+            foreach (string fname in filenames)
+            {
+
+                string fpath = frompath + @"\" + fname;
+                string tpath = targetpath + @"\" + fname.Replace(fname.Split('.')[0], tProgram);
+                if (fhelper.FileMove(fpath, tpath))
+                {
+                    ResultMessage("檔案搬移成功" + tpath);
+                }
+
+                //修改內容
+                ReplaceProgramName(tpath, fProgram, tProgram);
+
+            }
+
+        }
+        /// <summary>
+        /// 檔案搬移
+        /// </summary>
+        /// <param name="frompath"></param>
+        /// <param name="targetpath"></param>
+        /// <param name="filename"></param>
+        /// <param name="tfilename"> 新的檔名 </param>
+        public void FileMove(string frompath, string targetpath, string filename, string tfilename)
         {
             fhelper.CheckDir(targetpath);
 
             string fpath = frompath + @"\" + filename;
-            string tpath = targetpath + @"\" + filename;
+
+            string tpath = targetpath + @"\";
+            tpath += tfilename != "" ? tfilename : filename;
+
             if (fhelper.FileMove(fpath, tpath))
             {
                 ResultMessage("檔案搬移成功" + tpath);
             }
 
+            //如果是新檔就要修改內容
+            if (tfilename != "") ReplaceProgramName(tpath, fProgram, tProgram);
+
+
         }
 
-        public void FileMoveAndReplace(string frompath, string targetpath, string filename, List<string> replace_first, List<string> replace_second = null)
+        /// <summary>
+        /// 取代內文程式代碼
+        /// </summary>
+        /// <param name="targetpath"></param>
+        /// <param name="Oldvalue"></param>
+        /// <param name="Newvalue"></param>
+        public void ReplaceProgramName(string targetpath, string Oldvalue, string Newvalue)
+        {
+
+            string upperOldvalue = char.ToUpper(Oldvalue[0]) + Oldvalue.Substring(1);
+            string upperNewvalue = char.ToUpper(Newvalue[0]) + Newvalue.Substring(1);
+
+            //修改內文
+            //小寫、大駝峰、大寫
+            if (fhelper.FileReplace(targetpath, Oldvalue, Newvalue) && fhelper.FileReplace(targetpath, upperOldvalue, upperNewvalue) && fhelper.FileReplace(targetpath, Oldvalue.ToUpper(), upperNewvalue.ToUpper()))
+            {
+                ResultMessage("檔案內容取代成功" + targetpath);
+            }
+
+        }
+
+
+        public void FileMoveAndReplace(string frompath, string targetpath, string fromprogram, string targetprogram, string filename, List<string> replace_first, List<string> replace_second = null)
         {
             fhelper.CheckDir(targetpath);
 
-            string fpath = frompath + @"\" + filename;
-            string tpath = targetpath + @"\" + filename;
+            string fpath = frompath + @"\" + fromprogram + filename;
+
+            string tpath = targetpath + @"\";
+            tpath += isdiffprogaram ? targetprogram : fromprogram;
+            tpath += filename;
+
             if (fhelper.FileMove(fpath, tpath))
             {
                 ResultMessage("檔案搬移成功" + tpath);
@@ -228,6 +315,10 @@ namespace DLPCodeCreater
                     }
 
                 }
+
+                //不同程式要修改內容
+                if (isdiffprogaram) fhelper.FileReplace(tpath, fProgram.ToUpper(), tProgram.ToUpper());
+
             }
 
         }
@@ -248,12 +339,29 @@ namespace DLPCodeCreater
             //20230427 因應前端CRUD新寫法可能不需要複製 這兩個檔案
             if (serviceText.Count() > 0)
             {
+                List<string> repalceServiceText;
                 string fromPath = "/" + cbx_fromarea.Text + "/" + cbx_fromprogram.Text;
                 string tragetPath = "/" + cbx_targetarea.Text + "/" + cbx_targetprogram.Text;
-                List<string> repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).ToList();
+
+                string fromProgram = cbx_fromprogram.Text + ": {";
+                string tragetProgram = cbx_targetprogram.Text + ": {";
+
+                if (isdiffprogaram)
+                {
+                    //不同程式要修改內容
+                    repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).Select(s => s.Replace(fromProgram.ToUpper(), tragetProgram.ToUpper())).ToList();
+                }
+                else
+                {
+                    repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).ToList();
+                }
+
 
                 fhelper.FileWrite(repalceServiceText, false, "web-api.service");
                 var modelText = fhelper.FileRead(fAreapath + @"\models\web-api.model.ts", program, "}");
+                //不同程式要修改內容
+                if (isdiffprogaram) modelText = modelText.Select(s => s.Replace(fromProgram.ToUpper(), tragetProgram.ToUpper())).ToList();
+
                 fhelper.FileWrite(modelText, true, "web-api.model");
 
                 //開啟copy.txt
@@ -265,8 +373,9 @@ namespace DLPCodeCreater
                 ResultMessage("開啟檔案:" + tAreapath + @"\services\web-api.service.ts");
                 ResultMessage("開啟檔案:" + tAreapath + @"\models\web-api.model.ts");
             }
-            else {
-                ResultMessage("web-api內沒有程式名稱:"+ program+ " 不須複製!");
+            else
+            {
+                ResultMessage("web-api內沒有程式名稱:" + program + " 不須複製!");
             }
 
 
@@ -336,9 +445,9 @@ namespace DLPCodeCreater
             string TargetServicesFile = this.tbx_projectpath.Text + String.Format(Servicespath, cbx_targetmodule.Text, cbx_targetarea.Text);
 
             //Controller
-            FileMoveAndReplace(FromControllersFile, TargetControllersFile, cbx_fromprogram.Text.ToUpper() + "Controller.cs", replace, route_replace);
+            FileMoveAndReplace(FromControllersFile, TargetControllersFile, cbx_fromprogram.Text.ToUpper(), cbx_targetprogram.Text.ToUpper(), "Controller.cs", replace, route_replace);
             //Service
-            FileMoveAndReplace(FromServicesFile, TargetServicesFile, cbx_fromprogram.Text.ToUpper() + "Service.cs", replace);
+            FileMoveAndReplace(FromServicesFile, TargetServicesFile, cbx_fromprogram.Text.ToUpper(), cbx_targetprogram.Text.ToUpper(), "Service.cs", replace);
             ResultMessage("===============後端檔案搬移&地區修改結束================");
         }
 
@@ -349,6 +458,9 @@ namespace DLPCodeCreater
             string FromStoreProcedureFile = this.tbx_projectpath.Text + String.Format(StoreProcedurepath, cbx_frommodule.Text, cbx_fromarea.Text);
             string TargetStoreProcedureFile = this.tbx_projectpath.Text + String.Format(StoreProcedurepath, cbx_targetmodule.Text, cbx_targetarea.Text);
             var serviceText = fhelper.FileRead(FromStoreProcedureFile, program, "#endregion");
+
+            //不同程式要修改內容
+            if (isdiffprogaram) serviceText = serviceText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
 
             fhelper.FileWrite(serviceText, false, "SPName");
 
@@ -391,58 +503,68 @@ namespace DLPCodeCreater
         private void btn_dto_Click(object sender, EventArgs e)
         {
             ResultMessage("===============7.處理DTO作業開始================");
-            string program = this.cbx_fromprogram.Text.ToUpper();
-            List<string> replace = new List<string>();
-            List<string> openfiles = new List<string>();
-            List<string> replace_udt = new List<string>();
 
-            replace.Add('.' + cbx_fromarea.Text.ToUpper());
-            replace.Add('.' + cbx_targetarea.Text.ToUpper());
-
-
-            replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
-            replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
-
-            //處理DTO
-            string FromDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_frommodule.Text, cbx_fromarea.Text);
-            string TargetDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_targetmodule.Text, cbx_targetarea.Text);
-
-            //清空copy.text
-            fhelper.FileWrite(new List<string>(), false, "Start");
-
-            foreach (var repo in repository)
+            if (string.Compare(cbx_fromarea.Text, cbx_targetarea.Text) != 0)
             {
-                int repoIndex = repo.Length - 10;//Repository Length
-                repoIndex -= 1; //起始 'I' 字元長度
+                //不同區域才需處理DTO
+                string program = this.cbx_fromprogram.Text.ToUpper();
+                List<string> replace = new List<string>();
+                List<string> openfiles = new List<string>();
+                List<string> replace_udt = new List<string>();
 
-                string filename = repo.Substring(1, repoIndex) + "DTO.cs";
-                if (File.Exists(TargetDTOFile + @"\" + filename))
+                replace.Add('.' + cbx_fromarea.Text.ToUpper());
+                replace.Add('.' + cbx_targetarea.Text.ToUpper());
+
+
+                replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
+                replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
+
+                //處理DTO
+                string FromDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_frommodule.Text, cbx_fromarea.Text);
+                string TargetDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_targetmodule.Text, cbx_targetarea.Text);
+
+                //清空copy.text
+                fhelper.FileWrite(new List<string>(), false, "Start");
+
+                foreach (var repo in repository)
                 {
-                    openfiles.Add(TargetDTOFile + @"\" + filename);
-                    //已存在 抓關鍵字
-                    var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region " + program, "#endregion");
+                    int repoIndex = repo.Length - 10;//Repository Length
+                    repoIndex -= 1; //起始 'I' 字元長度
 
-                    //UDT物件名稱修正
-                    dtoText = dtoText.Select(s => s.Replace(replace_udt[0], replace_udt[1])).ToList();
+                    string filename = repo.Substring(1, repoIndex) + "DTO.cs";
+                    if (File.Exists(TargetDTOFile + @"\" + filename))
+                    {
+                        openfiles.Add(TargetDTOFile + @"\" + filename);
+                        //已存在 抓關鍵字
+                        var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region " + program, "#endregion");
 
-                    fhelper.FileWrite(dtoText, true, filename);
+                        //UDT物件名稱修正
+                        dtoText = dtoText.Select(s => s.Replace(replace_udt[0], replace_udt[1])).ToList();
+
+                        fhelper.FileWrite(dtoText, true, filename);
+                    }
+                    else
+                    {
+                        //不存在直接copy
+                        FileMoveAndReplace(FromDTOFile, TargetDTOFile, repo.Substring(1, repoIndex), repo.Substring(1, repoIndex), "DTO.cs", replace);
+                    }
                 }
-                else
+
+                //開啟copy.txt
+                System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
+                //DTO.cs
+                foreach (var of in openfiles)
                 {
-                    //不存在直接copy
-                    FileMoveAndReplace(FromDTOFile, TargetDTOFile, filename, replace);
+                    System.Diagnostics.Process.Start("explorer.exe", of);
                 }
+
+                ResultMessage("開啟檔案:DTO.cs");
+            }
+            else
+            {
+                ResultMessage("同一區域不須處理DTO");
             }
 
-            //開啟copy.txt
-            System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
-            //DTO.cs
-            foreach (var of in openfiles)
-            {
-                System.Diagnostics.Process.Start("explorer.exe", of);
-            }
-
-            ResultMessage("開啟檔案:DTO.cs");
             ResultMessage("===============處理DTO作業結束================");
         }
 
@@ -475,12 +597,16 @@ namespace DLPCodeCreater
                     openfiles.Add(TargetInterfaceFile + @"\" + filename);
                     //已存在 抓關鍵字
                     var dtoText = fhelper.FileRead(FromInterfaceFile + @"\" + filename, "#region " + program, "#endregion");
+
+                    //不同程式要修改內容
+                    if (isdiffprogaram) dtoText = dtoText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
+
                     fhelper.FileWrite(dtoText, true, filename);
                 }
                 else
                 {
                     //不存在直接copy
-                    FileMoveAndReplace(FromInterfaceFile, TargetInterfaceFile, filename, replace, replace_udt);
+                    FileMoveAndReplace(FromInterfaceFile, TargetInterfaceFile, repo, repo, ".cs", replace, replace_udt);
                 }
             }
 
@@ -525,12 +651,15 @@ namespace DLPCodeCreater
                     openfiles.Add(TargetRepositoriesFile + @"\" + filename);
                     //已存在 抓關鍵字
                     var dtoText = fhelper.FileRead(FromRepositoriesFile + @"\" + filename, "#region " + program, "#endregion");
+                    //不同程式要修改內容
+                    if (isdiffprogaram) dtoText = dtoText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
+
                     fhelper.FileWrite(dtoText, true, filename);
                 }
                 else
                 {
                     //不存在直接copy
-                    FileMoveAndReplace(FromRepositoriesFile, TargetRepositoriesFile, filename, replace, replace_udt);
+                    FileMoveAndReplace(FromRepositoriesFile, TargetRepositoriesFile, repo.Substring(1, repo.Length - 1), repo.Substring(1, repo.Length - 1), ".cs", replace, replace_udt);
                 }
             }
 
@@ -549,6 +678,7 @@ namespace DLPCodeCreater
         private void cbx_fromprogram_SelectedIndexChanged(object sender, EventArgs e)
         {
             cbx_targetprogram.Text = cbx_fromprogram.Text;
+            fProgram = cbx_targetprogram.Text;
         }
 
         private void tim_checkinput_Tick(object sender, EventArgs e)
@@ -566,7 +696,7 @@ namespace DLPCodeCreater
             else
             {
                 //搬移程式名稱需相同
-                if (string.Compare(cbx_fromprogram.Text, cbx_targetprogram.Text) == 0)
+                if (string.Compare(cbx_fromprogram.Text, cbx_targetprogram.Text) == 0 || isdiffprogaram)
                 {
                     btn_Move.Enabled = true;
                     btn_webapicopy.Enabled = true;
@@ -599,18 +729,19 @@ namespace DLPCodeCreater
         private void cbx_targetprogram_Leave(object sender, EventArgs e)
         {
             cbx_targetprogram.Text = cbx_targetprogram.Text.ToLower();
+            tProgram = cbx_targetprogram.Text;
         }
 
         //Test Button
         private void button1_Click(object sender, EventArgs e)
         {
             tbx_projectpath.Text = @"D:\Git\dlp-develop";
-            cbx_frommodule.Text = "mg";
-            cbx_fromarea.Text = "vs";
-            cbx_fromprogram.Text = "mgi100";
-            cbx_targetmodule.Text = "mg";
-            cbx_targetarea.Text = "vn";
-            cbx_targetprogram.Text = "mgi100";
+            cbx_frommodule.Text = "mi";
+            cbx_fromarea.Text = "dg";
+            cbx_fromprogram.Text = "mii470";
+            cbx_targetmodule.Text = "mi";
+            cbx_targetarea.Text = "dg";
+            cbx_targetprogram.Text = "mii470tzc";
         }
 
         //滾輪至底
@@ -907,12 +1038,13 @@ namespace DLPCodeCreater
 
         private void tim_tab2_Tick(object sender, EventArgs e)
         {
-            if (cbx_tab2_fromarea.Items.Count>0 && cbx_tab2_frommodule.Items.Count > 0 && cbx_tab2_fromprogram.Items.Count > 0)
+            if (cbx_tab2_fromarea.Items.Count > 0 && cbx_tab2_frommodule.Items.Count > 0 && cbx_tab2_fromprogram.Items.Count > 0)
             {
                 btn_gettranslate.Enabled = true;
 
             }
-            else {
+            else
+            {
                 btn_gettranslate.Enabled = false;
                 btn_IMultLanguage.Enabled = false;
             }
@@ -921,7 +1053,8 @@ namespace DLPCodeCreater
             {
                 btn_IMultLanguage.Enabled = true;
             }
-            else {
+            else
+            {
                 btn_IMultLanguage.Enabled = false;
             }
 
@@ -963,6 +1096,18 @@ namespace DLPCodeCreater
         #endregion
 
 
+        private void cbx_copydiff_Click(object sender, EventArgs e)
+        {
+            if (this.cbx_copydiff.Checked)
+            {
+                isdiffprogaram = true;
+            }
+            else
+            {
+                isdiffprogaram = false;
+            }
+
+        }
     }
 
 

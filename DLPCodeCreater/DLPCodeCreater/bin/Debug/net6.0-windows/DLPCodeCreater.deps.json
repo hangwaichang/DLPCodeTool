@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "DLPCodeCreater/2.0.0-20230427": {
+      "DLPCodeCreater/2.0.0-20230927": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Client": "3.0.0",
           "Newtonsoft.Json": "13.0.1",
@@ -16,8 +16,7 @@
           "System.ServiceModel.Federation": "4.8.1",
           "System.ServiceModel.Http": "4.8.1",
           "System.ServiceModel.NetTcp": "4.8.1",
-          "System.ServiceModel.Security": "4.8.1",
-          "DarrenLee.Translator": "1.0.0.0"
+          "System.ServiceModel.Security": "4.8.1"
         },
         "runtime": {
           "DLPCodeCreater.dll": {}
@@ -536,19 +535,11 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
-      },
-      "DarrenLee.Translator/1.0.0.0": {
-        "runtime": {
-          "DarrenLee.Translator.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
   "libraries": {
-    "DLPCodeCreater/2.0.0-20230427": {
+    "DLPCodeCreater/2.0.0-20230927": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -944,11 +935,6 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
-    },
-    "DarrenLee.Translator/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

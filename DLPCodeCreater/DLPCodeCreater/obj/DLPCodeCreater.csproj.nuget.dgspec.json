@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {}
+    "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {}
   },
   "projects": {
-    "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
-      "version": "2.0.0-20230427",
+    "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
+      "version": "2.0.0-20230927",
       "restore": {
-        "projectUniqueName": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+        "projectUniqueName": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
         "projectName": "DLPCodeCreater",
-        "projectPath": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+        "projectPath": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
         "packagesPath": "C:\\Users\\Jason_Chang\\.nuget\\packages\\",
-        "outputPath": "D:\\JasonCode\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
+        "outputPath": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Jason_Chang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0-windows7.0"
+          "net6.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -85,7 +85,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -97,7 +98,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

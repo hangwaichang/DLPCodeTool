@@ -28,726 +28,733 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tim_checkinput = new System.Windows.Forms.Timer(this.components);
-            this.tbc_main = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pnl_tab1 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btn_getrepository = new System.Windows.Forms.Button();
-            this.btn_repositories = new System.Windows.Forms.Button();
-            this.btn_dto = new System.Windows.Forms.Button();
-            this.btn_interface = new System.Windows.Forms.Button();
-            this.grb_Backend = new System.Windows.Forms.GroupBox();
-            this.btn_backendmove = new System.Windows.Forms.Button();
-            this.btn_spname = new System.Windows.Forms.Button();
-            this.grb_Frontend = new System.Windows.Forms.GroupBox();
-            this.btn_Move = new System.Windows.Forms.Button();
-            this.btn_webapicopy = new System.Windows.Forms.Button();
-            this.btn_modulecopy = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cbx_targetprogram = new System.Windows.Forms.ComboBox();
-            this.lab_targetprogram = new System.Windows.Forms.Label();
-            this.cbx_targetarea = new System.Windows.Forms.ComboBox();
-            this.lab_targetarea = new System.Windows.Forms.Label();
-            this.cbx_targetmodule = new System.Windows.Forms.ComboBox();
-            this.lab_targetmodule = new System.Windows.Forms.Label();
-            this.tbx_resultMsg = new System.Windows.Forms.TextBox();
-            this.cbx_fromprogram = new System.Windows.Forms.ComboBox();
-            this.lab_fromprogram = new System.Windows.Forms.Label();
-            this.cbx_fromarea = new System.Windows.Forms.ComboBox();
-            this.lab_fromarea = new System.Windows.Forms.Label();
-            this.cbx_frommodule = new System.Windows.Forms.ComboBox();
-            this.lab_module = new System.Windows.Forms.Label();
-            this.lab_projectpath = new System.Windows.Forms.Label();
-            this.btn_selectpath = new System.Windows.Forms.Button();
-            this.tbx_projectpath = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.pnl_tab2 = new System.Windows.Forms.Panel();
-            this.grb_tab2_dbselect = new System.Windows.Forms.GroupBox();
-            this.cbx_vndb = new System.Windows.Forms.CheckBox();
-            this.cbx_dgdb = new System.Windows.Forms.CheckBox();
-            this.cbx_tcdb = new System.Windows.Forms.CheckBox();
-            this.cbx_vsdb = new System.Windows.Forms.CheckBox();
-            this.cbx_vgdb = new System.Windows.Forms.CheckBox();
-            this.btn_IMultLanguage = new System.Windows.Forms.Button();
-            this.tbx_tab2_resultMsg = new System.Windows.Forms.TextBox();
-            this.lab_tab2_projectpath = new System.Windows.Forms.Label();
-            this.btn_tab2_selectpath = new System.Windows.Forms.Button();
-            this.tbx_tab2_projectpath = new System.Windows.Forms.TextBox();
-            this.btn_gettranslate = new System.Windows.Forms.Button();
-            this.dgv_tab2_languagetranslate = new System.Windows.Forms.DataGridView();
-            this.tw = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.zh = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.en = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.vi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cbx_tab2_fromprogram = new System.Windows.Forms.ComboBox();
-            this.lab_tab2_fromprogram = new System.Windows.Forms.Label();
-            this.cbx_tab2_fromarea = new System.Windows.Forms.ComboBox();
-            this.lab_atb2_fromarea = new System.Windows.Forms.Label();
-            this.cbx_tab2_frommodule = new System.Windows.Forms.ComboBox();
-            this.lab_tab2_module = new System.Windows.Forms.Label();
-            this.tim_tab2 = new System.Windows.Forms.Timer(this.components);
-            this.cmt_tab2_deleterow = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.delectRowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbc_main.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.pnl_tab1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.grb_Backend.SuspendLayout();
-            this.grb_Frontend.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.pnl_tab2.SuspendLayout();
-            this.grb_tab2_dbselect.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tab2_languagetranslate)).BeginInit();
-            this.cmt_tab2_deleterow.SuspendLayout();
-            this.SuspendLayout();
+            tim_checkinput = new System.Windows.Forms.Timer(components);
+            tbc_main = new TabControl();
+            tabPage1 = new TabPage();
+            pnl_tab1 = new Panel();
+            cbx_copydiff = new CheckBox();
+            groupBox1 = new GroupBox();
+            btn_getrepository = new Button();
+            btn_repositories = new Button();
+            btn_dto = new Button();
+            btn_interface = new Button();
+            grb_Backend = new GroupBox();
+            btn_backendmove = new Button();
+            btn_spname = new Button();
+            grb_Frontend = new GroupBox();
+            btn_Move = new Button();
+            btn_webapicopy = new Button();
+            btn_modulecopy = new Button();
+            button1 = new Button();
+            cbx_targetprogram = new ComboBox();
+            lab_targetprogram = new Label();
+            cbx_targetarea = new ComboBox();
+            lab_targetarea = new Label();
+            cbx_targetmodule = new ComboBox();
+            lab_targetmodule = new Label();
+            tbx_resultMsg = new TextBox();
+            cbx_fromprogram = new ComboBox();
+            lab_fromprogram = new Label();
+            cbx_fromarea = new ComboBox();
+            lab_fromarea = new Label();
+            cbx_frommodule = new ComboBox();
+            lab_module = new Label();
+            lab_projectpath = new Label();
+            btn_selectpath = new Button();
+            tbx_projectpath = new TextBox();
+            tabPage2 = new TabPage();
+            pnl_tab2 = new Panel();
+            grb_tab2_dbselect = new GroupBox();
+            cbx_vndb = new CheckBox();
+            cbx_dgdb = new CheckBox();
+            cbx_tcdb = new CheckBox();
+            cbx_vsdb = new CheckBox();
+            cbx_vgdb = new CheckBox();
+            btn_IMultLanguage = new Button();
+            tbx_tab2_resultMsg = new TextBox();
+            lab_tab2_projectpath = new Label();
+            btn_tab2_selectpath = new Button();
+            tbx_tab2_projectpath = new TextBox();
+            btn_gettranslate = new Button();
+            dgv_tab2_languagetranslate = new DataGridView();
+            tw = new DataGridViewTextBoxColumn();
+            zh = new DataGridViewTextBoxColumn();
+            en = new DataGridViewTextBoxColumn();
+            vi = new DataGridViewTextBoxColumn();
+            cbx_tab2_fromprogram = new ComboBox();
+            lab_tab2_fromprogram = new Label();
+            cbx_tab2_fromarea = new ComboBox();
+            lab_atb2_fromarea = new Label();
+            cbx_tab2_frommodule = new ComboBox();
+            lab_tab2_module = new Label();
+            tim_tab2 = new System.Windows.Forms.Timer(components);
+            cmt_tab2_deleterow = new ContextMenuStrip(components);
+            delectRowToolStripMenuItem = new ToolStripMenuItem();
+            tbc_main.SuspendLayout();
+            tabPage1.SuspendLayout();
+            pnl_tab1.SuspendLayout();
+            groupBox1.SuspendLayout();
+            grb_Backend.SuspendLayout();
+            grb_Frontend.SuspendLayout();
+            tabPage2.SuspendLayout();
+            pnl_tab2.SuspendLayout();
+            grb_tab2_dbselect.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_tab2_languagetranslate).BeginInit();
+            cmt_tab2_deleterow.SuspendLayout();
+            SuspendLayout();
             // 
             // tim_checkinput
             // 
-            this.tim_checkinput.Enabled = true;
-            this.tim_checkinput.Interval = 1000;
-            this.tim_checkinput.Tick += new System.EventHandler(this.tim_checkinput_Tick);
+            tim_checkinput.Enabled = true;
+            tim_checkinput.Interval = 1000;
+            tim_checkinput.Tick += tim_checkinput_Tick;
             // 
             // tbc_main
             // 
-            this.tbc_main.Controls.Add(this.tabPage1);
-            this.tbc_main.Controls.Add(this.tabPage2);
-            this.tbc_main.Location = new System.Drawing.Point(2, 3);
-            this.tbc_main.Name = "tbc_main";
-            this.tbc_main.SelectedIndex = 0;
-            this.tbc_main.Size = new System.Drawing.Size(823, 598);
-            this.tbc_main.TabIndex = 30;
+            tbc_main.Controls.Add(tabPage1);
+            tbc_main.Controls.Add(tabPage2);
+            tbc_main.Location = new Point(2, 3);
+            tbc_main.Name = "tbc_main";
+            tbc_main.SelectedIndex = 0;
+            tbc_main.Size = new Size(823, 598);
+            tbc_main.TabIndex = 30;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.pnl_tab1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(815, 570);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "SunDiRo";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Controls.Add(pnl_tab1);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(815, 570);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "SunDiRo";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // pnl_tab1
             // 
-            this.pnl_tab1.Controls.Add(this.groupBox1);
-            this.pnl_tab1.Controls.Add(this.grb_Backend);
-            this.pnl_tab1.Controls.Add(this.grb_Frontend);
-            this.pnl_tab1.Controls.Add(this.button1);
-            this.pnl_tab1.Controls.Add(this.cbx_targetprogram);
-            this.pnl_tab1.Controls.Add(this.lab_targetprogram);
-            this.pnl_tab1.Controls.Add(this.cbx_targetarea);
-            this.pnl_tab1.Controls.Add(this.lab_targetarea);
-            this.pnl_tab1.Controls.Add(this.cbx_targetmodule);
-            this.pnl_tab1.Controls.Add(this.lab_targetmodule);
-            this.pnl_tab1.Controls.Add(this.tbx_resultMsg);
-            this.pnl_tab1.Controls.Add(this.cbx_fromprogram);
-            this.pnl_tab1.Controls.Add(this.lab_fromprogram);
-            this.pnl_tab1.Controls.Add(this.cbx_fromarea);
-            this.pnl_tab1.Controls.Add(this.lab_fromarea);
-            this.pnl_tab1.Controls.Add(this.cbx_frommodule);
-            this.pnl_tab1.Controls.Add(this.lab_module);
-            this.pnl_tab1.Controls.Add(this.lab_projectpath);
-            this.pnl_tab1.Controls.Add(this.btn_selectpath);
-            this.pnl_tab1.Controls.Add(this.tbx_projectpath);
-            this.pnl_tab1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_tab1.Location = new System.Drawing.Point(3, 3);
-            this.pnl_tab1.Name = "pnl_tab1";
-            this.pnl_tab1.Size = new System.Drawing.Size(809, 564);
-            this.pnl_tab1.TabIndex = 0;
+            pnl_tab1.Controls.Add(cbx_copydiff);
+            pnl_tab1.Controls.Add(groupBox1);
+            pnl_tab1.Controls.Add(grb_Backend);
+            pnl_tab1.Controls.Add(grb_Frontend);
+            pnl_tab1.Controls.Add(button1);
+            pnl_tab1.Controls.Add(cbx_targetprogram);
+            pnl_tab1.Controls.Add(lab_targetprogram);
+            pnl_tab1.Controls.Add(cbx_targetarea);
+            pnl_tab1.Controls.Add(lab_targetarea);
+            pnl_tab1.Controls.Add(cbx_targetmodule);
+            pnl_tab1.Controls.Add(lab_targetmodule);
+            pnl_tab1.Controls.Add(tbx_resultMsg);
+            pnl_tab1.Controls.Add(cbx_fromprogram);
+            pnl_tab1.Controls.Add(lab_fromprogram);
+            pnl_tab1.Controls.Add(cbx_fromarea);
+            pnl_tab1.Controls.Add(lab_fromarea);
+            pnl_tab1.Controls.Add(cbx_frommodule);
+            pnl_tab1.Controls.Add(lab_module);
+            pnl_tab1.Controls.Add(lab_projectpath);
+            pnl_tab1.Controls.Add(btn_selectpath);
+            pnl_tab1.Controls.Add(tbx_projectpath);
+            pnl_tab1.Dock = DockStyle.Fill;
+            pnl_tab1.Location = new Point(3, 3);
+            pnl_tab1.Name = "pnl_tab1";
+            pnl_tab1.Size = new Size(809, 564);
+            pnl_tab1.TabIndex = 0;
+            // 
+            // cbx_copydiff
+            // 
+            cbx_copydiff.AutoSize = true;
+            cbx_copydiff.Location = new Point(619, 17);
+            cbx_copydiff.Name = "cbx_copydiff";
+            cbx_copydiff.Size = new Size(131, 19);
+            cbx_copydiff.TabIndex = 50;
+            cbx_copydiff.Text = "Copy Diff Program";
+            cbx_copydiff.UseVisualStyleBackColor = true;
+            cbx_copydiff.Click += cbx_copydiff_Click;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btn_getrepository);
-            this.groupBox1.Controls.Add(this.btn_repositories);
-            this.groupBox1.Controls.Add(this.btn_dto);
-            this.groupBox1.Controls.Add(this.btn_interface);
-            this.groupBox1.Location = new System.Drawing.Point(6, 236);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(767, 85);
-            this.groupBox1.TabIndex = 49;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "3.Repository";
+            groupBox1.Controls.Add(btn_getrepository);
+            groupBox1.Controls.Add(btn_repositories);
+            groupBox1.Controls.Add(btn_dto);
+            groupBox1.Controls.Add(btn_interface);
+            groupBox1.Location = new Point(6, 236);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(767, 85);
+            groupBox1.TabIndex = 49;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "3.Repository";
             // 
             // btn_getrepository
             // 
-            this.btn_getrepository.Location = new System.Drawing.Point(6, 22);
-            this.btn_getrepository.Name = "btn_getrepository";
-            this.btn_getrepository.Size = new System.Drawing.Size(132, 44);
-            this.btn_getrepository.TabIndex = 26;
-            this.btn_getrepository.Text = "Get Repository";
-            this.btn_getrepository.UseVisualStyleBackColor = true;
-            this.btn_getrepository.Click += new System.EventHandler(this.btn_getrepository_Click);
+            btn_getrepository.Location = new Point(6, 22);
+            btn_getrepository.Name = "btn_getrepository";
+            btn_getrepository.Size = new Size(132, 44);
+            btn_getrepository.TabIndex = 26;
+            btn_getrepository.Text = "Get Repository";
+            btn_getrepository.UseVisualStyleBackColor = true;
+            btn_getrepository.Click += btn_getrepository_Click;
             // 
             // btn_repositories
             // 
-            this.btn_repositories.Location = new System.Drawing.Point(448, 22);
-            this.btn_repositories.Name = "btn_repositories";
-            this.btn_repositories.Size = new System.Drawing.Size(132, 44);
-            this.btn_repositories.TabIndex = 28;
-            this.btn_repositories.Text = "Repositories";
-            this.btn_repositories.UseVisualStyleBackColor = true;
-            this.btn_repositories.Click += new System.EventHandler(this.btn_repositories_Click);
+            btn_repositories.Location = new Point(448, 22);
+            btn_repositories.Name = "btn_repositories";
+            btn_repositories.Size = new Size(132, 44);
+            btn_repositories.TabIndex = 28;
+            btn_repositories.Text = "Repositories";
+            btn_repositories.UseVisualStyleBackColor = true;
+            btn_repositories.Click += btn_repositories_Click;
             // 
             // btn_dto
             // 
-            this.btn_dto.Location = new System.Drawing.Point(157, 22);
-            this.btn_dto.Name = "btn_dto";
-            this.btn_dto.Size = new System.Drawing.Size(132, 44);
-            this.btn_dto.TabIndex = 25;
-            this.btn_dto.Text = "DTO";
-            this.btn_dto.UseVisualStyleBackColor = true;
-            this.btn_dto.Click += new System.EventHandler(this.btn_dto_Click);
+            btn_dto.Location = new Point(157, 22);
+            btn_dto.Name = "btn_dto";
+            btn_dto.Size = new Size(132, 44);
+            btn_dto.TabIndex = 25;
+            btn_dto.Text = "DTO";
+            btn_dto.UseVisualStyleBackColor = true;
+            btn_dto.Click += btn_dto_Click;
             // 
             // btn_interface
             // 
-            this.btn_interface.Location = new System.Drawing.Point(306, 22);
-            this.btn_interface.Name = "btn_interface";
-            this.btn_interface.Size = new System.Drawing.Size(132, 44);
-            this.btn_interface.TabIndex = 27;
-            this.btn_interface.Text = "Interface";
-            this.btn_interface.UseVisualStyleBackColor = true;
-            this.btn_interface.Click += new System.EventHandler(this.btn_interface_Click);
+            btn_interface.Location = new Point(306, 22);
+            btn_interface.Name = "btn_interface";
+            btn_interface.Size = new Size(132, 44);
+            btn_interface.TabIndex = 27;
+            btn_interface.Text = "Interface";
+            btn_interface.UseVisualStyleBackColor = true;
+            btn_interface.Click += btn_interface_Click;
             // 
             // grb_Backend
             // 
-            this.grb_Backend.Controls.Add(this.btn_backendmove);
-            this.grb_Backend.Controls.Add(this.btn_spname);
-            this.grb_Backend.Location = new System.Drawing.Point(489, 137);
-            this.grb_Backend.Name = "grb_Backend";
-            this.grb_Backend.Size = new System.Drawing.Size(284, 93);
-            this.grb_Backend.TabIndex = 48;
-            this.grb_Backend.TabStop = false;
-            this.grb_Backend.Text = "2.Backend";
+            grb_Backend.Controls.Add(btn_backendmove);
+            grb_Backend.Controls.Add(btn_spname);
+            grb_Backend.Location = new Point(489, 137);
+            grb_Backend.Name = "grb_Backend";
+            grb_Backend.Size = new Size(284, 93);
+            grb_Backend.TabIndex = 48;
+            grb_Backend.TabStop = false;
+            grb_Backend.Text = "2.Backend";
             // 
             // btn_backendmove
             // 
-            this.btn_backendmove.Location = new System.Drawing.Point(6, 31);
-            this.btn_backendmove.Name = "btn_backendmove";
-            this.btn_backendmove.Size = new System.Drawing.Size(132, 44);
-            this.btn_backendmove.TabIndex = 20;
-            this.btn_backendmove.Text = "Backend Move";
-            this.btn_backendmove.UseVisualStyleBackColor = true;
-            this.btn_backendmove.Click += new System.EventHandler(this.btn_backendmove_Click);
+            btn_backendmove.Location = new Point(6, 31);
+            btn_backendmove.Name = "btn_backendmove";
+            btn_backendmove.Size = new Size(132, 44);
+            btn_backendmove.TabIndex = 20;
+            btn_backendmove.Text = "Backend Move";
+            btn_backendmove.UseVisualStyleBackColor = true;
+            btn_backendmove.Click += btn_backendmove_Click;
             // 
             // btn_spname
             // 
-            this.btn_spname.Location = new System.Drawing.Point(144, 31);
-            this.btn_spname.Name = "btn_spname";
-            this.btn_spname.Size = new System.Drawing.Size(132, 44);
-            this.btn_spname.TabIndex = 21;
-            this.btn_spname.Text = "SPName";
-            this.btn_spname.UseVisualStyleBackColor = true;
-            this.btn_spname.Click += new System.EventHandler(this.btn_spname_Click);
+            btn_spname.Location = new Point(144, 31);
+            btn_spname.Name = "btn_spname";
+            btn_spname.Size = new Size(132, 44);
+            btn_spname.TabIndex = 21;
+            btn_spname.Text = "SPName";
+            btn_spname.UseVisualStyleBackColor = true;
+            btn_spname.Click += btn_spname_Click;
             // 
             // grb_Frontend
             // 
-            this.grb_Frontend.Controls.Add(this.btn_Move);
-            this.grb_Frontend.Controls.Add(this.btn_webapicopy);
-            this.grb_Frontend.Controls.Add(this.btn_modulecopy);
-            this.grb_Frontend.Location = new System.Drawing.Point(6, 137);
-            this.grb_Frontend.Name = "grb_Frontend";
-            this.grb_Frontend.Size = new System.Drawing.Size(465, 93);
-            this.grb_Frontend.TabIndex = 47;
-            this.grb_Frontend.TabStop = false;
-            this.grb_Frontend.Text = "1.Frontend";
+            grb_Frontend.Controls.Add(btn_Move);
+            grb_Frontend.Controls.Add(btn_webapicopy);
+            grb_Frontend.Controls.Add(btn_modulecopy);
+            grb_Frontend.Location = new Point(6, 137);
+            grb_Frontend.Name = "grb_Frontend";
+            grb_Frontend.Size = new Size(465, 93);
+            grb_Frontend.TabIndex = 47;
+            grb_Frontend.TabStop = false;
+            grb_Frontend.Text = "1.Frontend";
             // 
             // btn_Move
             // 
-            this.btn_Move.Location = new System.Drawing.Point(6, 31);
-            this.btn_Move.Name = "btn_Move";
-            this.btn_Move.Size = new System.Drawing.Size(132, 44);
-            this.btn_Move.TabIndex = 16;
-            this.btn_Move.Text = "Frontend Move";
-            this.btn_Move.UseVisualStyleBackColor = true;
-            this.btn_Move.Click += new System.EventHandler(this.btn_Move_Click);
+            btn_Move.Location = new Point(6, 31);
+            btn_Move.Name = "btn_Move";
+            btn_Move.Size = new Size(132, 44);
+            btn_Move.TabIndex = 16;
+            btn_Move.Text = "Frontend Move";
+            btn_Move.UseVisualStyleBackColor = true;
+            btn_Move.Click += btn_Move_Click;
             // 
             // btn_webapicopy
             // 
-            this.btn_webapicopy.Location = new System.Drawing.Point(157, 31);
-            this.btn_webapicopy.Name = "btn_webapicopy";
-            this.btn_webapicopy.Size = new System.Drawing.Size(132, 44);
-            this.btn_webapicopy.TabIndex = 17;
-            this.btn_webapicopy.Text = "web-api.service  web-api.model";
-            this.btn_webapicopy.UseVisualStyleBackColor = true;
-            this.btn_webapicopy.Click += new System.EventHandler(this.btn_webapicopy_Click);
+            btn_webapicopy.Location = new Point(157, 31);
+            btn_webapicopy.Name = "btn_webapicopy";
+            btn_webapicopy.Size = new Size(132, 44);
+            btn_webapicopy.TabIndex = 17;
+            btn_webapicopy.Text = "web-api.service  web-api.model";
+            btn_webapicopy.UseVisualStyleBackColor = true;
+            btn_webapicopy.Click += btn_webapicopy_Click;
             // 
             // btn_modulecopy
             // 
-            this.btn_modulecopy.Location = new System.Drawing.Point(306, 31);
-            this.btn_modulecopy.Name = "btn_modulecopy";
-            this.btn_modulecopy.Size = new System.Drawing.Size(132, 44);
-            this.btn_modulecopy.TabIndex = 19;
-            this.btn_modulecopy.Text = "routing.module.ts module.ts ";
-            this.btn_modulecopy.UseVisualStyleBackColor = true;
-            this.btn_modulecopy.Click += new System.EventHandler(this.btn_modulecopy_Click);
+            btn_modulecopy.Location = new Point(306, 31);
+            btn_modulecopy.Name = "btn_modulecopy";
+            btn_modulecopy.Size = new Size(132, 44);
+            btn_modulecopy.TabIndex = 19;
+            btn_modulecopy.Text = "routing.module.ts module.ts ";
+            btn_modulecopy.UseVisualStyleBackColor = true;
+            btn_modulecopy.Click += btn_modulecopy_Click;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(339, 538);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(132, 23);
-            this.button1.TabIndex = 46;
-            this.button1.Text = "Move";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Location = new Point(339, 538);
+            button1.Name = "button1";
+            button1.Size = new Size(132, 23);
+            button1.TabIndex = 46;
+            button1.Text = "Move";
+            button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
+            button1.Click += button1_Click;
             // 
             // cbx_targetprogram
             // 
-            this.cbx_targetprogram.FormattingEnabled = true;
-            this.cbx_targetprogram.Location = new System.Drawing.Point(619, 88);
-            this.cbx_targetprogram.Name = "cbx_targetprogram";
-            this.cbx_targetprogram.Size = new System.Drawing.Size(148, 23);
-            this.cbx_targetprogram.TabIndex = 45;
-            this.cbx_targetprogram.Leave += new System.EventHandler(this.cbx_targetprogram_Leave);
+            cbx_targetprogram.FormattingEnabled = true;
+            cbx_targetprogram.Location = new Point(619, 88);
+            cbx_targetprogram.Name = "cbx_targetprogram";
+            cbx_targetprogram.Size = new Size(148, 23);
+            cbx_targetprogram.TabIndex = 45;
+            cbx_targetprogram.Leave += cbx_targetprogram_Leave;
             // 
             // lab_targetprogram
             // 
-            this.lab_targetprogram.AutoSize = true;
-            this.lab_targetprogram.Location = new System.Drawing.Point(518, 96);
-            this.lab_targetprogram.Name = "lab_targetprogram";
-            this.lab_targetprogram.Size = new System.Drawing.Size(98, 15);
-            this.lab_targetprogram.TabIndex = 44;
-            this.lab_targetprogram.Text = "Target_Program";
+            lab_targetprogram.AutoSize = true;
+            lab_targetprogram.Location = new Point(518, 96);
+            lab_targetprogram.Name = "lab_targetprogram";
+            lab_targetprogram.Size = new Size(98, 15);
+            lab_targetprogram.TabIndex = 44;
+            lab_targetprogram.Text = "Target_Program";
             // 
             // cbx_targetarea
             // 
-            this.cbx_targetarea.FormattingEnabled = true;
-            this.cbx_targetarea.Location = new System.Drawing.Point(356, 88);
-            this.cbx_targetarea.Name = "cbx_targetarea";
-            this.cbx_targetarea.Size = new System.Drawing.Size(148, 23);
-            this.cbx_targetarea.TabIndex = 43;
-            this.cbx_targetarea.SelectedIndexChanged += new System.EventHandler(this.cbx_targetarea_SelectedIndexChanged);
-            this.cbx_targetarea.Leave += new System.EventHandler(this.cbx_targetarea_Leave);
+            cbx_targetarea.FormattingEnabled = true;
+            cbx_targetarea.Location = new Point(356, 88);
+            cbx_targetarea.Name = "cbx_targetarea";
+            cbx_targetarea.Size = new Size(148, 23);
+            cbx_targetarea.TabIndex = 43;
+            cbx_targetarea.SelectedIndexChanged += cbx_targetarea_SelectedIndexChanged;
+            cbx_targetarea.Leave += cbx_targetarea_Leave;
             // 
             // lab_targetarea
             // 
-            this.lab_targetarea.AutoSize = true;
-            this.lab_targetarea.Location = new System.Drawing.Point(283, 96);
-            this.lab_targetarea.Name = "lab_targetarea";
-            this.lab_targetarea.Size = new System.Drawing.Size(75, 15);
-            this.lab_targetarea.TabIndex = 42;
-            this.lab_targetarea.Text = "Target_Area";
+            lab_targetarea.AutoSize = true;
+            lab_targetarea.Location = new Point(283, 96);
+            lab_targetarea.Name = "lab_targetarea";
+            lab_targetarea.Size = new Size(75, 15);
+            lab_targetarea.TabIndex = 42;
+            lab_targetarea.Text = "Target_Area";
             // 
             // cbx_targetmodule
             // 
-            this.cbx_targetmodule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_targetmodule.FormattingEnabled = true;
-            this.cbx_targetmodule.Location = new System.Drawing.Point(117, 88);
-            this.cbx_targetmodule.Name = "cbx_targetmodule";
-            this.cbx_targetmodule.Size = new System.Drawing.Size(148, 23);
-            this.cbx_targetmodule.TabIndex = 41;
-            this.cbx_targetmodule.SelectedIndexChanged += new System.EventHandler(this.cbx_targetmodule_SelectedIndexChanged);
+            cbx_targetmodule.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_targetmodule.FormattingEnabled = true;
+            cbx_targetmodule.Location = new Point(117, 88);
+            cbx_targetmodule.Name = "cbx_targetmodule";
+            cbx_targetmodule.Size = new Size(148, 23);
+            cbx_targetmodule.TabIndex = 41;
+            cbx_targetmodule.SelectedIndexChanged += cbx_targetmodule_SelectedIndexChanged;
             // 
             // lab_targetmodule
             // 
-            this.lab_targetmodule.AutoSize = true;
-            this.lab_targetmodule.Location = new System.Drawing.Point(16, 96);
-            this.lab_targetmodule.Name = "lab_targetmodule";
-            this.lab_targetmodule.Size = new System.Drawing.Size(94, 15);
-            this.lab_targetmodule.TabIndex = 40;
-            this.lab_targetmodule.Text = "Target_Module";
+            lab_targetmodule.AutoSize = true;
+            lab_targetmodule.Location = new Point(16, 96);
+            lab_targetmodule.Name = "lab_targetmodule";
+            lab_targetmodule.Size = new Size(94, 15);
+            lab_targetmodule.TabIndex = 40;
+            lab_targetmodule.Text = "Target_Module";
             // 
             // tbx_resultMsg
             // 
-            this.tbx_resultMsg.Location = new System.Drawing.Point(6, 342);
-            this.tbx_resultMsg.Multiline = true;
-            this.tbx_resultMsg.Name = "tbx_resultMsg";
-            this.tbx_resultMsg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbx_resultMsg.Size = new System.Drawing.Size(767, 206);
-            this.tbx_resultMsg.TabIndex = 39;
-            this.tbx_resultMsg.TextChanged += new System.EventHandler(this.tbx_resultMsg_TextChanged);
+            tbx_resultMsg.Location = new Point(6, 342);
+            tbx_resultMsg.Multiline = true;
+            tbx_resultMsg.Name = "tbx_resultMsg";
+            tbx_resultMsg.ScrollBars = ScrollBars.Both;
+            tbx_resultMsg.Size = new Size(767, 206);
+            tbx_resultMsg.TabIndex = 39;
+            tbx_resultMsg.TextChanged += tbx_resultMsg_TextChanged;
             // 
             // cbx_fromprogram
             // 
-            this.cbx_fromprogram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_fromprogram.FormattingEnabled = true;
-            this.cbx_fromprogram.Location = new System.Drawing.Point(619, 50);
-            this.cbx_fromprogram.Name = "cbx_fromprogram";
-            this.cbx_fromprogram.Size = new System.Drawing.Size(148, 23);
-            this.cbx_fromprogram.TabIndex = 38;
-            this.cbx_fromprogram.SelectedIndexChanged += new System.EventHandler(this.cbx_fromprogram_SelectedIndexChanged);
+            cbx_fromprogram.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_fromprogram.FormattingEnabled = true;
+            cbx_fromprogram.Location = new Point(619, 50);
+            cbx_fromprogram.Name = "cbx_fromprogram";
+            cbx_fromprogram.Size = new Size(148, 23);
+            cbx_fromprogram.TabIndex = 38;
+            cbx_fromprogram.SelectedIndexChanged += cbx_fromprogram_SelectedIndexChanged;
             // 
             // lab_fromprogram
             // 
-            this.lab_fromprogram.AutoSize = true;
-            this.lab_fromprogram.Location = new System.Drawing.Point(526, 58);
-            this.lab_fromprogram.Name = "lab_fromprogram";
-            this.lab_fromprogram.Size = new System.Drawing.Size(90, 15);
-            this.lab_fromprogram.TabIndex = 37;
-            this.lab_fromprogram.Text = "From_Program";
+            lab_fromprogram.AutoSize = true;
+            lab_fromprogram.Location = new Point(526, 58);
+            lab_fromprogram.Name = "lab_fromprogram";
+            lab_fromprogram.Size = new Size(90, 15);
+            lab_fromprogram.TabIndex = 37;
+            lab_fromprogram.Text = "From_Program";
             // 
             // cbx_fromarea
             // 
-            this.cbx_fromarea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_fromarea.FormattingEnabled = true;
-            this.cbx_fromarea.Location = new System.Drawing.Point(356, 50);
-            this.cbx_fromarea.Name = "cbx_fromarea";
-            this.cbx_fromarea.Size = new System.Drawing.Size(148, 23);
-            this.cbx_fromarea.TabIndex = 36;
-            this.cbx_fromarea.SelectedIndexChanged += new System.EventHandler(this.cbx_fromarea_SelectedIndexChanged);
+            cbx_fromarea.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_fromarea.FormattingEnabled = true;
+            cbx_fromarea.Location = new Point(356, 50);
+            cbx_fromarea.Name = "cbx_fromarea";
+            cbx_fromarea.Size = new Size(148, 23);
+            cbx_fromarea.TabIndex = 36;
+            cbx_fromarea.SelectedIndexChanged += cbx_fromarea_SelectedIndexChanged;
             // 
             // lab_fromarea
             // 
-            this.lab_fromarea.AutoSize = true;
-            this.lab_fromarea.Location = new System.Drawing.Point(283, 58);
-            this.lab_fromarea.Name = "lab_fromarea";
-            this.lab_fromarea.Size = new System.Drawing.Size(67, 15);
-            this.lab_fromarea.TabIndex = 35;
-            this.lab_fromarea.Text = "From_Area";
+            lab_fromarea.AutoSize = true;
+            lab_fromarea.Location = new Point(283, 58);
+            lab_fromarea.Name = "lab_fromarea";
+            lab_fromarea.Size = new Size(67, 15);
+            lab_fromarea.TabIndex = 35;
+            lab_fromarea.Text = "From_Area";
             // 
             // cbx_frommodule
             // 
-            this.cbx_frommodule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_frommodule.FormattingEnabled = true;
-            this.cbx_frommodule.Location = new System.Drawing.Point(117, 50);
-            this.cbx_frommodule.Name = "cbx_frommodule";
-            this.cbx_frommodule.Size = new System.Drawing.Size(148, 23);
-            this.cbx_frommodule.TabIndex = 34;
-            this.cbx_frommodule.SelectedIndexChanged += new System.EventHandler(this.cbx_frommodule_SelectedIndexChanged);
+            cbx_frommodule.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_frommodule.FormattingEnabled = true;
+            cbx_frommodule.Location = new Point(117, 50);
+            cbx_frommodule.Name = "cbx_frommodule";
+            cbx_frommodule.Size = new Size(148, 23);
+            cbx_frommodule.TabIndex = 34;
+            cbx_frommodule.SelectedIndexChanged += cbx_frommodule_SelectedIndexChanged;
             // 
             // lab_module
             // 
-            this.lab_module.AutoSize = true;
-            this.lab_module.Location = new System.Drawing.Point(16, 58);
-            this.lab_module.Name = "lab_module";
-            this.lab_module.Size = new System.Drawing.Size(86, 15);
-            this.lab_module.TabIndex = 33;
-            this.lab_module.Text = "From_Module";
+            lab_module.AutoSize = true;
+            lab_module.Location = new Point(16, 58);
+            lab_module.Name = "lab_module";
+            lab_module.Size = new Size(86, 15);
+            lab_module.TabIndex = 33;
+            lab_module.Text = "From_Module";
             // 
             // lab_projectpath
             // 
-            this.lab_projectpath.AutoSize = true;
-            this.lab_projectpath.Location = new System.Drawing.Point(16, 22);
-            this.lab_projectpath.Name = "lab_projectpath";
-            this.lab_projectpath.Size = new System.Drawing.Size(71, 15);
-            this.lab_projectpath.TabIndex = 32;
-            this.lab_projectpath.Text = "ProjectPath";
+            lab_projectpath.AutoSize = true;
+            lab_projectpath.Location = new Point(16, 22);
+            lab_projectpath.Name = "lab_projectpath";
+            lab_projectpath.Size = new Size(71, 15);
+            lab_projectpath.TabIndex = 32;
+            lab_projectpath.Text = "ProjectPath";
             // 
             // btn_selectpath
             // 
-            this.btn_selectpath.Location = new System.Drawing.Point(511, 14);
-            this.btn_selectpath.Name = "btn_selectpath";
-            this.btn_selectpath.Size = new System.Drawing.Size(75, 23);
-            this.btn_selectpath.TabIndex = 31;
-            this.btn_selectpath.Text = "Select";
-            this.btn_selectpath.UseVisualStyleBackColor = true;
-            this.btn_selectpath.Click += new System.EventHandler(this.btn_selectpath_Click);
+            btn_selectpath.Location = new Point(511, 14);
+            btn_selectpath.Name = "btn_selectpath";
+            btn_selectpath.Size = new Size(75, 23);
+            btn_selectpath.TabIndex = 31;
+            btn_selectpath.Text = "Select";
+            btn_selectpath.UseVisualStyleBackColor = true;
+            btn_selectpath.Click += btn_selectpath_Click;
             // 
             // tbx_projectpath
             // 
-            this.tbx_projectpath.Location = new System.Drawing.Point(117, 14);
-            this.tbx_projectpath.Name = "tbx_projectpath";
-            this.tbx_projectpath.Size = new System.Drawing.Size(388, 23);
-            this.tbx_projectpath.TabIndex = 30;
-            this.tbx_projectpath.Text = ".\\dlp-develop";
+            tbx_projectpath.Location = new Point(117, 14);
+            tbx_projectpath.Name = "tbx_projectpath";
+            tbx_projectpath.Size = new Size(388, 23);
+            tbx_projectpath.TabIndex = 30;
+            tbx_projectpath.Text = ".\\dlp-develop";
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.pnl_tab2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(815, 570);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "DoGoRo";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Controls.Add(pnl_tab2);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(815, 570);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "DoGoRo";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // pnl_tab2
             // 
-            this.pnl_tab2.Controls.Add(this.grb_tab2_dbselect);
-            this.pnl_tab2.Controls.Add(this.btn_IMultLanguage);
-            this.pnl_tab2.Controls.Add(this.tbx_tab2_resultMsg);
-            this.pnl_tab2.Controls.Add(this.lab_tab2_projectpath);
-            this.pnl_tab2.Controls.Add(this.btn_tab2_selectpath);
-            this.pnl_tab2.Controls.Add(this.tbx_tab2_projectpath);
-            this.pnl_tab2.Controls.Add(this.btn_gettranslate);
-            this.pnl_tab2.Controls.Add(this.dgv_tab2_languagetranslate);
-            this.pnl_tab2.Controls.Add(this.cbx_tab2_fromprogram);
-            this.pnl_tab2.Controls.Add(this.lab_tab2_fromprogram);
-            this.pnl_tab2.Controls.Add(this.cbx_tab2_fromarea);
-            this.pnl_tab2.Controls.Add(this.lab_atb2_fromarea);
-            this.pnl_tab2.Controls.Add(this.cbx_tab2_frommodule);
-            this.pnl_tab2.Controls.Add(this.lab_tab2_module);
-            this.pnl_tab2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_tab2.Location = new System.Drawing.Point(3, 3);
-            this.pnl_tab2.Name = "pnl_tab2";
-            this.pnl_tab2.Size = new System.Drawing.Size(809, 564);
-            this.pnl_tab2.TabIndex = 0;
+            pnl_tab2.Controls.Add(grb_tab2_dbselect);
+            pnl_tab2.Controls.Add(btn_IMultLanguage);
+            pnl_tab2.Controls.Add(tbx_tab2_resultMsg);
+            pnl_tab2.Controls.Add(lab_tab2_projectpath);
+            pnl_tab2.Controls.Add(btn_tab2_selectpath);
+            pnl_tab2.Controls.Add(tbx_tab2_projectpath);
+            pnl_tab2.Controls.Add(btn_gettranslate);
+            pnl_tab2.Controls.Add(dgv_tab2_languagetranslate);
+            pnl_tab2.Controls.Add(cbx_tab2_fromprogram);
+            pnl_tab2.Controls.Add(lab_tab2_fromprogram);
+            pnl_tab2.Controls.Add(cbx_tab2_fromarea);
+            pnl_tab2.Controls.Add(lab_atb2_fromarea);
+            pnl_tab2.Controls.Add(cbx_tab2_frommodule);
+            pnl_tab2.Controls.Add(lab_tab2_module);
+            pnl_tab2.Dock = DockStyle.Fill;
+            pnl_tab2.Location = new Point(3, 3);
+            pnl_tab2.Name = "pnl_tab2";
+            pnl_tab2.Size = new Size(809, 564);
+            pnl_tab2.TabIndex = 0;
             // 
             // grb_tab2_dbselect
             // 
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_vndb);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_dgdb);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_tcdb);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_vsdb);
-            this.grb_tab2_dbselect.Controls.Add(this.cbx_vgdb);
-            this.grb_tab2_dbselect.Location = new System.Drawing.Point(151, 76);
-            this.grb_tab2_dbselect.Name = "grb_tab2_dbselect";
-            this.grb_tab2_dbselect.Size = new System.Drawing.Size(201, 102);
-            this.grb_tab2_dbselect.TabIndex = 60;
-            this.grb_tab2_dbselect.TabStop = false;
-            this.grb_tab2_dbselect.Text = "Select DB";
+            grb_tab2_dbselect.Controls.Add(cbx_vndb);
+            grb_tab2_dbselect.Controls.Add(cbx_dgdb);
+            grb_tab2_dbselect.Controls.Add(cbx_tcdb);
+            grb_tab2_dbselect.Controls.Add(cbx_vsdb);
+            grb_tab2_dbselect.Controls.Add(cbx_vgdb);
+            grb_tab2_dbselect.Location = new Point(151, 76);
+            grb_tab2_dbselect.Name = "grb_tab2_dbselect";
+            grb_tab2_dbselect.Size = new Size(201, 102);
+            grb_tab2_dbselect.TabIndex = 60;
+            grb_tab2_dbselect.TabStop = false;
+            grb_tab2_dbselect.Text = "Select DB";
             // 
             // cbx_vndb
             // 
-            this.cbx_vndb.AutoSize = true;
-            this.cbx_vndb.Location = new System.Drawing.Point(6, 47);
-            this.cbx_vndb.Name = "cbx_vndb";
-            this.cbx_vndb.Size = new System.Drawing.Size(60, 19);
-            this.cbx_vndb.TabIndex = 60;
-            this.cbx_vndb.Text = "VNDB";
-            this.cbx_vndb.UseVisualStyleBackColor = true;
-            this.cbx_vndb.Click += new System.EventHandler(this.cbx_vndb_Click);
+            cbx_vndb.AutoSize = true;
+            cbx_vndb.Location = new Point(6, 47);
+            cbx_vndb.Name = "cbx_vndb";
+            cbx_vndb.Size = new Size(60, 19);
+            cbx_vndb.TabIndex = 60;
+            cbx_vndb.Text = "VNDB";
+            cbx_vndb.UseVisualStyleBackColor = true;
+            cbx_vndb.Click += cbx_vndb_Click;
             // 
             // cbx_dgdb
             // 
-            this.cbx_dgdb.AutoSize = true;
-            this.cbx_dgdb.Location = new System.Drawing.Point(6, 22);
-            this.cbx_dgdb.Name = "cbx_dgdb";
-            this.cbx_dgdb.Size = new System.Drawing.Size(60, 19);
-            this.cbx_dgdb.TabIndex = 56;
-            this.cbx_dgdb.Text = "DGDB";
-            this.cbx_dgdb.UseVisualStyleBackColor = true;
-            this.cbx_dgdb.Click += new System.EventHandler(this.cbx_dgdb_Click);
+            cbx_dgdb.AutoSize = true;
+            cbx_dgdb.Location = new Point(6, 22);
+            cbx_dgdb.Name = "cbx_dgdb";
+            cbx_dgdb.Size = new Size(60, 19);
+            cbx_dgdb.TabIndex = 56;
+            cbx_dgdb.Text = "DGDB";
+            cbx_dgdb.UseVisualStyleBackColor = true;
+            cbx_dgdb.Click += cbx_dgdb_Click;
             // 
             // cbx_tcdb
             // 
-            this.cbx_tcdb.AutoSize = true;
-            this.cbx_tcdb.Location = new System.Drawing.Point(107, 22);
-            this.cbx_tcdb.Name = "cbx_tcdb";
-            this.cbx_tcdb.Size = new System.Drawing.Size(57, 19);
-            this.cbx_tcdb.TabIndex = 59;
-            this.cbx_tcdb.Text = "TCDB";
-            this.cbx_tcdb.UseVisualStyleBackColor = true;
-            this.cbx_tcdb.Click += new System.EventHandler(this.cbx_tcdb_Click);
+            cbx_tcdb.AutoSize = true;
+            cbx_tcdb.Location = new Point(107, 22);
+            cbx_tcdb.Name = "cbx_tcdb";
+            cbx_tcdb.Size = new Size(57, 19);
+            cbx_tcdb.TabIndex = 59;
+            cbx_tcdb.Text = "TCDB";
+            cbx_tcdb.UseVisualStyleBackColor = true;
+            cbx_tcdb.Click += cbx_tcdb_Click;
             // 
             // cbx_vsdb
             // 
-            this.cbx_vsdb.AutoSize = true;
-            this.cbx_vsdb.Location = new System.Drawing.Point(6, 72);
-            this.cbx_vsdb.Name = "cbx_vsdb";
-            this.cbx_vsdb.Size = new System.Drawing.Size(57, 19);
-            this.cbx_vsdb.TabIndex = 57;
-            this.cbx_vsdb.Text = "VSDB";
-            this.cbx_vsdb.UseVisualStyleBackColor = true;
-            this.cbx_vsdb.Click += new System.EventHandler(this.cbx_vsdb_Click);
+            cbx_vsdb.AutoSize = true;
+            cbx_vsdb.Location = new Point(6, 72);
+            cbx_vsdb.Name = "cbx_vsdb";
+            cbx_vsdb.Size = new Size(57, 19);
+            cbx_vsdb.TabIndex = 57;
+            cbx_vsdb.Text = "VSDB";
+            cbx_vsdb.UseVisualStyleBackColor = true;
+            cbx_vsdb.Click += cbx_vsdb_Click;
             // 
             // cbx_vgdb
             // 
-            this.cbx_vgdb.AutoSize = true;
-            this.cbx_vgdb.Location = new System.Drawing.Point(107, 47);
-            this.cbx_vgdb.Name = "cbx_vgdb";
-            this.cbx_vgdb.Size = new System.Drawing.Size(59, 19);
-            this.cbx_vgdb.TabIndex = 58;
-            this.cbx_vgdb.Text = "VGDB";
-            this.cbx_vgdb.UseVisualStyleBackColor = true;
-            this.cbx_vgdb.Click += new System.EventHandler(this.cbx_vgdb_Click);
+            cbx_vgdb.AutoSize = true;
+            cbx_vgdb.Location = new Point(107, 47);
+            cbx_vgdb.Name = "cbx_vgdb";
+            cbx_vgdb.Size = new Size(59, 19);
+            cbx_vgdb.TabIndex = 58;
+            cbx_vgdb.Text = "VGDB";
+            cbx_vgdb.UseVisualStyleBackColor = true;
+            cbx_vgdb.Click += cbx_vgdb_Click;
             // 
             // btn_IMultLanguage
             // 
-            this.btn_IMultLanguage.Location = new System.Drawing.Point(13, 134);
-            this.btn_IMultLanguage.Name = "btn_IMultLanguage";
-            this.btn_IMultLanguage.Size = new System.Drawing.Size(132, 44);
-            this.btn_IMultLanguage.TabIndex = 55;
-            this.btn_IMultLanguage.Text = "Insert MultiLanguage";
-            this.btn_IMultLanguage.UseVisualStyleBackColor = true;
-            this.btn_IMultLanguage.Click += new System.EventHandler(this.btn_IMultLanguage_Click);
+            btn_IMultLanguage.Location = new Point(13, 134);
+            btn_IMultLanguage.Name = "btn_IMultLanguage";
+            btn_IMultLanguage.Size = new Size(132, 44);
+            btn_IMultLanguage.TabIndex = 55;
+            btn_IMultLanguage.Text = "Insert MultiLanguage";
+            btn_IMultLanguage.UseVisualStyleBackColor = true;
+            btn_IMultLanguage.Click += btn_IMultLanguage_Click;
             // 
             // tbx_tab2_resultMsg
             // 
-            this.tbx_tab2_resultMsg.Location = new System.Drawing.Point(358, 84);
-            this.tbx_tab2_resultMsg.Multiline = true;
-            this.tbx_tab2_resultMsg.Name = "tbx_tab2_resultMsg";
-            this.tbx_tab2_resultMsg.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbx_tab2_resultMsg.Size = new System.Drawing.Size(411, 124);
-            this.tbx_tab2_resultMsg.TabIndex = 53;
-            this.tbx_tab2_resultMsg.TextChanged += new System.EventHandler(this.tbx_tab2_resultMsg_TextChanged);
+            tbx_tab2_resultMsg.Location = new Point(358, 84);
+            tbx_tab2_resultMsg.Multiline = true;
+            tbx_tab2_resultMsg.Name = "tbx_tab2_resultMsg";
+            tbx_tab2_resultMsg.ScrollBars = ScrollBars.Both;
+            tbx_tab2_resultMsg.Size = new Size(411, 124);
+            tbx_tab2_resultMsg.TabIndex = 53;
+            tbx_tab2_resultMsg.TextChanged += tbx_tab2_resultMsg_TextChanged;
             // 
             // lab_tab2_projectpath
             // 
-            this.lab_tab2_projectpath.AutoSize = true;
-            this.lab_tab2_projectpath.Location = new System.Drawing.Point(18, 22);
-            this.lab_tab2_projectpath.Name = "lab_tab2_projectpath";
-            this.lab_tab2_projectpath.Size = new System.Drawing.Size(71, 15);
-            this.lab_tab2_projectpath.TabIndex = 52;
-            this.lab_tab2_projectpath.Text = "ProjectPath";
+            lab_tab2_projectpath.AutoSize = true;
+            lab_tab2_projectpath.Location = new Point(18, 22);
+            lab_tab2_projectpath.Name = "lab_tab2_projectpath";
+            lab_tab2_projectpath.Size = new Size(71, 15);
+            lab_tab2_projectpath.TabIndex = 52;
+            lab_tab2_projectpath.Text = "ProjectPath";
             // 
             // btn_tab2_selectpath
             // 
-            this.btn_tab2_selectpath.Location = new System.Drawing.Point(513, 14);
-            this.btn_tab2_selectpath.Name = "btn_tab2_selectpath";
-            this.btn_tab2_selectpath.Size = new System.Drawing.Size(75, 23);
-            this.btn_tab2_selectpath.TabIndex = 51;
-            this.btn_tab2_selectpath.Text = "Select";
-            this.btn_tab2_selectpath.UseVisualStyleBackColor = true;
-            this.btn_tab2_selectpath.Click += new System.EventHandler(this.btn_tab2_selectpath_Click);
+            btn_tab2_selectpath.Location = new Point(513, 14);
+            btn_tab2_selectpath.Name = "btn_tab2_selectpath";
+            btn_tab2_selectpath.Size = new Size(75, 23);
+            btn_tab2_selectpath.TabIndex = 51;
+            btn_tab2_selectpath.Text = "Select";
+            btn_tab2_selectpath.UseVisualStyleBackColor = true;
+            btn_tab2_selectpath.Click += btn_tab2_selectpath_Click;
             // 
             // tbx_tab2_projectpath
             // 
-            this.tbx_tab2_projectpath.Location = new System.Drawing.Point(119, 14);
-            this.tbx_tab2_projectpath.Name = "tbx_tab2_projectpath";
-            this.tbx_tab2_projectpath.Size = new System.Drawing.Size(388, 23);
-            this.tbx_tab2_projectpath.TabIndex = 50;
-            this.tbx_tab2_projectpath.Text = ".\\dlp-develop";
+            tbx_tab2_projectpath.Location = new Point(119, 14);
+            tbx_tab2_projectpath.Name = "tbx_tab2_projectpath";
+            tbx_tab2_projectpath.Size = new Size(388, 23);
+            tbx_tab2_projectpath.TabIndex = 50;
+            tbx_tab2_projectpath.Text = ".\\dlp-develop";
             // 
             // btn_gettranslate
             // 
-            this.btn_gettranslate.Location = new System.Drawing.Point(13, 84);
-            this.btn_gettranslate.Name = "btn_gettranslate";
-            this.btn_gettranslate.Size = new System.Drawing.Size(132, 44);
-            this.btn_gettranslate.TabIndex = 49;
-            this.btn_gettranslate.Text = "Get Translate";
-            this.btn_gettranslate.UseVisualStyleBackColor = true;
-            this.btn_gettranslate.Click += new System.EventHandler(this.btn_gettranslate_Click);
+            btn_gettranslate.Location = new Point(13, 84);
+            btn_gettranslate.Name = "btn_gettranslate";
+            btn_gettranslate.Size = new Size(132, 44);
+            btn_gettranslate.TabIndex = 49;
+            btn_gettranslate.Text = "Get Translate";
+            btn_gettranslate.UseVisualStyleBackColor = true;
+            btn_gettranslate.Click += btn_gettranslate_Click;
             // 
             // dgv_tab2_languagetranslate
             // 
-            this.dgv_tab2_languagetranslate.AllowUserToAddRows = false;
-            this.dgv_tab2_languagetranslate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tab2_languagetranslate.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.tw,
-            this.zh,
-            this.en,
-            this.vi});
-            this.dgv_tab2_languagetranslate.Location = new System.Drawing.Point(3, 214);
-            this.dgv_tab2_languagetranslate.Name = "dgv_tab2_languagetranslate";
-            this.dgv_tab2_languagetranslate.RowTemplate.Height = 25;
-            this.dgv_tab2_languagetranslate.Size = new System.Drawing.Size(803, 353);
-            this.dgv_tab2_languagetranslate.TabIndex = 48;
-            this.dgv_tab2_languagetranslate.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_tab2_languagetranslate_CellMouseUp);
+            dgv_tab2_languagetranslate.AllowUserToAddRows = false;
+            dgv_tab2_languagetranslate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_tab2_languagetranslate.Columns.AddRange(new DataGridViewColumn[] { tw, zh, en, vi });
+            dgv_tab2_languagetranslate.Location = new Point(3, 214);
+            dgv_tab2_languagetranslate.Name = "dgv_tab2_languagetranslate";
+            dgv_tab2_languagetranslate.RowTemplate.Height = 25;
+            dgv_tab2_languagetranslate.Size = new Size(803, 353);
+            dgv_tab2_languagetranslate.TabIndex = 48;
+            dgv_tab2_languagetranslate.CellMouseUp += dgv_tab2_languagetranslate_CellMouseUp;
             // 
             // tw
             // 
-            this.tw.HeaderText = "繁體中文";
-            this.tw.Name = "tw";
-            this.tw.Width = 250;
+            tw.HeaderText = "繁體中文";
+            tw.Name = "tw";
+            tw.Width = 250;
             // 
             // zh
             // 
-            this.zh.HeaderText = "簡體中文";
-            this.zh.Name = "zh";
-            this.zh.Width = 150;
+            zh.HeaderText = "簡體中文";
+            zh.Name = "zh";
+            zh.Width = 150;
             // 
             // en
             // 
-            this.en.HeaderText = "英文";
-            this.en.Name = "en";
-            this.en.Width = 150;
+            en.HeaderText = "英文";
+            en.Name = "en";
+            en.Width = 150;
             // 
             // vi
             // 
-            this.vi.HeaderText = "越南文";
-            this.vi.Name = "vi";
-            this.vi.Width = 150;
+            vi.HeaderText = "越南文";
+            vi.Name = "vi";
+            vi.Width = 150;
             // 
             // cbx_tab2_fromprogram
             // 
-            this.cbx_tab2_fromprogram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_tab2_fromprogram.FormattingEnabled = true;
-            this.cbx_tab2_fromprogram.Location = new System.Drawing.Point(621, 47);
-            this.cbx_tab2_fromprogram.Name = "cbx_tab2_fromprogram";
-            this.cbx_tab2_fromprogram.Size = new System.Drawing.Size(148, 23);
-            this.cbx_tab2_fromprogram.TabIndex = 47;
+            cbx_tab2_fromprogram.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_tab2_fromprogram.FormattingEnabled = true;
+            cbx_tab2_fromprogram.Location = new Point(621, 47);
+            cbx_tab2_fromprogram.Name = "cbx_tab2_fromprogram";
+            cbx_tab2_fromprogram.Size = new Size(148, 23);
+            cbx_tab2_fromprogram.TabIndex = 47;
             // 
             // lab_tab2_fromprogram
             // 
-            this.lab_tab2_fromprogram.AutoSize = true;
-            this.lab_tab2_fromprogram.Location = new System.Drawing.Point(528, 55);
-            this.lab_tab2_fromprogram.Name = "lab_tab2_fromprogram";
-            this.lab_tab2_fromprogram.Size = new System.Drawing.Size(90, 15);
-            this.lab_tab2_fromprogram.TabIndex = 46;
-            this.lab_tab2_fromprogram.Text = "From_Program";
+            lab_tab2_fromprogram.AutoSize = true;
+            lab_tab2_fromprogram.Location = new Point(528, 55);
+            lab_tab2_fromprogram.Name = "lab_tab2_fromprogram";
+            lab_tab2_fromprogram.Size = new Size(90, 15);
+            lab_tab2_fromprogram.TabIndex = 46;
+            lab_tab2_fromprogram.Text = "From_Program";
             // 
             // cbx_tab2_fromarea
             // 
-            this.cbx_tab2_fromarea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_tab2_fromarea.FormattingEnabled = true;
-            this.cbx_tab2_fromarea.Location = new System.Drawing.Point(358, 47);
-            this.cbx_tab2_fromarea.Name = "cbx_tab2_fromarea";
-            this.cbx_tab2_fromarea.Size = new System.Drawing.Size(148, 23);
-            this.cbx_tab2_fromarea.TabIndex = 45;
-            this.cbx_tab2_fromarea.SelectedIndexChanged += new System.EventHandler(this.cbx_tab2_fromarea_SelectedIndexChanged);
+            cbx_tab2_fromarea.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_tab2_fromarea.FormattingEnabled = true;
+            cbx_tab2_fromarea.Location = new Point(358, 47);
+            cbx_tab2_fromarea.Name = "cbx_tab2_fromarea";
+            cbx_tab2_fromarea.Size = new Size(148, 23);
+            cbx_tab2_fromarea.TabIndex = 45;
+            cbx_tab2_fromarea.SelectedIndexChanged += cbx_tab2_fromarea_SelectedIndexChanged;
             // 
             // lab_atb2_fromarea
             // 
-            this.lab_atb2_fromarea.AutoSize = true;
-            this.lab_atb2_fromarea.Location = new System.Drawing.Point(285, 55);
-            this.lab_atb2_fromarea.Name = "lab_atb2_fromarea";
-            this.lab_atb2_fromarea.Size = new System.Drawing.Size(67, 15);
-            this.lab_atb2_fromarea.TabIndex = 44;
-            this.lab_atb2_fromarea.Text = "From_Area";
+            lab_atb2_fromarea.AutoSize = true;
+            lab_atb2_fromarea.Location = new Point(285, 55);
+            lab_atb2_fromarea.Name = "lab_atb2_fromarea";
+            lab_atb2_fromarea.Size = new Size(67, 15);
+            lab_atb2_fromarea.TabIndex = 44;
+            lab_atb2_fromarea.Text = "From_Area";
             // 
             // cbx_tab2_frommodule
             // 
-            this.cbx_tab2_frommodule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbx_tab2_frommodule.FormattingEnabled = true;
-            this.cbx_tab2_frommodule.Location = new System.Drawing.Point(119, 47);
-            this.cbx_tab2_frommodule.Name = "cbx_tab2_frommodule";
-            this.cbx_tab2_frommodule.Size = new System.Drawing.Size(148, 23);
-            this.cbx_tab2_frommodule.TabIndex = 43;
-            this.cbx_tab2_frommodule.SelectedIndexChanged += new System.EventHandler(this.cbx_tab2_frommodule_SelectedIndexChanged);
+            cbx_tab2_frommodule.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_tab2_frommodule.FormattingEnabled = true;
+            cbx_tab2_frommodule.Location = new Point(119, 47);
+            cbx_tab2_frommodule.Name = "cbx_tab2_frommodule";
+            cbx_tab2_frommodule.Size = new Size(148, 23);
+            cbx_tab2_frommodule.TabIndex = 43;
+            cbx_tab2_frommodule.SelectedIndexChanged += cbx_tab2_frommodule_SelectedIndexChanged;
             // 
             // lab_tab2_module
             // 
-            this.lab_tab2_module.AutoSize = true;
-            this.lab_tab2_module.Location = new System.Drawing.Point(18, 55);
-            this.lab_tab2_module.Name = "lab_tab2_module";
-            this.lab_tab2_module.Size = new System.Drawing.Size(86, 15);
-            this.lab_tab2_module.TabIndex = 42;
-            this.lab_tab2_module.Text = "From_Module";
+            lab_tab2_module.AutoSize = true;
+            lab_tab2_module.Location = new Point(18, 55);
+            lab_tab2_module.Name = "lab_tab2_module";
+            lab_tab2_module.Size = new Size(86, 15);
+            lab_tab2_module.TabIndex = 42;
+            lab_tab2_module.Text = "From_Module";
             // 
             // tim_tab2
             // 
-            this.tim_tab2.Enabled = true;
-            this.tim_tab2.Interval = 1000;
-            this.tim_tab2.Tick += new System.EventHandler(this.tim_tab2_Tick);
+            tim_tab2.Enabled = true;
+            tim_tab2.Interval = 1000;
+            tim_tab2.Tick += tim_tab2_Tick;
             // 
             // cmt_tab2_deleterow
             // 
-            this.cmt_tab2_deleterow.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.delectRowToolStripMenuItem});
-            this.cmt_tab2_deleterow.Name = "cmt_tab2_deleterow";
-            this.cmt_tab2_deleterow.Size = new System.Drawing.Size(140, 26);
-            this.cmt_tab2_deleterow.Click += new System.EventHandler(this.cmt_tab2_deleterow_Click);
+            cmt_tab2_deleterow.Items.AddRange(new ToolStripItem[] { delectRowToolStripMenuItem });
+            cmt_tab2_deleterow.Name = "cmt_tab2_deleterow";
+            cmt_tab2_deleterow.Size = new Size(140, 26);
+            cmt_tab2_deleterow.Click += cmt_tab2_deleterow_Click;
             // 
             // delectRowToolStripMenuItem
             // 
-            this.delectRowToolStripMenuItem.Name = "delectRowToolStripMenuItem";
-            this.delectRowToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.delectRowToolStripMenuItem.Text = "Delete Row";
+            delectRowToolStripMenuItem.Name = "delectRowToolStripMenuItem";
+            delectRowToolStripMenuItem.Size = new Size(139, 22);
+            delectRowToolStripMenuItem.Text = "Delete Row";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(829, 604);
-            this.Controls.Add(this.tbc_main);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
-            this.Text = "SunDiTool";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.tbc_main.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.pnl_tab1.ResumeLayout(false);
-            this.pnl_tab1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.grb_Backend.ResumeLayout(false);
-            this.grb_Frontend.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.pnl_tab2.ResumeLayout(false);
-            this.pnl_tab2.PerformLayout();
-            this.grb_tab2_dbselect.ResumeLayout(false);
-            this.grb_tab2_dbselect.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tab2_languagetranslate)).EndInit();
-            this.cmt_tab2_deleterow.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveBorder;
+            ClientSize = new Size(829, 604);
+            Controls.Add(tbc_main);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Name = "Form1";
+            Text = "SunDiTool";
+            Load += Form1_Load;
+            tbc_main.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            pnl_tab1.ResumeLayout(false);
+            pnl_tab1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            grb_Backend.ResumeLayout(false);
+            grb_Frontend.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            pnl_tab2.ResumeLayout(false);
+            pnl_tab2.PerformLayout();
+            grb_tab2_dbselect.ResumeLayout(false);
+            grb_tab2_dbselect.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_tab2_languagetranslate).EndInit();
+            cmt_tab2_deleterow.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
@@ -812,5 +819,6 @@
         private ContextMenuStrip cmt_tab2_deleterow;
         private ToolStripMenuItem delectRowToolStripMenuItem;
         private CheckBox cbx_vndb;
+        private CheckBox cbx_copydiff;
     }
 }
