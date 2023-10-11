@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "DLPCodeCreater/2.0.0-20230927": {
+      "DLPCodeCreater/2.0.0-20231011": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Client": "3.0.0",
           "Newtonsoft.Json": "13.0.1",
@@ -539,7 +539,7 @@
     }
   },
   "libraries": {
-    "DLPCodeCreater/2.0.0-20230927": {
+    "DLPCodeCreater/2.0.0-20231011": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

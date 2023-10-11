@@ -89,6 +89,17 @@
             lab_atb2_fromarea = new Label();
             cbx_tab2_frommodule = new ComboBox();
             lab_tab2_module = new Label();
+            tabPage3 = new TabPage();
+            dGV_innerObj = new DataGridView();
+            textBoxResults = new TextBox();
+            btn_run = new Button();
+            btn_clearMessege = new Button();
+            dGdVwHeaders = new DataGridView();
+            Index = new DataGridViewTextBoxColumn();
+            Type = new DataGridViewTextBoxColumn();
+            lstVwSubItems = new ListView();
+            btnPath = new Button();
+            txtSelectPath = new TextBox();
             tim_tab2 = new System.Windows.Forms.Timer(components);
             cmt_tab2_deleterow = new ContextMenuStrip(components);
             delectRowToolStripMenuItem = new ToolStripMenuItem();
@@ -102,6 +113,9 @@
             pnl_tab2.SuspendLayout();
             grb_tab2_dbselect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_tab2_languagetranslate).BeginInit();
+            tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dGV_innerObj).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dGdVwHeaders).BeginInit();
             cmt_tab2_deleterow.SuspendLayout();
             SuspendLayout();
             // 
@@ -115,11 +129,13 @@
             // 
             tbc_main.Controls.Add(tabPage1);
             tbc_main.Controls.Add(tabPage2);
-            tbc_main.Location = new Point(2, 3);
+            tbc_main.Controls.Add(tabPage3);
+            tbc_main.Location = new Point(-6, 3);
             tbc_main.Name = "tbc_main";
             tbc_main.SelectedIndex = 0;
-            tbc_main.Size = new Size(823, 598);
+            tbc_main.Size = new Size(797, 598);
             tbc_main.TabIndex = 30;
+            tbc_main.Tag = "";
             // 
             // tabPage1
             // 
@@ -127,7 +143,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(815, 570);
+            tabPage1.Size = new Size(789, 570);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "SunDiRo";
             tabPage1.UseVisualStyleBackColor = true;
@@ -158,7 +174,7 @@
             pnl_tab1.Dock = DockStyle.Fill;
             pnl_tab1.Location = new Point(3, 3);
             pnl_tab1.Name = "pnl_tab1";
-            pnl_tab1.Size = new Size(809, 564);
+            pnl_tab1.Size = new Size(783, 564);
             pnl_tab1.TabIndex = 0;
             // 
             // cbx_copydiff
@@ -465,7 +481,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(815, 570);
+            tabPage2.Size = new Size(789, 570);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "DoGoRo";
             tabPage2.UseVisualStyleBackColor = true;
@@ -489,7 +505,7 @@
             pnl_tab2.Dock = DockStyle.Fill;
             pnl_tab2.Location = new Point(3, 3);
             pnl_tab2.Name = "pnl_tab2";
-            pnl_tab2.Size = new Size(809, 564);
+            pnl_tab2.Size = new Size(783, 564);
             pnl_tab2.TabIndex = 0;
             // 
             // grb_tab2_dbselect
@@ -626,7 +642,7 @@
             dgv_tab2_languagetranslate.Location = new Point(3, 214);
             dgv_tab2_languagetranslate.Name = "dgv_tab2_languagetranslate";
             dgv_tab2_languagetranslate.RowTemplate.Height = 25;
-            dgv_tab2_languagetranslate.Size = new Size(803, 353);
+            dgv_tab2_languagetranslate.Size = new Size(766, 353);
             dgv_tab2_languagetranslate.TabIndex = 48;
             dgv_tab2_languagetranslate.CellMouseUp += dgv_tab2_languagetranslate_CellMouseUp;
             // 
@@ -710,6 +726,122 @@
             lab_tab2_module.TabIndex = 42;
             lab_tab2_module.Text = "From_Module";
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(dGV_innerObj);
+            tabPage3.Controls.Add(textBoxResults);
+            tabPage3.Controls.Add(btn_run);
+            tabPage3.Controls.Add(btn_clearMessege);
+            tabPage3.Controls.Add(dGdVwHeaders);
+            tabPage3.Controls.Add(lstVwSubItems);
+            tabPage3.Controls.Add(btnPath);
+            tabPage3.Controls.Add(txtSelectPath);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(789, 570);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "ColDef";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dGV_innerObj
+            // 
+            dGV_innerObj.AllowUserToAddRows = false;
+            dGV_innerObj.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dGV_innerObj.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dGV_innerObj.Location = new Point(3, 368);
+            dGV_innerObj.Name = "dGV_innerObj";
+            dGV_innerObj.RowTemplate.Height = 25;
+            dGV_innerObj.Size = new Size(783, 187);
+            dGV_innerObj.TabIndex = 14;
+            dGV_innerObj.Visible = false;
+            // 
+            // textBoxResults
+            // 
+            textBoxResults.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxResults.Location = new Point(6, 361);
+            textBoxResults.Multiline = true;
+            textBoxResults.Name = "textBoxResults";
+            textBoxResults.ScrollBars = ScrollBars.Both;
+            textBoxResults.Size = new Size(777, 203);
+            textBoxResults.TabIndex = 7;
+            // 
+            // btn_run
+            // 
+            btn_run.Location = new Point(587, 14);
+            btn_run.Name = "btn_run";
+            btn_run.Size = new Size(89, 56);
+            btn_run.TabIndex = 13;
+            btn_run.Text = "執行";
+            btn_run.UseVisualStyleBackColor = true;
+            btn_run.Click += btn_run_Click;
+            // 
+            // btn_clearMessege
+            // 
+            btn_clearMessege.Location = new Point(494, 14);
+            btn_clearMessege.Name = "btn_clearMessege";
+            btn_clearMessege.Size = new Size(87, 56);
+            btn_clearMessege.TabIndex = 12;
+            btn_clearMessege.Text = "清MSG";
+            btn_clearMessege.UseVisualStyleBackColor = true;
+            btn_clearMessege.Click += btn_clearMessege_Click;
+            // 
+            // dGdVwHeaders
+            // 
+            dGdVwHeaders.AllowUserToAddRows = false;
+            dGdVwHeaders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dGdVwHeaders.Columns.AddRange(new DataGridViewColumn[] { Index, Type });
+            dGdVwHeaders.Location = new Point(6, 76);
+            dGdVwHeaders.Name = "dGdVwHeaders";
+            dGdVwHeaders.RowTemplate.Height = 25;
+            dGdVwHeaders.Size = new Size(181, 279);
+            dGdVwHeaders.TabIndex = 11;
+            dGdVwHeaders.CellMouseDown += dGdVwHeaders_CellMouseDown;
+            dGdVwHeaders.SelectionChanged += dGdVwHeaders_SelectionChanged;
+            // 
+            // Index
+            // 
+            Index.HeaderText = "區段代號";
+            Index.Name = "Index";
+            Index.ReadOnly = true;
+            Index.Width = 60;
+            // 
+            // Type
+            // 
+            Type.HeaderText = "Model類型";
+            Type.Name = "Type";
+            Type.ToolTipText = "111";
+            Type.Width = 70;
+            // 
+            // lstVwSubItems
+            // 
+            lstVwSubItems.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lstVwSubItems.GridLines = true;
+            lstVwSubItems.Location = new Point(193, 76);
+            lstVwSubItems.Name = "lstVwSubItems";
+            lstVwSubItems.Size = new Size(590, 279);
+            lstVwSubItems.TabIndex = 10;
+            lstVwSubItems.UseCompatibleStateImageBehavior = false;
+            lstVwSubItems.ItemCheck += lstVwSubItems_ItemCheck;
+            // 
+            // btnPath
+            // 
+            btnPath.Location = new Point(396, 14);
+            btnPath.Name = "btnPath";
+            btnPath.Size = new Size(92, 56);
+            btnPath.TabIndex = 9;
+            btnPath.Text = "選文字檔";
+            btnPath.UseVisualStyleBackColor = true;
+            btnPath.Click += btnPath_Click;
+            // 
+            // txtSelectPath
+            // 
+            txtSelectPath.Location = new Point(6, 14);
+            txtSelectPath.Multiline = true;
+            txtSelectPath.Name = "txtSelectPath";
+            txtSelectPath.Size = new Size(384, 56);
+            txtSelectPath.TabIndex = 8;
+            // 
             // tim_tab2
             // 
             tim_tab2.Enabled = true;
@@ -734,7 +866,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
-            ClientSize = new Size(829, 604);
+            ClientSize = new Size(797, 604);
             Controls.Add(tbc_main);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
@@ -753,6 +885,10 @@
             grb_tab2_dbselect.ResumeLayout(false);
             grb_tab2_dbselect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_tab2_languagetranslate).EndInit();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dGV_innerObj).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dGdVwHeaders).EndInit();
             cmt_tab2_deleterow.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -820,5 +956,16 @@
         private ToolStripMenuItem delectRowToolStripMenuItem;
         private CheckBox cbx_vndb;
         private CheckBox cbx_copydiff;
+        private TabPage tabPage3;
+        private DataGridView dGV_innerObj;
+        private TextBox textBoxResults;
+        private Button btn_run;
+        private Button btn_clearMessege;
+        private DataGridView dGdVwHeaders;
+        private ListView lstVwSubItems;
+        private Button btnPath;
+        private TextBox txtSelectPath;
+        private DataGridViewTextBoxColumn Index;
+        private DataGridViewTextBoxColumn Type;
     }
 }
