@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+ï»¿using Newtonsoft.Json;
 using System.Collections;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -46,7 +46,7 @@ namespace DLPCodeCreater
         List<string> repository = new List<string>();
 
 
-        #region Tab3 ÅÜ¼Æ«Å§i
+        #region Tab3 è®Šæ•¸å®£å‘Š
 
         List<SearchResult> mainFilteredList = new List<SearchResult>();
 
@@ -67,18 +67,18 @@ namespace DLPCodeCreater
         public class innerObj
         {
 
-            public int innerIndex { get; set; }    //¤º³¡¯Á¤Ş
-            public int index { get; set; }    //¤ÀÃş¯Á¤Ş
-            public string dbColumn { get; set; }    //* ¸ê®ÆÄæ¦WºÙ
-            public string itemEngName { get; set; } //* ¦WºÙ
-            public string itemChtName { get; set; } //* ¼ĞÅÒ or * ´£¥Ü(first)
-            public string itemType { get; set; }    //* ¶µ¥ØÃş«¬
+            public int innerIndex { get; set; }    //å…§éƒ¨ç´¢å¼•
+            public int index { get; set; }    //åˆ†é¡ç´¢å¼•
+            public string dbColumn { get; set; }    //* è³‡æ–™æ¬„åç¨±
+            public string itemEngName { get; set; } //* åç¨±
+            public string itemChtName { get; set; } //* æ¨™ç±¤ or * æç¤º(first)
+            public string itemType { get; set; }    //* é …ç›®é¡å‹
 
-            public string HeaderType { get; set; }    //Ãş«¬Gird/Form
+            public string HeaderType { get; set; }    //é¡å‹Gird/Form
 
-            public int? SubSeq { get; set; }    //¶¶§Ç¯Á¤Ş
+            public int? SubSeq { get; set; }    //é †åºç´¢å¼•
 
-            public bool Checked { get; set; }    //¿ï¨ú
+            public bool Checked { get; set; }    //é¸å–
 
         }
 
@@ -111,9 +111,11 @@ namespace DLPCodeCreater
 
         }
 
-        private ContextMenuStrip contextMenu;//«Å§i¤@­Ó¥kÁä¿ï³æªºª«¥ó
+        private ContextMenuStrip contextMenu;//å®£å‘Šä¸€å€‹å³éµé¸å–®çš„ç‰©ä»¶
 
-        #endregion Tab3 ÅÜ¼Æ«Å§i
+        ListViewItem lvi;
+
+        #endregion Tab3 è®Šæ•¸å®£å‘Š
 
         public Form1()
         {
@@ -131,7 +133,7 @@ namespace DLPCodeCreater
             btn_dto.Enabled = false;
             btn_repositories.Enabled = false;
             btn_interface.Enabled = false;
-            //ª©¥»¸¹
+            //ç‰ˆæœ¬è™Ÿ
             string version = System.Windows.Forms.Application.ProductVersion;
             this.Text = String.Format("SunDiTool {0}", version);
         }
@@ -147,13 +149,13 @@ namespace DLPCodeCreater
                 FolderBrowserDialog path = new FolderBrowserDialog();
                 path.ShowDialog();
                 this.tbx_projectpath.Text = path.SelectedPath;
-                //¨ú±o¼Ò²Õ¦Cªí
+                //å–å¾—æ¨¡çµ„åˆ—è¡¨
                 List<string> ds = fhelper.DirSearch(this.tbx_projectpath.Text + AppPortalpath);
 
                 BindingSource bs = new BindingSource();
-                //©ñ¤Jfrom_module
+                //æ”¾å…¥from_module
                 this.cbx_frommodule.DataSource = ds;
-                //©ñ¤Jtarget_module
+                //æ”¾å…¥target_module
                 this.cbx_targetmodule.DataSource = ds;
             }
             catch (Exception)
@@ -165,9 +167,9 @@ namespace DLPCodeCreater
         private void cbx_frommodule_SelectedIndexChanged(object sender, EventArgs e)
         {
             fModulepath = this.tbx_projectpath.Text + AppPortalpath + this.cbx_frommodule.Text;
-            //¨ú±o¦a°Ï¦Cªí
+            //å–å¾—åœ°å€åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(fModulepath);
-            //©ñ¤Jfrom_area
+            //æ”¾å…¥from_area
             BindingSource bs = new BindingSource();
             this.cbx_fromarea.DataSource = ds;
         }
@@ -175,9 +177,9 @@ namespace DLPCodeCreater
         private void cbx_fromarea_SelectedIndexChanged(object sender, EventArgs e)
         {
             fAreapath = fModulepath + @"\" + this.cbx_fromarea.Text;
-            //¨ú±oµ{¦¡¦Cªí
+            //å–å¾—ç¨‹å¼åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(fAreapath);
-            //©ñ¤Jfrom_program
+            //æ”¾å…¥from_program
             BindingSource bs = new BindingSource();
             this.cbx_fromprogram.DataSource = ds;
         }
@@ -187,9 +189,9 @@ namespace DLPCodeCreater
         private void cbx_targetmodule_SelectedIndexChanged(object sender, EventArgs e)
         {
             tModulepath = this.tbx_projectpath.Text + AppPortalpath + this.cbx_targetmodule.Text;
-            //¨ú±o¦a°Ï¦Cªí
+            //å–å¾—åœ°å€åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(tModulepath);
-            //©ñ¤Jfrom_area
+            //æ”¾å…¥from_area
             BindingSource bs = new BindingSource();
             this.cbx_targetarea.DataSource = ds;
         }
@@ -197,17 +199,17 @@ namespace DLPCodeCreater
         private void cbx_targetarea_SelectedIndexChanged(object sender, EventArgs e)
         {
             tAreapath = tModulepath + @"\" + this.cbx_targetarea.Text;
-            //¨ú±oµ{¦¡¦Cªí
+            //å–å¾—ç¨‹å¼åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(tAreapath);
-            //©ñ¤Jfrom_program
+            //æ”¾å…¥from_program
             BindingSource bs = new BindingSource();
             this.cbx_targetprogram.DataSource = ds;
         }
 
-        //·h²¾ÀÉ®×
+        //æ¬ç§»æª”æ¡ˆ
         private void btn_Move_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============1.«eºİÀÉ®×·h²¾¶}©l================");
+            ResultMessage("===============1.å‰ç«¯æª”æ¡ˆæ¬ç§»é–‹å§‹================");
             fProgrampath = fAreapath + @"\" + this.cbx_fromprogram.Text;
             tProgrampath = tAreapath + @"\" + this.cbx_targetprogram.Text;
             string fileName = "";
@@ -215,7 +217,7 @@ namespace DLPCodeCreater
             //ts,css,html
             if (isdiffprogaram)
             {
-                //½Æ»s¤£¦Pµ{¦¡¦WºÙ
+                //è¤‡è£½ä¸åŒç¨‹å¼åç¨±
                 GetFileandMoveAndReplaceContext(fProgrampath, tProgrampath);
             }
             else
@@ -239,7 +241,7 @@ namespace DLPCodeCreater
             if (isdiffprogaram) tfileName = tProgram + ".state.ts";
             FileMove(fAreapath + @"\states", tAreapath + @"\states", fileName, tfileName);
             //api
-            //20230427 ¦]À³«eºİCRUD·s¼gªk¥i¯à¨S¦³api.ts
+            //20230427 å› æ‡‰å‰ç«¯CRUDæ–°å¯«æ³•å¯èƒ½æ²’æœ‰api.ts
             fileName = this.cbx_fromprogram.Text + ".api.ts";
             if (isdiffprogaram) tfileName = tProgram + ".api.ts";
             if (File.Exists(fAreapath + @"\api\" + fileName))
@@ -267,7 +269,7 @@ namespace DLPCodeCreater
             {
                 FileMove(fAreapath + @"\validations", tAreapath + @"\validations", fileName, tfileName);
             }
-            ResultMessage("===============«eºİÀÉ®×·h²¾µ²§ô================");
+            ResultMessage("===============å‰ç«¯æª”æ¡ˆæ¬ç§»çµæŸ================");
         }
 
 
@@ -282,14 +284,14 @@ namespace DLPCodeCreater
                 string tpath = targetpath + @"\" + fname;
                 if (fhelper.FileMove(fpath, tpath))
                 {
-                    ResultMessage("ÀÉ®×·h²¾¦¨¥\" + tpath);
+                    ResultMessage("æª”æ¡ˆæ¬ç§»æˆåŠŸ" + tpath);
                 }
             }
 
         }
 
         /// <summary>
-        /// ½Æ»s«eºİÀÉ®×¨Ã­×§ï¤º®e
+        /// è¤‡è£½å‰ç«¯æª”æ¡ˆä¸¦ä¿®æ”¹å…§å®¹
         /// </summary>
         /// <param name="frompath"></param>
         /// <param name="targetpath"></param>
@@ -305,22 +307,22 @@ namespace DLPCodeCreater
                 string tpath = targetpath + @"\" + fname.Replace(fname.Split('.')[0], tProgram);
                 if (fhelper.FileMove(fpath, tpath))
                 {
-                    ResultMessage("ÀÉ®×·h²¾¦¨¥\" + tpath);
+                    ResultMessage("æª”æ¡ˆæ¬ç§»æˆåŠŸ" + tpath);
                 }
 
-                //­×§ï¤º®e
+                //ä¿®æ”¹å…§å®¹
                 ReplaceProgramName(tpath, fProgram, tProgram);
 
             }
 
         }
         /// <summary>
-        /// ÀÉ®×·h²¾
+        /// æª”æ¡ˆæ¬ç§»
         /// </summary>
         /// <param name="frompath"></param>
         /// <param name="targetpath"></param>
         /// <param name="filename"></param>
-        /// <param name="tfilename"> ·sªºÀÉ¦W </param>
+        /// <param name="tfilename"> æ–°çš„æª”å </param>
         public void FileMove(string frompath, string targetpath, string filename, string tfilename)
         {
             fhelper.CheckDir(targetpath);
@@ -332,17 +334,17 @@ namespace DLPCodeCreater
 
             if (fhelper.FileMove(fpath, tpath))
             {
-                ResultMessage("ÀÉ®×·h²¾¦¨¥\" + tpath);
+                ResultMessage("æª”æ¡ˆæ¬ç§»æˆåŠŸ" + tpath);
             }
 
-            //¦pªG¬O·sÀÉ´N­n­×§ï¤º®e
+            //å¦‚æœæ˜¯æ–°æª”å°±è¦ä¿®æ”¹å…§å®¹
             if (tfilename != "") ReplaceProgramName(tpath, fProgram, tProgram);
 
 
         }
 
         /// <summary>
-        /// ¨ú¥N¤º¤åµ{¦¡¥N½X
+        /// å–ä»£å…§æ–‡ç¨‹å¼ä»£ç¢¼
         /// </summary>
         /// <param name="targetpath"></param>
         /// <param name="Oldvalue"></param>
@@ -353,11 +355,11 @@ namespace DLPCodeCreater
             string upperOldvalue = char.ToUpper(Oldvalue[0]) + Oldvalue.Substring(1);
             string upperNewvalue = char.ToUpper(Newvalue[0]) + Newvalue.Substring(1);
 
-            //­×§ï¤º¤å
-            //¤p¼g¡B¤j¾m®p¡B¤j¼g
+            //ä¿®æ”¹å…§æ–‡
+            //å°å¯«ã€å¤§é§å³°ã€å¤§å¯«
             if (fhelper.FileReplace(targetpath, Oldvalue, Newvalue) && fhelper.FileReplace(targetpath, upperOldvalue, upperNewvalue) && fhelper.FileReplace(targetpath, Oldvalue.ToUpper(), upperNewvalue.ToUpper()))
             {
-                ResultMessage("ÀÉ®×¤º®e¨ú¥N¦¨¥\" + targetpath);
+                ResultMessage("æª”æ¡ˆå…§å®¹å–ä»£æˆåŠŸ" + targetpath);
             }
 
         }
@@ -375,31 +377,31 @@ namespace DLPCodeCreater
 
             if (fhelper.FileMove(fpath, tpath))
             {
-                ResultMessage("ÀÉ®×·h²¾¦¨¥\" + tpath);
+                ResultMessage("æª”æ¡ˆæ¬ç§»æˆåŠŸ" + tpath);
                 if (fhelper.FileReplace(tpath, replace_first[0], replace_first[1]))
                 {
                     if (replace_second != null)
                     {
                         if (fhelper.FileReplace(tpath, replace_second[0], replace_second[1]))
                         {
-                            ResultMessage("¦a°Ï¦WºÙ¨ú¥N¦¨¥\!");
+                            ResultMessage("åœ°å€åç¨±å–ä»£æˆåŠŸ!");
                         }
                     }
                     else
                     {
-                        ResultMessage("¦a°Ï¦WºÙ¨ú¥N¦¨¥\!");
+                        ResultMessage("åœ°å€åç¨±å–ä»£æˆåŠŸ!");
                     }
 
                 }
 
-                //¤£¦Pµ{¦¡­n­×§ï¤º®e
+                //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
                 if (isdiffprogaram) fhelper.FileReplace(tpath, fProgram.ToUpper(), tProgram.ToUpper());
 
             }
 
         }
 
-        //°T®§µ²ªG
+        //è¨Šæ¯çµæœ
         public void ResultMessage(string msg)
         {
             tbx_resultMsg.Text += Environment.NewLine;
@@ -408,11 +410,11 @@ namespace DLPCodeCreater
 
         private void btn_webapicopy_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============2.«eºİweb-apiÅª¨ú¶}©l================");
+            ResultMessage("===============2.å‰ç«¯web-apiè®€å–é–‹å§‹================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             var serviceText = fhelper.FileRead(fAreapath + @"\services\web-api.service.ts", program, "}");
 
-            //20230427 ¦]À³«eºİCRUD·s¼gªk¥i¯à¤£»İ­n½Æ»s ³o¨â­ÓÀÉ®×
+            //20230427 å› æ‡‰å‰ç«¯CRUDæ–°å¯«æ³•å¯èƒ½ä¸éœ€è¦è¤‡è£½ é€™å…©å€‹æª”æ¡ˆ
             if (serviceText.Count() > 0)
             {
                 List<string> repalceServiceText;
@@ -424,7 +426,7 @@ namespace DLPCodeCreater
 
                 if (isdiffprogaram)
                 {
-                    //¤£¦Pµ{¦¡­n­×§ï¤º®e
+                    //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
                     repalceServiceText = serviceText.Select(s => s.Replace(fromPath.ToUpper(), tragetPath.ToUpper())).Select(s => s.Replace(fromProgram.ToUpper(), tragetProgram.ToUpper())).ToList();
                 }
                 else
@@ -435,32 +437,32 @@ namespace DLPCodeCreater
 
                 fhelper.FileWrite(repalceServiceText, false, "web-api.service");
                 var modelText = fhelper.FileRead(fAreapath + @"\models\web-api.model.ts", program, "}");
-                //¤£¦Pµ{¦¡­n­×§ï¤º®e
+                //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
                 if (isdiffprogaram) modelText = modelText.Select(s => s.Replace(fromProgram.ToUpper(), tragetProgram.ToUpper())).ToList();
 
                 fhelper.FileWrite(modelText, true, "web-api.model");
 
-                //¶}±Òcopy.txt
+                //é–‹å•Ÿcopy.txt
                 System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
 
-                //¶}±Ò¥Ø¼Ğweb-api.service web-api.model
+                //é–‹å•Ÿç›®æ¨™web-api.service web-api.model
                 System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\services\web-api.service.ts");
                 System.Diagnostics.Process.Start("explorer.exe", tAreapath + @"\models\web-api.model.ts");
-                ResultMessage("¶}±ÒÀÉ®×:" + tAreapath + @"\services\web-api.service.ts");
-                ResultMessage("¶}±ÒÀÉ®×:" + tAreapath + @"\models\web-api.model.ts");
+                ResultMessage("é–‹å•Ÿæª”æ¡ˆ:" + tAreapath + @"\services\web-api.service.ts");
+                ResultMessage("é–‹å•Ÿæª”æ¡ˆ:" + tAreapath + @"\models\web-api.model.ts");
             }
             else
             {
-                ResultMessage("web-api¤º¨S¦³µ{¦¡¦WºÙ:" + program + " ¤£¶·½Æ»s!");
+                ResultMessage("web-apiå…§æ²’æœ‰ç¨‹å¼åç¨±:" + program + " ä¸é ˆè¤‡è£½!");
             }
 
 
-            ResultMessage("===============«eºİweb-apiÅª¨úµ²§ô================");
+            ResultMessage("===============å‰ç«¯web-apiè®€å–çµæŸ================");
         }
 
         private void btn_modulecopy_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============3.«eºİrouting.moduleÅª¨ú¶}©l================");
+            ResultMessage("===============3.å‰ç«¯routing.moduleè®€å–é–‹å§‹================");
             List<string> lsmodulecopy = new List<string>();
             //.module
             string program = char.ToUpper(this.cbx_targetprogram.Text[0]) + this.cbx_targetprogram.Text.Substring(1);
@@ -489,20 +491,20 @@ namespace DLPCodeCreater
 
             fhelper.FileWrite(lsmodulecopy, true, module + "-routing.module");
 
-            //¶}±Òcopy.txt
+            //é–‹å•Ÿcopy.txt
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
-            //¶}±Ò¥Ø¼Ğ.module routing.module
+            //é–‹å•Ÿç›®æ¨™.module routing.module
             System.Diagnostics.Process.Start("explorer.exe", tModulepath + @"\" + module + ".module.ts");
             System.Diagnostics.Process.Start("explorer.exe", tModulepath + @"\" + module + "-routing.module.ts");
-            ResultMessage("¶}±ÒÀÉ®×:" + tModulepath + @"\" + module + ".module.ts");
-            ResultMessage("¶}±ÒÀÉ®×:" + tModulepath + @"\" + module + "-routing.module.ts");
+            ResultMessage("é–‹å•Ÿæª”æ¡ˆ:" + tModulepath + @"\" + module + ".module.ts");
+            ResultMessage("é–‹å•Ÿæª”æ¡ˆ:" + tModulepath + @"\" + module + "-routing.module.ts");
 
-            ResultMessage("===============«eºİrouting.moduleÅª¨úµ²§ô================");
+            ResultMessage("===============å‰ç«¯routing.moduleè®€å–çµæŸ================");
         }
 
         private void btn_backendmove_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============4.«áºİÀÉ®×·h²¾&¦a°Ï­×§ï¶}©l================");
+            ResultMessage("===============4.å¾Œç«¯æª”æ¡ˆæ¬ç§»&åœ°å€ä¿®æ”¹é–‹å§‹================");
             List<string> replace = new List<string>();
             replace.Add('.' + cbx_fromarea.Text.ToUpper());
             replace.Add('.' + cbx_targetarea.Text.ToUpper());
@@ -524,38 +526,38 @@ namespace DLPCodeCreater
             FileMoveAndReplace(FromControllersFile, TargetControllersFile, cbx_fromprogram.Text.ToUpper(), cbx_targetprogram.Text.ToUpper(), "Controller.cs", replace, route_replace);
             //Service
             FileMoveAndReplace(FromServicesFile, TargetServicesFile, cbx_fromprogram.Text.ToUpper(), cbx_targetprogram.Text.ToUpper(), "Service.cs", replace);
-            ResultMessage("===============«áºİÀÉ®×·h²¾&¦a°Ï­×§ïµ²§ô================");
+            ResultMessage("===============å¾Œç«¯æª”æ¡ˆæ¬ç§»&åœ°å€ä¿®æ”¹çµæŸ================");
         }
 
         private void btn_spname_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============5.«eºİSPNameÅª¨ú¶}©l================");
+            ResultMessage("===============5.å‰ç«¯SPNameè®€å–é–‹å§‹================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             string FromStoreProcedureFile = this.tbx_projectpath.Text + String.Format(StoreProcedurepath, cbx_frommodule.Text, cbx_fromarea.Text);
             string TargetStoreProcedureFile = this.tbx_projectpath.Text + String.Format(StoreProcedurepath, cbx_targetmodule.Text, cbx_targetarea.Text);
             var serviceText = fhelper.FileRead(FromStoreProcedureFile, program, "#endregion");
 
-            //¤£¦Pµ{¦¡­n­×§ï¤º®e
+            //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
             if (isdiffprogaram) serviceText = serviceText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
 
             fhelper.FileWrite(serviceText, false, "SPName");
 
-            //¶}±Òcopy.txt
+            //é–‹å•Ÿcopy.txt
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
             //SPName.cs
             System.Diagnostics.Process.Start("explorer.exe", TargetStoreProcedureFile);
-            ResultMessage("¶}±ÒÀÉ®×:" + TargetStoreProcedureFile);
-            ResultMessage("===============«eºİSPNameÅª¨úµ²§ô================");
+            ResultMessage("é–‹å•Ÿæª”æ¡ˆ:" + TargetStoreProcedureFile);
+            ResultMessage("===============å‰ç«¯SPNameè®€å–çµæŸ================");
         }
 
         private void btn_getrepository_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============6.¨úRepository©ú²Ó¶}©l================");
+            ResultMessage("===============6.å–Repositoryæ˜ç´°é–‹å§‹================");
 
             btn_dto.Enabled = true;
             repository.Clear();
 
-            //±qTargetServices¨ú Repository©ú²Ó
+            //å¾TargetServiceså– Repositoryæ˜ç´°
             string TargetServicesFile = this.tbx_projectpath.Text + String.Format(Servicespath, cbx_targetmodule.Text, cbx_targetarea.Text) + @"\" + cbx_targetprogram.Text.ToUpper() + "Service.cs";
             string keyword = cbx_targetprogram.Text.ToUpper() + "Service(";
             List<string> FileText = fhelper.FileRead(TargetServicesFile, keyword, ")");
@@ -573,16 +575,16 @@ namespace DLPCodeCreater
                 btn_interface.Enabled = true;
             }
 
-            ResultMessage("===============¨úRepository©ú²Óµ²§ô================");
+            ResultMessage("===============å–Repositoryæ˜ç´°çµæŸ================");
         }
 
         private void btn_dto_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============7.³B²zDTO§@·~¶}©l================");
+            ResultMessage("===============7.è™•ç†DTOä½œæ¥­é–‹å§‹================");
 
             if (string.Compare(cbx_fromarea.Text, cbx_targetarea.Text) != 0)
             {
-                //¤£¦P°Ï°ì¤~»İ³B²zDTO
+                //ä¸åŒå€åŸŸæ‰éœ€è™•ç†DTO
                 string program = this.cbx_fromprogram.Text.ToUpper();
                 List<string> replace = new List<string>();
                 List<string> openfiles = new List<string>();
@@ -595,38 +597,38 @@ namespace DLPCodeCreater
                 replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
                 replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
-                //³B²zDTO
+                //è™•ç†DTO
                 string FromDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_frommodule.Text, cbx_fromarea.Text);
                 string TargetDTOFile = this.tbx_projectpath.Text + String.Format(DTOpath, cbx_targetmodule.Text, cbx_targetarea.Text);
 
-                //²MªÅcopy.text
+                //æ¸…ç©ºcopy.text
                 fhelper.FileWrite(new List<string>(), false, "Start");
 
                 foreach (var repo in repository)
                 {
                     int repoIndex = repo.Length - 10;//Repository Length
-                    repoIndex -= 1; //°_©l 'I' ¦r¤¸ªø«×
+                    repoIndex -= 1; //èµ·å§‹ 'I' å­—å…ƒé•·åº¦
 
                     string filename = repo.Substring(1, repoIndex) + "DTO.cs";
                     if (File.Exists(TargetDTOFile + @"\" + filename))
                     {
                         openfiles.Add(TargetDTOFile + @"\" + filename);
-                        //¤w¦s¦b §ìÃöÁä¦r
+                        //å·²å­˜åœ¨ æŠ“é—œéµå­—
                         var dtoText = fhelper.FileRead(FromDTOFile + @"\" + filename, "#region " + program, "#endregion");
 
-                        //UDTª«¥ó¦WºÙ­×¥¿
+                        //UDTç‰©ä»¶åç¨±ä¿®æ­£
                         dtoText = dtoText.Select(s => s.Replace(replace_udt[0], replace_udt[1])).ToList();
 
                         fhelper.FileWrite(dtoText, true, filename);
                     }
                     else
                     {
-                        //¤£¦s¦bª½±µcopy
+                        //ä¸å­˜åœ¨ç›´æ¥copy
                         FileMoveAndReplace(FromDTOFile, TargetDTOFile, repo.Substring(1, repoIndex), repo.Substring(1, repoIndex), "DTO.cs", replace);
                     }
                 }
 
-                //¶}±Òcopy.txt
+                //é–‹å•Ÿcopy.txt
                 System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
                 //DTO.cs
                 foreach (var of in openfiles)
@@ -634,19 +636,19 @@ namespace DLPCodeCreater
                     System.Diagnostics.Process.Start("explorer.exe", of);
                 }
 
-                ResultMessage("¶}±ÒÀÉ®×:DTO.cs");
+                ResultMessage("é–‹å•Ÿæª”æ¡ˆ:DTO.cs");
             }
             else
             {
-                ResultMessage("¦P¤@°Ï°ì¤£¶·³B²zDTO");
+                ResultMessage("åŒä¸€å€åŸŸä¸é ˆè™•ç†DTO");
             }
 
-            ResultMessage("===============³B²zDTO§@·~µ²§ô================");
+            ResultMessage("===============è™•ç†DTOä½œæ¥­çµæŸ================");
         }
 
         private void btn_interface_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============8.³B²zINTERFACE§@·~¶}©l================");
+            ResultMessage("===============8.è™•ç†INTERFACEä½œæ¥­é–‹å§‹================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             List<string> replace = new List<string>();
             List<string> replace_udt = new List<string>();
@@ -658,11 +660,11 @@ namespace DLPCodeCreater
             replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
             replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
-            //³B²zInterface
+            //è™•ç†Interface
             string FromInterfaceFile = this.tbx_projectpath.Text + String.Format(Interfacepath, cbx_frommodule.Text, cbx_fromarea.Text);
             string TargetInterfaceFile = this.tbx_projectpath.Text + String.Format(Interfacepath, cbx_targetmodule.Text, cbx_targetarea.Text);
 
-            //²MªÅcopy.text
+            //æ¸…ç©ºcopy.text
             fhelper.FileWrite(new List<string>(), false, "Start");
 
             foreach (var repo in repository)
@@ -671,22 +673,22 @@ namespace DLPCodeCreater
                 if (File.Exists(TargetInterfaceFile + @"\" + filename))
                 {
                     openfiles.Add(TargetInterfaceFile + @"\" + filename);
-                    //¤w¦s¦b §ìÃöÁä¦r
+                    //å·²å­˜åœ¨ æŠ“é—œéµå­—
                     var dtoText = fhelper.FileRead(FromInterfaceFile + @"\" + filename, "#region " + program, "#endregion");
 
-                    //¤£¦Pµ{¦¡­n­×§ï¤º®e
+                    //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
                     if (isdiffprogaram) dtoText = dtoText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
 
                     fhelper.FileWrite(dtoText, true, filename);
                 }
                 else
                 {
-                    //¤£¦s¦bª½±µcopy
+                    //ä¸å­˜åœ¨ç›´æ¥copy
                     FileMoveAndReplace(FromInterfaceFile, TargetInterfaceFile, repo, repo, ".cs", replace, replace_udt);
                 }
             }
 
-            //¶}±Òcopy.txt
+            //é–‹å•Ÿcopy.txt
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
             //Interface.cs
             foreach (var of in openfiles)
@@ -694,13 +696,13 @@ namespace DLPCodeCreater
                 System.Diagnostics.Process.Start("explorer.exe", of);
             }
 
-            ResultMessage("¶}±ÒÀÉ®×:Interface.cs");
-            ResultMessage("===============³B²zINTERFACE§@·~µ²§ô================");
+            ResultMessage("é–‹å•Ÿæª”æ¡ˆ:Interface.cs");
+            ResultMessage("===============è™•ç†INTERFACEä½œæ¥­çµæŸ================");
         }
 
         private void btn_repositories_Click(object sender, EventArgs e)
         {
-            ResultMessage("===============9.³B²zREPOSITORIES§@·~¶}©l================");
+            ResultMessage("===============9.è™•ç†REPOSITORIESä½œæ¥­é–‹å§‹================");
             string program = this.cbx_fromprogram.Text.ToUpper();
             List<string> replace = new List<string>();
             List<string> replace_udt = new List<string>();
@@ -712,11 +714,11 @@ namespace DLPCodeCreater
             replace_udt.Add('_' + cbx_fromarea.Text.ToUpper());
             replace_udt.Add('_' + cbx_targetarea.Text.ToUpper());
 
-            //³B²zInterface
+            //è™•ç†Interface
             string FromRepositoriesFile = this.tbx_projectpath.Text + String.Format(Repositoriespath, cbx_frommodule.Text, cbx_fromarea.Text);
             string TargetRepositoriesFile = this.tbx_projectpath.Text + String.Format(Repositoriespath, cbx_targetmodule.Text, cbx_targetarea.Text);
 
-            //²MªÅcopy.text
+            //æ¸…ç©ºcopy.text
             fhelper.FileWrite(new List<string>(), false, "Start");
 
             foreach (string repo in repository)
@@ -725,21 +727,21 @@ namespace DLPCodeCreater
                 if (File.Exists(TargetRepositoriesFile + @"\" + filename))
                 {
                     openfiles.Add(TargetRepositoriesFile + @"\" + filename);
-                    //¤w¦s¦b §ìÃöÁä¦r
+                    //å·²å­˜åœ¨ æŠ“é—œéµå­—
                     var dtoText = fhelper.FileRead(FromRepositoriesFile + @"\" + filename, "#region " + program, "#endregion");
-                    //¤£¦Pµ{¦¡­n­×§ï¤º®e
+                    //ä¸åŒç¨‹å¼è¦ä¿®æ”¹å…§å®¹
                     if (isdiffprogaram) dtoText = dtoText.Select(s => s.Replace(fProgram.ToUpper(), tProgram.ToUpper())).ToList();
 
                     fhelper.FileWrite(dtoText, true, filename);
                 }
                 else
                 {
-                    //¤£¦s¦bª½±µcopy
+                    //ä¸å­˜åœ¨ç›´æ¥copy
                     FileMoveAndReplace(FromRepositoriesFile, TargetRepositoriesFile, repo.Substring(1, repo.Length - 1), repo.Substring(1, repo.Length - 1), ".cs", replace, replace_udt);
                 }
             }
 
-            //¶}±Òcopy.txt
+            //é–‹å•Ÿcopy.txt
             System.Diagnostics.Process.Start("explorer.exe", "copy.txt");
             //Repositories.cs
             foreach (var of in openfiles)
@@ -747,8 +749,8 @@ namespace DLPCodeCreater
                 System.Diagnostics.Process.Start("explorer.exe", of);
             }
 
-            ResultMessage("¶}±ÒÀÉ®×:Repositories.cs");
-            ResultMessage("===============³B²zREPOSITORIES§@·~µ²§ô================");
+            ResultMessage("é–‹å•Ÿæª”æ¡ˆ:Repositories.cs");
+            ResultMessage("===============è™•ç†REPOSITORIESä½œæ¥­çµæŸ================");
         }
 
         private void cbx_fromprogram_SelectedIndexChanged(object sender, EventArgs e)
@@ -771,7 +773,7 @@ namespace DLPCodeCreater
             }
             else
             {
-                //·h²¾µ{¦¡¦WºÙ»İ¬Û¦P
+                //æ¬ç§»ç¨‹å¼åç¨±éœ€ç›¸åŒ
                 if (string.Compare(cbx_fromprogram.Text, cbx_targetprogram.Text) == 0 || isdiffprogaram)
                 {
                     btn_Move.Enabled = true;
@@ -820,7 +822,7 @@ namespace DLPCodeCreater
             cbx_targetprogram.Text = "mii470tzc";
         }
 
-        //ºu½ü¦Ü©³
+        //æ»¾è¼ªè‡³åº•
         private void tbx_resultMsg_TextChanged(object sender, EventArgs e)
         {
             this.tbx_resultMsg.SelectionStart = this.tbx_resultMsg.Text.Length;
@@ -833,9 +835,9 @@ namespace DLPCodeCreater
         private void cbx_tab2_frommodule_SelectedIndexChanged(object sender, EventArgs e)
         {
             fModulepath = this.tbx_tab2_projectpath.Text + AppPortalpath + this.cbx_tab2_frommodule.Text;
-            //¨ú±o¦a°Ï¦Cªí
+            //å–å¾—åœ°å€åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(fModulepath);
-            //©ñ¤Jfrom_area
+            //æ”¾å…¥from_area
             BindingSource bs = new BindingSource();
             this.cbx_tab2_fromarea.DataSource = ds;
         }
@@ -843,21 +845,21 @@ namespace DLPCodeCreater
         private void cbx_tab2_fromarea_SelectedIndexChanged(object sender, EventArgs e)
         {
             fAreapath = fModulepath + @"\" + this.cbx_tab2_fromarea.Text;
-            //¨ú±oµ{¦¡¦Cªí
+            //å–å¾—ç¨‹å¼åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(fAreapath);
-            //©ñ¤Jfrom_program
+            //æ”¾å…¥from_program
             BindingSource bs = new BindingSource();
             this.cbx_tab2_fromprogram.DataSource = ds;
         }
 
-        //·j´MÁcÅé¤¤¤å
+        //æœå°‹ç¹é«”ä¸­æ–‡
         private void btn_gettranslate_Click(object sender, EventArgs e)
         {
-            ResultMessageTab2("------------------¶}©l¨ú±oµ{¦¡¤º³¡¸ê®Æ!------------------");
+            ResultMessageTab2("------------------é–‹å§‹å–å¾—ç¨‹å¼å…§éƒ¨è³‡æ–™!------------------");
             //clear dgv_tab2_languagetranslate
             dgv_tab2_languagetranslate.DataSource = null;
             dgv_tab2_languagetranslate.Rows.Clear();
-            ResultMessageTab2("µe­±²M°£");
+            ResultMessageTab2("ç•«é¢æ¸…é™¤");
 
             string fileName = "";
             thelper.languageTranslates_merge = new List<LanguageTranslate>();
@@ -867,56 +869,56 @@ namespace DLPCodeCreater
 
 
             //ts,css,html
-            ResultMessageTab2("1.±½´yts,css,html");
+            ResultMessageTab2("1.æƒæts,css,html");
             fProgrampath = fAreapath + @"\" + this.cbx_tab2_fromprogram.Text;
             Dir = new DirectoryInfo(fProgrampath);
             files = Dir.GetFiles();
             thelper.mergeTranslate(thelper.getTranslate(files));
 
             //services
-            ResultMessageTab2("2.±½´yservices");
+            ResultMessageTab2("2.æƒæservices");
             fileName = this.cbx_tab2_fromprogram.Text + ".service.ts";
             thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\services\" + fileName));
             //pop-up.service.ts
-            ResultMessageTab2("3.±½´ypop-up.service.ts");
+            ResultMessageTab2("3.æƒæpop-up.service.ts");
             fileName = this.cbx_tab2_fromprogram.Text + "-pop-up.service.ts";
             if (File.Exists(fAreapath + @"\services\" + fileName))
             {
                 thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\services\" + fileName));
             }
             //states
-            ResultMessageTab2("4.±½´ystates");
+            ResultMessageTab2("4.æƒæstates");
             fileName = this.cbx_tab2_fromprogram.Text + ".state.ts";
             thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\states\" + fileName));
             //controls
-            ResultMessageTab2("5.±½´ycontrols");
+            ResultMessageTab2("5.æƒæcontrols");
             fileName = this.cbx_tab2_fromprogram.Text + ".control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
             {
                 thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\controls\" + fileName));
             }
             //form.control
-            ResultMessageTab2("6.±½´yform.control");
+            ResultMessageTab2("6.æƒæform.control");
             fileName = this.cbx_tab2_fromprogram.Text + "-form.control.ts";
             if (File.Exists(fAreapath + @"\controls\" + fileName))
             {
                 thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\controls\" + fileName));
             }
             //validations
-            ResultMessageTab2("7.±½´yvalidations");
+            ResultMessageTab2("7.æƒævalidations");
             fileName = this.cbx_fromprogram.Text + ".validation.ts";
             if (File.Exists(fAreapath + @"\validations\" + fileName))
             {
                 thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\validations\" + fileName));
             }
 
-            //¶ë¤J¸ê®Æ
-            ResultMessageTab2("8.¸ê®ÆÂ½Ä¶¶}©l");
+            //å¡å…¥è³‡æ–™
+            ResultMessageTab2("8.è³‡æ–™ç¿»è­¯é–‹å§‹");
             foreach (var lt in thelper.languageTranslates_merge)
             {
                 this.dgv_tab2_languagetranslate.Rows.Add(lt.TW, lt.ZH, lt.EN, lt.VI);
             }
-            ResultMessageTab2("------------------¨ú±oµ{¦¡¤º³¡¸ê®Æ§¹¦¨------------------");
+            ResultMessageTab2("------------------å–å¾—ç¨‹å¼å…§éƒ¨è³‡æ–™å®Œæˆ------------------");
         }
 
         private void btn_tab2_selectpath_Click(object sender, EventArgs e)
@@ -924,17 +926,17 @@ namespace DLPCodeCreater
             FolderBrowserDialog path = new FolderBrowserDialog();
             path.ShowDialog();
             this.tbx_tab2_projectpath.Text = path.SelectedPath;
-            //¨ú±o¼Ò²Õ¦Cªí
+            //å–å¾—æ¨¡çµ„åˆ—è¡¨
             List<string> ds = fhelper.DirSearch(this.tbx_tab2_projectpath.Text + AppPortalpath);
 
             BindingSource bs = new BindingSource();
-            //©ñ¤Jfrom_module
+            //æ”¾å…¥from_module
             this.cbx_tab2_frommodule.DataSource = ds;
-            //©ñ¤Jfrom_module
+            //æ”¾å…¥from_module
             this.cbx_tab2_frommodule.DataSource = ds;
         }
 
-        //ºu½ü¦Ü©³
+        //æ»¾è¼ªè‡³åº•
         private void tbx_tab2_resultMsg_TextChanged(object sender, EventArgs e)
         {
             this.tbx_tab2_resultMsg.SelectionStart = this.tbx_tab2_resultMsg.Text.Length;
@@ -962,7 +964,7 @@ namespace DLPCodeCreater
                     DbInsert(sql, ml, this.cbx_tab2_fromprogram.Text.ToUpper());
                 }
 
-                ResultMessageTab2("DB-¼g¤Jµ²§ô!");
+                ResultMessageTab2("DB-å¯«å…¥çµæŸ!");
             }
             catch (Exception)
             {
@@ -972,7 +974,7 @@ namespace DLPCodeCreater
 
         }
 
-        //¼g¤JDB
+        //å¯«å…¥DB
         public void DbInsert(string sql, MultiLanguage ml, string program)
         {
             try
@@ -1018,7 +1020,7 @@ namespace DLPCodeCreater
                     {
                         DgDbcontext = GenericDbFactory<DGDbContext>.Create();
                         DgDbcontext.Connect();
-                        ResultMessageTab2("DGDB-³s½u¦¨¥\!");
+                        ResultMessageTab2("DGDB-é€£ç·šæˆåŠŸ!");
                     }
                 }
             }
@@ -1040,7 +1042,7 @@ namespace DLPCodeCreater
                     {
                         VsDbcontext = GenericDbFactory<VSDbContext>.Create();
                         VsDbcontext.Connect();
-                        ResultMessageTab2("VSDB-³s½u¦¨¥\!");
+                        ResultMessageTab2("VSDB-é€£ç·šæˆåŠŸ!");
                     }
                 }
             }
@@ -1061,7 +1063,7 @@ namespace DLPCodeCreater
                     {
                         VnDbcontext = GenericDbFactory<VNDbContext>.Create();
                         VnDbcontext.Connect();
-                        ResultMessageTab2("VNDB-³s½u¦¨¥\!");
+                        ResultMessageTab2("VNDB-é€£ç·šæˆåŠŸ!");
                     }
                 }
             }
@@ -1082,7 +1084,7 @@ namespace DLPCodeCreater
                     {
                         VgDbcontext = GenericDbFactory<VGDbContext>.Create();
                         VgDbcontext.Connect();
-                        ResultMessageTab2("VGDB-³s½u¦¨¥\!");
+                        ResultMessageTab2("VGDB-é€£ç·šæˆåŠŸ!");
                     }
                 }
             }
@@ -1102,7 +1104,7 @@ namespace DLPCodeCreater
                     {
                         TcDbcontext = GenericDbFactory<TCDbContext>.Create();
                         TcDbcontext.Connect();
-                        ResultMessageTab2("TCDB-³s½u¦¨¥\!");
+                        ResultMessageTab2("TCDB-é€£ç·šæˆåŠŸ!");
                     }
                 }
             }
@@ -1136,7 +1138,7 @@ namespace DLPCodeCreater
 
         }
 
-        //¥kÁä§R°£¨Æ¥ó
+        //å³éµåˆªé™¤äº‹ä»¶
         private void dgv_tab2_languagetranslate_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1155,7 +1157,7 @@ namespace DLPCodeCreater
             dgv_tab2_languagetranslate.Rows.RemoveAt(this.rowIndex);
         }
 
-        //°T®§µ²ªG
+        //è¨Šæ¯çµæœ
         public void ResultErrorMessageTab2(string msg)
         {
             ResultMessageTab2("=============Error Meg Start=============");
@@ -1188,42 +1190,44 @@ namespace DLPCodeCreater
             // Sort the items in the list in ascending order.
             lstVwSubItems.Sorting = SortOrder.Ascending;
 
+            this.comboBox1.Visible = false;
+
         }
 
-        //³]©w¥kÁä¿ï³æ
+        //è¨­å®šå³éµé¸å–®
         private void InitialContextMenu()
         {
-            // ¥[¸ü¹Ï¹³
+            // åŠ è¼‰åœ–åƒ
             System.Drawing.Image image1 = System.Drawing.Image.FromFile(@"delete.png");
             System.Drawing.Image image2 = System.Drawing.Image.FromFile(@"form.png");
             System.Drawing.Image image3 = System.Drawing.Image.FromFile(@"grid.png");
 
             contextMenu = new ContextMenuStrip();
-            // ³Ğ«Øµæ³æ¶µ¥Ø
-            ToolStripMenuItem item1 = new ToolStripMenuItem("²MªÅ", image1);
-            ToolStripMenuItem item2 = new ToolStripMenuItem("³]©wForm", image2);
-            ToolStripMenuItem item3 = new ToolStripMenuItem("³]©wGrid", image3);
+            // å‰µå»ºèœå–®é …ç›®
+            ToolStripMenuItem item1 = new ToolStripMenuItem("æ¸…ç©º", image1);
+            ToolStripMenuItem item2 = new ToolStripMenuItem("è¨­å®šForm", image2);
+            ToolStripMenuItem item3 = new ToolStripMenuItem("è¨­å®šGrid", image3);
 
-            // ±Nµæ³æ¶µ¥Ø²K¥[¨ìContextMenuStrip
+            // å°‡èœå–®é …ç›®æ·»åŠ åˆ°ContextMenuStrip
             contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { item1, item2, item3 });
 
-            // ÃöÁpContextMenuStrip¨ì±zªº±±¨î¤¸¥ó
+            // é—œè¯ContextMenuStripåˆ°æ‚¨çš„æ§åˆ¶å…ƒä»¶
             this.dGdVwHeaders.Columns[1].ContextMenuStrip = contextMenu;
 
-            // ³]¸m¨Æ¥ó³B²zµ{§Ç¥H³B²z¿ï¶µªºÂIÀ»¨Æ¥ó
+            // è¨­ç½®äº‹ä»¶è™•ç†ç¨‹åºä»¥è™•ç†é¸é …çš„é»æ“Šäº‹ä»¶
             item1.Click += Item1_Click;
             item2.Click += Item2_Click;
             item3.Click += Item3_Click;
         }
 
-        //°»´úÀÉ®×§_¬°BIG5½s½X
+        //åµæ¸¬æª”æ¡ˆå¦ç‚ºBIG5ç·¨ç¢¼
         public static bool IsBig5Encoding(string file)
         {
             if (!File.Exists(file)) return false;
 
             Encoding big5 = Encoding.GetEncoding(950);
             byte[] bytes = File.ReadAllBytes(file);
-            //±Nbyte[]Âà¬°string¦AÂà¦^byte[]¬İ¦ì¤¸¼Æ¬O§_¦³ÅÜ
+            //å°‡byte[]è½‰ç‚ºstringå†è½‰å›byte[]çœ‹ä½å…ƒæ•¸æ˜¯å¦æœ‰è®Š
             return bytes.Length ==
                 big5.GetByteCount(big5.GetString(bytes));
         }
@@ -1234,12 +1238,12 @@ namespace DLPCodeCreater
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                // ³]©w¹w³]ªºÀÉ®×Ãş«¬¿z¿ï¾¹
-                //openFileDialog.Filter = "©Ò¦³ÀÉ®×|*.*";
-                openFileDialog.Filter = "¤å¥»ÀÉ®× (*.txt)|*.txt";
-                openFileDialog.Title = "¿ï¾Ü­n¥´¶}ªºÀÉ®×";
+                // è¨­å®šé è¨­çš„æª”æ¡ˆé¡å‹ç¯©é¸å™¨
+                //openFileDialog.Filter = "æ‰€æœ‰æª”æ¡ˆ|*.*";
+                openFileDialog.Filter = "æ–‡æœ¬æª”æ¡ˆ (*.txt)|*.txt";
+                openFileDialog.Title = "é¸æ“‡è¦æ‰“é–‹çš„æª”æ¡ˆ";
 
-                // ¨Ï¥ÎªÌ¿ï¾Ü¤FÀÉ®×
+                // ä½¿ç”¨è€…é¸æ“‡äº†æª”æ¡ˆ
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     list_innerObj.Clear();
@@ -1248,26 +1252,26 @@ namespace DLPCodeCreater
                     string selectedFilePath = openFileDialog.FileName;
                     this.txtSelectPath.Text = selectedFilePath;
 
-                    //textBoxResults.AppendText($" ¨ú±oÀÉ¦W(¤£¥]§tªşÀÉ¦W)¡G {Path.GetFileNameWithoutExtension(openFileDialog.FileName)}]{Environment.NewLine}");
-                    filePath = openFileDialog.FileName; //(¥ş°ì)
+                    //textBoxResults.AppendText($" å–å¾—æª”å(ä¸åŒ…å«é™„æª”å)ï¼š {Path.GetFileNameWithoutExtension(openFileDialog.FileName)}]{Environment.NewLine}");
+                    filePath = openFileDialog.FileName; //(å…¨åŸŸ)
 
-                    //// ÀË´ú¤å¥ó½s½X
+                    //// æª¢æ¸¬æ–‡ä»¶ç·¨ç¢¼
                     Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                     string[] lines;
 
-                    // §PÂ_½s½X
+                    // åˆ¤æ–·ç·¨ç¢¼
                     if (!IsBig5Encoding(openFileDialog.FileName))
                     {
-                        //MessageBox.Show("«DBIG5½s½X");
-                        textBoxResults.AppendText($"«DBIG5½s½X{Environment.NewLine}");
-                        // Åª¨ú¤å¦rÀÉªº¨C¤@¦æ
+                        //MessageBox.Show("éBIG5ç·¨ç¢¼");
+                        textBoxResults.AppendText($"éBIG5ç·¨ç¢¼{Environment.NewLine}");
+                        // è®€å–æ–‡å­—æª”çš„æ¯ä¸€è¡Œ
                         lines = File.ReadAllLines(selectedFilePath);
                     }
                     else
                     {
-                        // Åª¨ú¤å¦rÀÉªº¨C¤@¦æ
+                        // è®€å–æ–‡å­—æª”çš„æ¯ä¸€è¡Œ
                         lines = File.ReadAllLines(selectedFilePath, Encoding.GetEncoding("BIG5"));
-                        // ±N¨C¦æ¤º®e±q¹w³]½s½XÂà´«¬° UTF-8
+                        // å°‡æ¯è¡Œå…§å®¹å¾é è¨­ç·¨ç¢¼è½‰æ›ç‚º UTF-8
                         for (int i = 0; i < lines.Length; i++)
                         {
                             Encoding big5Encoding = Encoding.GetEncoding("BIG5");
@@ -1280,19 +1284,19 @@ namespace DLPCodeCreater
                     }
 
 
-                    // ­n·j´Mªº¦h­Ó¦r¦ê
+                    // è¦æœå°‹çš„å¤šå€‹å­—ä¸²
                     string[] searchStrings = new string[]
                     {
-                    " * °Ï¶ô                                              ",
-                    "   * ¶µ¥Ø                                            ",
-                    "     * ¦WºÙ                                          ",
-                    "     * ¶µ¥ØÃş«¬                                      ",
-                    "     - ¶µ¥ØÃş«¬                                      ",
-                    "     ^ ¶µ¥ØÃş«¬                                      ",
-                    "     * ¸ê®ÆÄæ¦WºÙ                                    ",
-                    "     * ´£¥Ü                                          ",
-                    "   - Ãö«Y                                            ",
-                    "     * ¼ĞÅÒ                                          ",
+                    " * å€å¡Š                                              ",
+                    "   * é …ç›®                                            ",
+                    "     * åç¨±                                          ",
+                    "     * é …ç›®é¡å‹                                      ",
+                    "     - é …ç›®é¡å‹                                      ",
+                    "     ^ é …ç›®é¡å‹                                      ",
+                    "     * è³‡æ–™æ¬„åç¨±                                    ",
+                    "     * æç¤º                                          ",
+                    "   - é—œä¿‚                                            ",
+                    "     * æ¨™ç±¤                                          ",
                     " * Blocks                                            ",
                     "   * Items                                           ",
                     "     * Name                                          ",
@@ -1303,27 +1307,27 @@ namespace DLPCodeCreater
                     "     * Prompt                                        ",
                     "   - Relations                                       ",
                     "     ^ Label                                         ",
-                    " * ­È²M³æ                                            ",   // Header
+                    " * å€¼æ¸…å–®                                            ",   // Header
                     " * Lists of Values                                   ",   // Header
-                    " - ¥\¯àªí                                            ",
+                    " - åŠŸèƒ½è¡¨                                            ",
                     " - Menus                                             ",
-                    "* ¨Ó·½¦WºÙ                                  LOV_ITEM",
-                    "   * °O¿ı¸s²Õ                                        ",
-                    "     * ­È²M³æ                                        LOV_",    //»P * ¸ê®ÆÄæ¦WºÙ ¦P¼h
-                    "     * List of Values                                LOV_",    //»P * Column Name  ¦P¼h
-                    "* ¦WºÙ                                            LOV_",       //»P * ­È²M³æ ¦r¦ê¤@­P
-                    "* Name                                            LOV_",       //»P * List of Values ¦r¦ê¤@­P
-                    "     * ¦WºÙ                                          ",        // LOV MAPPING
-                    "     * ¼ĞÃD                                          ",        // LOV MAPPING
-                    "     * ¦^ÂĞ¶µ¥Ø                                      ",        // LOV MAPPING
-                    "     * Åã¥Ü¼e«×                                      ",        // LOV MAPPING
+                    "* ä¾†æºåç¨±                                  LOV_ITEM",
+                    "   * è¨˜éŒ„ç¾¤çµ„                                        ",
+                    "     * å€¼æ¸…å–®                                        LOV_",    //èˆ‡ * è³‡æ–™æ¬„åç¨± åŒå±¤
+                    "     * List of Values                                LOV_",    //èˆ‡ * Column Name  åŒå±¤
+                    "* åç¨±                                            LOV_",       //èˆ‡ * å€¼æ¸…å–® å­—ä¸²ä¸€è‡´
+                    "* Name                                            LOV_",       //èˆ‡ * List of Values å­—ä¸²ä¸€è‡´
+                    "     * åç¨±                                          ",        // LOV MAPPING
+                    "     * æ¨™é¡Œ                                          ",        // LOV MAPPING
+                    "     * å›è¦†é …ç›®                                      ",        // LOV MAPPING
+                    "     * é¡¯ç¤ºå¯¬åº¦                                      ",        // LOV MAPPING
                     "     * Name                                          ",        // LOV MAPPING
                     "     * Title                                         ",        // LOV MAPPING
                     "     * Return Item                                   ",        // LOV MAPPING
                     "     * Display Width                                 ",        // LOV MAPPING
                     };
 
-                    // Àx¦s²Å¦X·j´M¦r¦êªº¯Á¤Ş©M¦r¦ê
+                    // å„²å­˜ç¬¦åˆæœå°‹å­—ä¸²çš„ç´¢å¼•å’Œå­—ä¸²
                     var searchResults = new List<SearchResult>();
 
                     for (int i = 0; i < lines.Length; i++)
@@ -1333,47 +1337,47 @@ namespace DLPCodeCreater
 
                         foreach (string searchString in searchStrings)
                         {
-                            // §PÂ_¬O§_¦³²Å¦X·j´M¦r¦êªº¤º®e
+                            // åˆ¤æ–·æ˜¯å¦æœ‰ç¬¦åˆæœå°‹å­—ä¸²çš„å…§å®¹
                             if (line.Contains(searchString))
                             {
-                                // «Ø¥ß SearchResult ª«¥ó¨Ã±N¯Á¤Ş©M¦r¦êÀx¦s°_¨Ó
+                                // å»ºç«‹ SearchResult ç‰©ä»¶ä¸¦å°‡ç´¢å¼•å’Œå­—ä¸²å„²å­˜èµ·ä¾†
                                 var result = new SearchResult(i, line);
                                 searchResults.Add(result);
-                                break; // §ä¨ì²Å¦Xªº¦r¦ê«á¸õ¥X°j°é¡AÄ~Äò³B²z¤U¤@¦æ
+                                break; // æ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²å¾Œè·³å‡ºè¿´åœˆï¼Œç¹¼çºŒè™•ç†ä¸‹ä¸€è¡Œ
                             }
                         }
                     }
 
                     //foreach (var result in searchResults)
-                    //    textBoxResults.AppendText($"000 §ä¨ì²Å¦Xªº¦r¦ê¡G¤º®e¡G[{result.Line}]¡A¯Á¤Ş¡G{result.Index}{Environment.NewLine}");
+                    //    textBoxResults.AppendText($"000 æ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²ï¼šå…§å®¹ï¼š[{result.Line}]ï¼Œç´¢å¼•ï¼š{result.Index}{Environment.NewLine}");
 
 
-                    // ­n·j´Mªº¦h­Ó¦r¦ê Header
+                    // è¦æœå°‹çš„å¤šå€‹å­—ä¸² Header
                     string[] headerStrings = new string[]
                     {
-                    " * °Ï¶ô                                              ",
-                    "   * ¶µ¥Ø                                            ",
-                    "   - Ãö«Y                                            ",
+                    " * å€å¡Š                                              ",
+                    "   * é …ç›®                                            ",
+                    "   - é—œä¿‚                                            ",
                     " * Blocks                                            ",
                     "   * Items                                           ",
                     "   - Relations                                       ",
-                    " * ­È²M³æ                                            ",
+                    " * å€¼æ¸…å–®                                            ",
                     " * Lists of Values                                   ",
-                    " - ¥\¯àªí                                            ",
+                    " - åŠŸèƒ½è¡¨                                            ",
                     " - Menus                                             ",
                     };
 
 
-                    // Àx¦s¤ÀÃş«áªºµ²ªG
+                    // å„²å­˜åˆ†é¡å¾Œçš„çµæœ
                     var categorizedResults = new List<SearchResult>();
 
-                    // ±N·j´Mµ²ªGÅã¥Ü¦b TextBox ±±¨î¶µ¤¤
+                    // å°‡æœå°‹çµæœé¡¯ç¤ºåœ¨ TextBox æ§åˆ¶é …ä¸­
                     //textBoxResults.Clear();
                     string header = null;
                     int counter = 0;
                     foreach (var result in searchResults)
                     {
-                        //textBoxResults.AppendText($"001 §ä¨ì²Å¦Xªº¦r¦ê¡G¤º®e¡G[{result.Line}]¡A¯Á¤Ş¡G{result.Index}{Environment.NewLine}");
+                        //textBoxResults.AppendText($"001 æ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²ï¼šå…§å®¹ï¼š[{result.Line}]ï¼Œç´¢å¼•ï¼š{result.Index}{Environment.NewLine}");
 
 
                         for (int i = 0; i < headerStrings.Length; i++)
@@ -1381,10 +1385,10 @@ namespace DLPCodeCreater
                             string line = headerStrings[i];
 
 
-                            // §PÂ_¬O§_¦³²Å¦X·j´M¦r¦êªº¤º®e
+                            // åˆ¤æ–·æ˜¯å¦æœ‰ç¬¦åˆæœå°‹å­—ä¸²çš„å…§å®¹
                             if (result.Line.Contains(line))
                             {
-                                // ¦pªG¬OÀY¤ÀÃş¡A«h³]©w¥Ø«eªº¤ÀÃş¬°¸ÓÀY¤ÀÃş
+                                // å¦‚æœæ˜¯é ­åˆ†é¡ï¼Œå‰‡è¨­å®šç›®å‰çš„åˆ†é¡ç‚ºè©²é ­åˆ†é¡
                                 header = result.Line;
                                 counter++;
                             }
@@ -1393,8 +1397,8 @@ namespace DLPCodeCreater
 
                         if (!string.IsNullOrEmpty(header) && header != result.Line)
                         {
-                            // ¦pªG¬O¤l¤ÀÃş¡A±N¸Ó¦æ¤å¦r¥[¤J¨ì¥Ø«eªº¤ÀÃş¤¤
-                            // «Ø¥ß SearchResult ª«¥ó¨Ã±N¯Á¤Ş©M¦r¦êÀx¦s°_¨Ó
+                            // å¦‚æœæ˜¯å­åˆ†é¡ï¼Œå°‡è©²è¡Œæ–‡å­—åŠ å…¥åˆ°ç›®å‰çš„åˆ†é¡ä¸­
+                            // å»ºç«‹ SearchResult ç‰©ä»¶ä¸¦å°‡ç´¢å¼•å’Œå­—ä¸²å„²å­˜èµ·ä¾†
                             categorizedResults.Add(new SearchResult(counter, header, result.Line, "", null));
                         }
                     }
@@ -1402,16 +1406,16 @@ namespace DLPCodeCreater
 
                     //textBoxResults.Clear();
                     //foreach (var obj in resultobj)
-                    //    textBoxResults.AppendText($"003 §ä¨ì²Å¦Xªº¦r¦ê¡GCounter¡G[{obj.index}]¡AÀY¡G[{obj.Header}]¡A¤l¡G[{obj.Sub}]{Environment.NewLine}");
+                    //    textBoxResults.AppendText($"003 æ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²ï¼šCounterï¼š[{obj.index}]ï¼Œé ­ï¼š[{obj.Header}]ï¼Œå­ï¼š[{obj.Sub}]{Environment.NewLine}");
 
 
-                    /* ¹LÂo±¼'«D¶µ¥Ø'ªº¤ÀÃş */
-                    // ¥D¼h
-                    this.mainFilteredList = categorizedResults.FindAll(e => e.Header == "   * ¶µ¥Ø                                            "
+                    /* éæ¿¾æ‰'éé …ç›®'çš„åˆ†é¡ */
+                    // ä¸»å±¤
+                    this.mainFilteredList = categorizedResults.FindAll(e => e.Header == "   * é …ç›®                                            "
                         || e.Header == "   * Items                                           ");
 
-                    // LOV¼h
-                    this.LOVFilteredList = categorizedResults.FindAll(e => e.Header == " * ­È²M³æ                                            "
+                    // LOVå±¤
+                    this.LOVFilteredList = categorizedResults.FindAll(e => e.Header == " * å€¼æ¸…å–®                                            "
                         || e.Header == " * Lists of Values                                   ");
 
 
@@ -1424,33 +1428,33 @@ namespace DLPCodeCreater
 
 
 
-                    // LOV¼h ¶ñ­È³B²z
+                    // LOVå±¤ å¡«å€¼è™•ç†
                     foreach (var obj in LOVFilteredList.Select((Value, Index) => new { Value, Index }))
                     {
-                        //textBoxResults.AppendText($"LOV§ä¨ì²Å¦Xªº¦r¦ê¡GCounter¡G[{obj.Value.index}]¡AÀY¡G[{obj.Value.Header}]¡A¤l¡G[{obj.Value.Sub}]{Environment.NewLine}");
+                        //textBoxResults.AppendText($"LOVæ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²ï¼šCounterï¼š[{obj.Value.index}]ï¼Œé ­ï¼š[{obj.Value.Header}]ï¼Œå­ï¼š[{obj.Value.Sub}]{Environment.NewLine}");
 
-                        if (obj.Value.Sub.Contains("     * ¦WºÙ                                          ")
+                        if (obj.Value.Sub.Contains("     * åç¨±                                          ")
                             || obj.Value.Sub.Contains("     * Name                                          "))
                             _LOV_itemEngName = getRealValue(obj.Value.Sub);
 
 
-                        if (obj.Value.Sub.Contains("* ¦^ÂĞ¶µ¥Ø") || obj.Value.Sub.Contains("* Return Item"))
+                        if (obj.Value.Sub.Contains("* å›è¦†é …ç›®") || obj.Value.Sub.Contains("* Return Item"))
                             _LOV_dbColumn = getRealValue(obj.Value.Sub);
 
 
-                        if (obj.Value.Sub.Contains("* ¼ĞÃD") || obj.Value.Sub.Contains("* Title"))
+                        if (obj.Value.Sub.Contains("* æ¨™é¡Œ") || obj.Value.Sub.Contains("* Title"))
                             _LOV_itemChtName = getRealValue(obj.Value.Sub);
 
 
-                        if (obj.Value.Sub.Contains("* ¦WºÙ                                            LOV_")
+                        if (obj.Value.Sub.Contains("* åç¨±                                            LOV_")
                             || obj.Value.Sub.Contains("* Name                                            LOV_"))
                             _LOV_key = getRealValue(obj.Value.Sub);
 
 
-                        if (obj.Value.Sub.Contains("* Åã¥Ü¼e«×")
+                        if (obj.Value.Sub.Contains("* é¡¯ç¤ºå¯¬åº¦")
                             || obj.Value.Sub.Contains("* Display Width"))
                         {
-                            //¥[¤J¨ìlist_LovObj
+                            //åŠ å…¥åˆ°list_LovObj
                             list_LovObj.Add(new innerObj()
                             {
                                 HeaderType = "",
@@ -1465,26 +1469,26 @@ namespace DLPCodeCreater
 
                     }
 
-                    //// LOVª«¥ó¦Cªí
+                    //// LOVç‰©ä»¶åˆ—è¡¨
                     //foreach (var obj in list_LovObj)
-                    //    textBoxResults.AppendText($"LOV¦r¦ê¡Gindex¡G[{obj.index}]¡AitemType¡G[{obj.itemType}]¡AdbColumn¡G[{obj.dbColumn}]¡AitemEngName¡G[{obj.itemEngName}]¡AitemChtName¡G[{obj.itemChtName}]{Environment.NewLine}");
+                    //    textBoxResults.AppendText($"LOVå­—ä¸²ï¼šindexï¼š[{obj.index}]ï¼ŒitemTypeï¼š[{obj.itemType}]ï¼ŒdbColumnï¼š[{obj.dbColumn}]ï¼ŒitemEngNameï¼š[{obj.itemEngName}]ï¼ŒitemChtNameï¼š[{obj.itemChtName}]{Environment.NewLine}");
 
 
-                    // ¥D¼h ¶ñ­È³B²z
+                    // ä¸»å±¤ å¡«å€¼è™•ç†
                     foreach (var obj in mainFilteredList.Select((Value, Index) => new { Value, Index }))
                     {
-                        textBoxResults.AppendText($"§ä¨ì²Å¦Xªº¦r¦ê¡GCounter¡G[{obj.Value.index}]¡AÀY¡G[{obj.Value.Header}]¡A¤l¡G[{obj.Value.Sub}]{Environment.NewLine}");
+                        textBoxResults.AppendText($"æ‰¾åˆ°ç¬¦åˆçš„å­—ä¸²ï¼šCounterï¼š[{obj.Value.index}]ï¼Œé ­ï¼š[{obj.Value.Header}]ï¼Œå­ï¼š[{obj.Value.Sub}]{Environment.NewLine}");
 
 
 
 
-                        if (obj.Value.Sub.Contains("* ¦WºÙ")
+                        if (obj.Value.Sub.Contains("* åç¨±")
                             || obj.Value.Sub.Contains("* Name"))
                         {
 
                             if (_temp_itemEngName != string.Empty)
                             {
-                                //¥[¤J'¥D­nª«¥ó'¨ì'¥D­nobjectlist'
+                                //åŠ å…¥'ä¸»è¦ç‰©ä»¶'åˆ°'ä¸»è¦objectlist'
                                 list_innerObj.Add(new innerObj()
                                 {
                                     HeaderType = "",
@@ -1502,14 +1506,14 @@ namespace DLPCodeCreater
                             _temp_itemEngName = getRealValue(obj.Value.Sub);
                         }
 
-                        if (obj.Value.Sub.Contains("* ¸ê®ÆÄæ¦WºÙ")
+                        if (obj.Value.Sub.Contains("* è³‡æ–™æ¬„åç¨±")
                             || obj.Value.Sub.Contains("* Column Name"))
                         {
                             _temp_dbColumn = getRealValue(obj.Value.Sub);
                         }
 
 
-                        if (obj.Value.Sub.Contains("* ¼ĞÅÒ") || obj.Value.Sub.Contains("* ´£¥Ü")
+                        if (obj.Value.Sub.Contains("* æ¨™ç±¤") || obj.Value.Sub.Contains("* æç¤º")
                             || obj.Value.Sub.Contains("* Prompt") || obj.Value.Sub.Contains("^ Label")
                             && string.Empty == _temp_itemChtName)
                         {
@@ -1517,11 +1521,11 @@ namespace DLPCodeCreater
                         }
 
 
-                        if (obj.Value.Sub.Contains("* ¶µ¥ØÃş«¬")
+                        if (obj.Value.Sub.Contains("* é …ç›®é¡å‹")
                             || obj.Value.Sub.Contains("* Item Type")
-                            || obj.Value.Sub.Contains("^ ¶µ¥ØÃş«¬")
+                            || obj.Value.Sub.Contains("^ é …ç›®é¡å‹")
                             || obj.Value.Sub.Contains("^ Item Type")
-                            || obj.Value.Sub.Contains("- ¶µ¥ØÃş«¬")
+                            || obj.Value.Sub.Contains("- é …ç›®é¡å‹")
                             || obj.Value.Sub.Contains("- Item Type"))
                         {
                             _temp_itemType = getRealValue(obj.Value.Sub);
@@ -1529,14 +1533,14 @@ namespace DLPCodeCreater
 
 
                         //20231003 add
-                        if (obj.Value.Sub.Contains("     * ­È²M³æ                                        LOV_")
+                        if (obj.Value.Sub.Contains("     * å€¼æ¸…å–®                                        LOV_")
                              || obj.Value.Sub.Contains("     * List of Values                                LOV_"))
                         {
                             _temp_itemType = getRealValue(obj.Value.Sub);
                         }
 
 
-                        //¤ÀÃş¯Á¤Ş¤Á´«¤§»Ú
+                        //åˆ†é¡ç´¢å¼•åˆ‡æ›ä¹‹éš›
                         if (obj.Value.index != temp_index)
                         {
                             for (int i = 0; i < 5; i++)
@@ -1548,7 +1552,7 @@ namespace DLPCodeCreater
                                     dbColumn = null,
                                     itemEngName = null,
                                     itemChtName = null,
-                                    itemType = "FormÁôÂÃ®æ¦¡"
+                                    itemType = "Forméš±è—æ ¼å¼"
                                 });
 
                             temp_index = obj.Value.index;
@@ -1557,10 +1561,10 @@ namespace DLPCodeCreater
 
 
 
-                        // ³Ì«á¤@µ§ÃB¥~³B²z
+                        // æœ€å¾Œä¸€ç­†é¡å¤–è™•ç†
                         if (mainFilteredList.Count == obj.Index + 1)
                         {
-                            //¥[¤J ¥D­nobjectlist
+                            //åŠ å…¥ ä¸»è¦objectlist
                             list_innerObj.Add(new innerObj()
                             {
                                 HeaderType = "",
@@ -1578,12 +1582,12 @@ namespace DLPCodeCreater
                     }
 
 
-                    //¦h¬ö¿ıindex
+                    //å¤šç´€éŒ„index
                     foreach (var obj in list_innerObj.Select((Value, Index) => new { Value, Index }))
                         obj.Value.innerIndex = obj.Index;
 
 
-                    //Åã¥Ü¦b¥t¤@­Ódatagrid¬d¬İ(ÁôÂÃ)
+                    //é¡¯ç¤ºåœ¨å¦ä¸€å€‹datagridæŸ¥çœ‹(éš±è—)
                     if (list_innerObj.Count > 0)
                         dGV_innerObj.DataSource = list_innerObj;
                     //textBoxResults.AppendText($"{JsonConvert.SerializeObject(list_innerObj)}");
@@ -1593,13 +1597,15 @@ namespace DLPCodeCreater
                     this.dGdVwHeaders.Rows.Clear();
 
 
-                    List<IGrouping<int, innerObj>> headerlist = list_innerObj.GroupBy(x => x.index).ToList();//¨úheader¨Ï¥Î
+                    List<IGrouping<int, innerObj>> headerlist = list_innerObj.GroupBy(x => x.index).ToList();//å–headerä½¿ç”¨
 
                     headerlist.ForEach(group =>
                     {
                         //textBoxResults.AppendText($"Score:{group.Key}, Count:{group.Count()}{Environment.NewLine}");
-                        this.dGdVwHeaders.Rows.Add(group.Key, "Grid/Form");
-                        //group.ToList().ForEach(item => textBoxResults.AppendText($"\tindex:{item.index}"));//, Score:{item.Score}  ¤À²Õ«á¤º®e¨ú±o
+                        //this.dGdVwHeaders.Rows.Add(group.Key, "Grid/Form");   //æ”¹ç”¨comboboxï¼Œå–æ¶ˆåŸå…ˆé è¨­å€¼
+                        this.dGdVwHeaders.Rows.Add(group.Key, "");  //æ”¹ç”¨comboboxï¼Œé è¨­å€¼ç‚ºç©º
+
+                        //group.ToList().ForEach(item => textBoxResults.AppendText($"\tindex:{item.index}"));//, Score:{item.Score}  åˆ†çµ„å¾Œå…§å®¹å–å¾—
                     });
 
 
@@ -1639,7 +1645,7 @@ namespace DLPCodeCreater
         }
 
         /// <summary>
-        /// ¸ü¤J²Ó¸`³¡¤À
+        /// è¼‰å…¥ç´°ç¯€éƒ¨åˆ†
         /// </summary>
         /// <param name="datarow"></param>
         public void Fun_Reload_SubDataGridView(DataGridViewRow datarow)
@@ -1648,12 +1654,12 @@ namespace DLPCodeCreater
 
 
             lstVwSubItems.Clear();
-            this.count = 0; //¥ş°ì
+            this.count = 0; //å…¨åŸŸ
             var templist = this.list_innerObj.Where(x => x.index == Convert.ToInt32(datarow.Cells[0].Value)
                 ).ToList();
 
-            lstVwSubItems.Columns.Add("¿ï¨ú¶¶§Ç", 40, HorizontalAlignment.Left);
-            lstVwSubItems.Columns.Add("¶¶§Ç", 40, HorizontalAlignment.Left);
+            lstVwSubItems.Columns.Add("é¸å–é †åº", 40, HorizontalAlignment.Left);
+            lstVwSubItems.Columns.Add("é †åº", 40, HorizontalAlignment.Left);
 
             lstVwSubItems.Columns.Add("itemChtName", 120, HorizontalAlignment.Left);
             lstVwSubItems.Columns.Add("dbColumn", 120, HorizontalAlignment.Left);
@@ -1680,11 +1686,11 @@ namespace DLPCodeCreater
         }
 
         /// <summary>
-        /// Âà´«¦¨ LOV Detail¦r¦ê
+        /// è½‰æ›æˆ LOV Detailå­—ä¸²
         /// </summary>
-        /// <param name="indexString">Â^¨ú¦r¦ê</param>
-        /// <param name="index">0:colDefs³¡¤À 1:keyMapping³¡¤À</param>
-        /// <returns>LOV Detail¦r¦ê</returns>
+        /// <param name="indexString">æ“·å–å­—ä¸²</param>
+        /// <param name="index">0:colDefséƒ¨åˆ† 1:keyMappingéƒ¨åˆ†</param>
+        /// <returns>LOV Detailå­—ä¸²</returns>
         public string Fun_Lov_Detail_String(string indexString, int index)
         {
             var itemObj = this.list_LovObj.Where(x => x.itemType == indexString).ToList();
@@ -1710,24 +1716,24 @@ namespace DLPCodeCreater
 
         private void Item1_Click(object sender, EventArgs e)
         {
-            // ³]©w·sªº­È
+            // è¨­å®šæ–°çš„å€¼
             dGdVwHeaders.Rows[tempRowIndex].Cells[tempColumnIndex].Value = "";
 
         }
-        //¥kÁä¨Æ¥ó
+        //å³éµäº‹ä»¶
         private void Item2_Click(object sender, EventArgs e)
         {
-            // ³]©w·sªº­È
+            // è¨­å®šæ–°çš„å€¼
             dGdVwHeaders.Rows[tempRowIndex].Cells[tempColumnIndex].Value = "Form";
         }
-        //¥kÁä¨Æ¥ó
+        //å³éµäº‹ä»¶
         private void Item3_Click(object sender, EventArgs e)
         {
-            // ³]©w·sªº­È
+            // è¨­å®šæ–°çš„å€¼
             dGdVwHeaders.Rows[tempRowIndex].Cells[tempColumnIndex].Value = "Grid";
         }
 
-        //¨ú±o¥kÁäcell¸ê°T
+        //å–å¾—å³éµcellè³‡è¨Š
         private void dGdVwHeaders_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             tempColumnIndex = e.ColumnIndex;
@@ -1744,7 +1750,7 @@ namespace DLPCodeCreater
 
         }
 
-        //ÂIÀ»DataGridView(GRID/FORM)
+        //é»æ“ŠDataGridView(GRID/FORM)
         private void dGdVwHeaders_SelectionChanged(object sender, EventArgs e)
         {
             var rowsCount = dGdVwHeaders.SelectedRows.Count;
@@ -1755,28 +1761,28 @@ namespace DLPCodeCreater
 
         }
 
-        //¿ï²Ó¶µ¶¶§Ç  ­«·s¸ü¤J¤]·|Ä²µo
+        //é¸ç´°é …é †åº  é‡æ–°è¼‰å…¥ä¹Ÿæœƒè§¸ç™¼
         private void lstVwSubItems_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            // ¤Ï¦V
+            // åå‘
             if (e.CurrentValue == CheckState.Unchecked)
             {
                 count++;
                 if (this.lstVwSubItems.Items[e.Index].SubItems[1].Text is "")
-                    this.lstVwSubItems.Items[e.Index].SubItems[1].Text = count.ToString();          // [1]:¶¶§Ç
+                    this.lstVwSubItems.Items[e.Index].SubItems[1].Text = count.ToString();          // [1]:é †åº
                 ListViewItem.ListViewSubItem aaa = this.lstVwSubItems.Items[e.Index].SubItems[2];   // [2]:itemChtName
 
 
                 int innerindex = Convert.ToInt16(this.lstVwSubItems.Items[e.Index].SubItems[6].Text);   // [6]:index
                 if (this.list_innerObj[innerindex].SubSeq is null)
-                    this.list_innerObj[innerindex].SubSeq = count;  // «ü©w¶¶§Çµ¹¥D­nobjectlist
+                    this.list_innerObj[innerindex].SubSeq = count;  // æŒ‡å®šé †åºçµ¦ä¸»è¦objectlist
                 this.list_innerObj[innerindex].Checked = true;
 
-                //¨ú±o¥D­nobjectlist¤¤²Å¦XÂIÀ»·í¦æ±o¸ê®Æ
+                //å–å¾—ä¸»è¦objectlistä¸­ç¬¦åˆé»æ“Šç•¶è¡Œå¾—è³‡æ–™
                 var testlist2 = this.list_innerObj.Where(x => x.innerIndex == innerindex).ToList();
                 textBoxResults.AppendText($"{JsonConvert.SerializeObject(testlist2)},{Environment.NewLine}");
 
-                ////¨ú±o¹ïÀ³ªºLOV OBJ
+                ////å–å¾—å°æ‡‰çš„LOV OBJ
                 //var testlist3 = this.list_LovObj.Where(x => x.itemType == lstVwSubItems.Items[e.Index].SubItems[5].Text).ToList();  // [5]:itemType
                 //textBoxResults.AppendText($"{JsonConvert.SerializeObject(testlist3)},{Environment.NewLine}");
 
@@ -1786,7 +1792,7 @@ namespace DLPCodeCreater
                 count--;
                 this.lstVwSubItems.Items[e.Index].SubItems[1].Text = "";
                 int innerindex = Convert.ToInt16(this.lstVwSubItems.Items[e.Index].SubItems[6].Text);
-                this.list_innerObj[innerindex].SubSeq = null;  // «ü©w¶¶§Çµ¹¥D­nobjectlist
+                this.list_innerObj[innerindex].SubSeq = null;  // æŒ‡å®šé †åºçµ¦ä¸»è¦objectlist
                 this.list_innerObj[innerindex].Checked = false;
             }
 
@@ -1816,58 +1822,64 @@ namespace DLPCodeCreater
             txt.Close();
         }
 
-        // ²MªÅ°T®§®Ø
+        // æ¸…ç©ºè¨Šæ¯æ¡†
         private void btn_clearMessege_Click(object sender, EventArgs e)
         {
             textBoxResults.Clear();
         }
 
-        // °õ¦æ
+        // åŸ·è¡Œ
         private void btn_run_Click(object sender, EventArgs e)
         {
             textBoxResults.Clear();
             List<string> allResultStr = new List<string>();
             foreach (DataGridViewRow row in this.dGdVwHeaders.Rows)
             {
-                // ÀË¬d¦æªºÃş«¬¡A¥H±Æ°£ Header ©M¨ä¥L«D¸ê®Æ¦æ
+                // æª¢æŸ¥è¡Œçš„é¡å‹ï¼Œä»¥æ’é™¤ Header å’Œå…¶ä»–éè³‡æ–™è¡Œ
                 if (row.IsNewRow) continue;
 
-                // ³v¦C¨ú±o¨C­ÓÀx¦s®æªº¤º®e­È
+                // é€åˆ—å–å¾—æ¯å€‹å„²å­˜æ ¼çš„å…§å®¹å€¼
                 int _dataindex = Convert.ToInt16(row.Cells[0].Value);
                 string _dataType = row.Cells[1].Value?.ToString();
 
-                // ¨Ï¥Î¨ú±oªº­È¶i¦æ«áÄò³B²z
+                // ä½¿ç”¨å–å¾—çš„å€¼é€²è¡Œå¾ŒçºŒè™•ç†
                 //textBoxResults.AppendText($"Row: " + _dataindex + " | " + _dataType + ","+ Environment.NewLine);
 
                 //-----------------------------------------------------------------------------
 
-                // ¨Ï¥Î Where ¤èªk¿z¿ï¦PÃşªº¸ê®Æ
-                // ¨Ï¥Î OrderBy ¤èªk¨Ì¾Ú«ü©wªº¤¸¯ÀÄæ¦ì¶i¦æ­«·s±Æ§Ç
+                // ä½¿ç”¨ Where æ–¹æ³•ç¯©é¸åŒé¡çš„è³‡æ–™
+                // ä½¿ç”¨ OrderBy æ–¹æ³•ä¾æ“šæŒ‡å®šçš„å…ƒç´ æ¬„ä½é€²è¡Œé‡æ–°æ’åº
                 List<innerObj> current_list = this.list_innerObj.Where(x => x.index == _dataindex).OrderBy(obj => obj.SubSeq).ToList().FindAll(e => e.SubSeq != null);
 
-                /*¼ĞÃD³¡¤À  µLÅÜ¼Æ¤£»İ­×§ï*/
-                string _templateModel_grid_header_start = "<<<< Grid >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n      {\r\n        headerName: '¶µ¥Ø',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: 'ITEM',\r\n      },\r\n";
+                /*æ¨™é¡Œéƒ¨åˆ†  ç„¡è®Šæ•¸ä¸éœ€ä¿®æ”¹*/
+                string _templateModel_grid_header_start = "<<<< Grid >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n      {\r\n        headerName: 'é …ç›®',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: 'ITEM',\r\n      },\r\n";
                 string _templateModel_grid_header_end = "    ];\r\n\r\n//------------------------------------------------\r\n\r\n\r\n\r\n";
                 string _templateModel_form_header_start = "<<<< Form >>>>\r\n//------------------------------------------------\r\n\r\n    const controls: FormBase<any>[] = [\r\n";
                 string _templateModel_form_header_end = "    ];\r\n\r\n//------------------------------------------------\r\n\r\n\r\n\r\n";
 
-                /*GRID³¡¤À*/
-                string _templateModel_grid_normal = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'text',\r\n        editable: false,\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
-                string _templateModel_grid_confirm = "      {{\r\n        headerName: '{0}', //¤Ä¿ï\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        editable: false,\r\n        filter: false,\r\n        sortable: false,\r\n        cellRenderer: 'confirmRenderer',\r\n        width: 50,\r\n        suppressSizeToFit: true,\r\n        cellRendererParams: (params) => {{\r\n          // if (params.data?.ITEM === 0) return {{ disabled: true }};\r\n\r\n          return {{\r\n            checkValueType: EAgGridCheckValueType.booleanType,\r\n            // afterCheckedFunc: (value: boolean) => {{\r\n            //   if (value) {{\r\n            //     //§PÂ_³q¹L¡A¤Ä¿ï\r\n            //     params.data.{1} = true;\r\n            //   }} else {{\r\n            //     //¨ú®ø¤Ä¿ï\r\n            //     params.data.{1} = false;\r\n            //   }}\r\n            //   params.node.setData(params.data);\r\n            // }},\r\n          }};\r\n        }},\r\n      }},\r\n";
+                /*GRIDéƒ¨åˆ†*/
+                string _templateModel_grid_view_normal = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'text',\r\n        editable: false,\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
+                string _templateModel_grid_view_number = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'number',\r\n        valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //å« åƒä»½ä½ï¼‹é¡¯ç¤ºå°æ•¸é»å¾Œå¹¾ä½\r\n        cellStyle: this._pubFunction.rightTextAlign,\r\n        floatingFilterComponent: 'numberFilterRenderer',\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
+                string _templateModel_grid_view_date = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'date',\r\n        editable: false,\r\n        width: 120,\r\n        suppressSizeToFit: true,\r\n        valueFormatter: this._pubFunction.formatDate,\r\n        // valueFormatter: (params) => {{\r\n        //   return this._pubFunction.formatDate({{ value: params.data?.{1} }}, 'yyyy/MM/dd');\r\n        // }},\r\n      }},\r\n";
+                string _templateModel_grid_confirm = "      {{\r\n        headerName: '{0}', //å‹¾é¸\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        editable: false,\r\n        filter: false,\r\n        sortable: false,\r\n        cellRenderer: 'confirmRenderer',\r\n        width: 50,\r\n        suppressSizeToFit: true,\r\n        cellRendererParams: (params) => {{\r\n          // if (params.data?.ITEM === 0) return {{ disabled: true }};\r\n\r\n          return {{\r\n            checkValueType: EAgGridCheckValueType.booleanType,\r\n            // afterCheckedFunc: (value: boolean) => {{\r\n            //   if (value) {{\r\n            //     //åˆ¤æ–·é€šéï¼Œå‹¾é¸\r\n            //     params.data.{1} = true;\r\n            //   }} else {{\r\n            //     //å–æ¶ˆå‹¾é¸\r\n            //     params.data.{1} = false;\r\n            //   }}\r\n            //   params.node.setData(params.data);\r\n            // }},\r\n          }};\r\n        }},\r\n      }},\r\n";
+                string _templateModel_grid_check = "      {{\r\n        headerName: '{0}', \r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: ['wrappingHeader'],\r\n        editable: false,\r\n        filter: false,\r\n        sortable: false,\r\n        cellRenderer: 'checkRenderer',\r\n        width: 50,\r\n        suppressSizeToFit: true,\r\n        valueGetter: (params) => {{\r\n          return params.data?.{1} === 'Y';\r\n        }},\r\n        valueSetter: (params) => {{\r\n          params.data.{1} = params.newValue ? 'Y' : null;\r\n          return true;\r\n        }},\r\n        cellRendererParams: (params) => {{\r\n          // if (params.data?.ITEM === 0) return {{ disabled: true }};\r\n          return {{\r\n            checkValueType: EAgGridCheckValueType.stringType,\r\n            onCheckedFunc: (value: string) => {{\r\n              // if (value == 'Y')\r\n              //   params.data.{1} = 'Y';  //å‹¾é¸\r\n              // else\r\n              //   params.data.{1} = 'N';  //å–æ¶ˆå‹¾é¸\r\n              // params.node.setData(params.data);\r\n            }},\r\n          }};\r\n        }},\r\n      }},\r\n";
+                //string _templateModel_grid_select = "      {{\r\n        headerName: '{1}',\r\n        field: '{0}',\r\n        type: 'text',\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n        valueFormatter: (params) => {{\r\n          return {{\r\n            // PASS: 'PASS',\r\n            // FAIL: 'FAIL',\r\n          }}[params.data.{0}];\r\n        }},\r\n        cellEditor: 'selectEditor',\r\n        cellEditorParams: {{\r\n          control: {{\r\n            multiple: false,\r\n            field: ['{0}'],\r\n            options: of([\r\n              // {{ key: 'PASS', value: 'PASS' }},\r\n              // {{ key: 'FAIL', value: 'FAIL' }},\r\n            ]),\r\n          }},\r\n        }},\r\n        floatingFilterComponent: 'selectFilterRenderer',\r\n        floatingFilterComponentParams: {{\r\n          options: of([\r\n            // {{ key: 'PASS', value: 'PASS' }},\r\n            // {{ key: 'FAIL', value: 'FAIL' }},\r\n          ]),\r\n        }},\r\n      }},\r\n";
+                string _templateModel_grid_select = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'text',\r\n        editable: true, //(params) => {{return params.data?.ITEM === 0;}},// å¯æ–°å¢ä¸å¯ä¿®æ”¹\r\n        sortable: true,\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n        valueFormatter: (params) => {{\r\n          const displayValue = params.node?.data?.{1} ?? '';\r\n          return {{ \r\n            // '1': 'Cosmos/KM3ä»£å·¥', '3': 'çµ„åº•åŠ å·¥' \r\n          }}[displayValue] ?? '';\r\n        }},\r\n        // valueSetter: (params) => {{\r\n        //   const optKey = params.newValue?.[0];\r\n        //   params.data.{1} = optKey;\r\n        //   return true;\r\n        // }},\r\n        cellEditor: 'selectRenderer',\r\n        cellEditorParams: {{\r\n          control: {{\r\n            multiple: false,\r\n            field: ['{1}'],\r\n            options: of([\r\n              // {{ key: '1', value: 'Cosmos/KM3ä»£å·¥' }},\r\n              // {{ key: '3', value: 'çµ„åº•åŠ å·¥' }},\r\n            ]),\r\n          }},\r\n        }},\r\n        floatingFilterComponent: 'selectFilterRenderer',\r\n        floatingFilterComponentParams: {{\r\n          options: of([\r\n            // {{ key: '1', value: 'Cosmos/KM3ä»£å·¥' }},\r\n            // {{ key: '3', value: 'çµ„åº•åŠ å·¥' }},\r\n          ]),\r\n        }},\r\n      }},\r\n";
 
-                /*FORM³¡¤À*/
+                /*FORMéƒ¨åˆ†*/
                 string _templateModel_form_normal = "      new FormTextBox({{\r\n        key: '{1}',\r\n        label: '{0}',\r\n        // labelWidth: 5,\r\n        flex: '20',\r\n        order: 1,\r\n        class: 'pr-1',\r\n        // readonly: true,\r\n      }}),\r\n";  // textAlign: 'right',\r\n
                 string _templateModel_form_btn = "      new FormButtonAuthority({{\r\n        showButtons: [\r\n          <IButtons>{{\r\n            key: 'confirm',\r\n            color: 'primary',\r\n            text: '{0}',\r\n            icon: 'done_all',\r\n            visible: true,\r\n            //visibledAsync: this.State.FormRefs.visibleAsync$,\r\n            clickFunction: () => {{\r\n              //this.Service.pushSave();\r\n            }},\r\n          }},\r\n        ],\r\n        flex: '20',\r\n        order: 1,\r\n        class: 'pr-1',\r\n      }}),\r\n";
+                string _templateModel_form_radio_btn = "      new FormRadioButton({{\r\n        key: '{0}',\r\n        label: '',\r\n        options: of([\r\n          // {{ key: 'A', value: 'ä¸­æ–‡é¡¯ç¤ºA' }},\r\n          // {{ key: 'B', value: 'ä¸­æ–‡é¡¯ç¤ºB' }},\r\n          // {{ key: 'C', value: 'ä¸­æ–‡é¡¯ç¤ºC' }},\r\n        ]),\r\n        flex: '45',\r\n        // value: 'A',\r\n        inputChangeFunc: (params) => {{\r\n          // this._Service.query();\r\n        }},\r\n      }}),\r\n";
                 string _templateModel_form_hidden = "      new FormHidden({\r\n        key: '',\r\n        label: '',\r\n        order: 1,\r\n        flex: '20',\r\n      }),\r\n";
+                string _templateModel_form_drop_down_list = "      new FormDropDownList({{\r\n        key: '{0}',\r\n        label: '{1}',\r\n        labelWidth: 10,\r\n        flex: 25,\r\n        class: 'pr-1',\r\n        options: of([\r\n          // {{ key: 'A', value: 'é¡¯ç¤ºæ–‡å­—A' }},\r\n          // {{ key: 'B', value: 'é¡¯ç¤ºæ–‡å­—B' }},\r\n          // {{ key: 'C', value: 'é¡¯ç¤ºæ–‡å­—C' }},\r\n        ]),\r\n        inputChangeFunc: (value, form) => {{\r\n          //this._Service.update();\r\n        }},\r\n      }}),\r\n";
                 string _templateModel_form_hidden2 = "      new FormHidden({}),\r\n";
 
 
-                /*LOV³¡¤À*/
-                string _templateModel_grid_Lovl = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        suppressSizeToFit: true,\r\n        editable: true, //(params) => {{ return params.data.ITEM === 0; // ¥i·s¼W¤£¥i­×§ï }},\r\n        sortable: true,\r\n        width: 120,\r\n        type: 'text',\r\n        cellEditor: 'lovEditor',\r\n        cellEditorParams: (params) => {{\r\n          return <ILovEditorParams>{{\r\n            apiParams: {{\r\n              // sp«eºó\r\n              moduleNo: '¼Ò²Õ¦WºÙ',\r\n              programNo: '{2}',\r\n              commonApiType: ECommonApiType.CallStoreProcedureDataSet,\r\n            }},\r\n            queryAction: 'sp¦WºÙ', // sp¦WºÙ\r\n            //payload: {{}}, // input\r\n            refCursorKeys: ['vªí¦WºÙInfo', 'vªí¦WºÙCount'], // output\r\n            colDefs: [\r\n{3}            ],\r\n            keyMapping: {{              {4}\r\n            }},\r\n            checkInput: true,\r\n            onPostChange: (params) => {{\r\n              if (params.isValidInput) //this._Service.ServiceFun(params.value);\r\n            }},\r\n          }};\r\n        }},\r\n      }},\r\n";
-                string _templateModel_form_Lovl = "      new FormLov({{\r\n        key: '{0}',\r\n        label: '{1}',\r\n        //labelWidth: '10',\r\n        apiParams: {{\r\n          moduleNo: '¼Ò²Õ¦WºÙ',\r\n          programNo: '{2}',\r\n          commonApiType: ECommonApiType.CallStoreProcedureDataSet,\r\n        }},\r\n        queryAction: 'SP¦WºÙ', // sp¦WºÙ\r\n        refCursorKeys: ['vªí¦WºÙInfo', 'vªí¦WºÙCount'],\r\n        colDefs: [\r\n{3}        ],\r\n        keyMapping: {{{4}\r\n        }},\r\n        checkInput: true,\r\n        flex: '25',\r\n        class: 'pr-1',\r\n      }}),\r\n";
+                /*LOVéƒ¨åˆ†*/
+                string _templateModel_grid_Lovl = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        suppressSizeToFit: true,\r\n        editable: true, //(params) => {{ return params.data.ITEM === 0; // å¯æ–°å¢ä¸å¯ä¿®æ”¹ }},\r\n        sortable: true,\r\n        width: 120,\r\n        type: 'text',\r\n        cellEditor: 'lovEditor',\r\n        cellEditorParams: (params) => {{\r\n          return <ILovEditorParams>{{\r\n            apiParams: {{\r\n              // spå‰ç¶´\r\n              moduleNo: æ¨¡çµ„åç¨±,\r\n              programNo: '{2}',\r\n              commonApiType: ECommonApiType.CallStoreProcedureDataSet,\r\n            }},\r\n            queryAction: spåç¨±, // spåç¨±\r\n            //payload: {{}}, // input\r\n            refCursorKeys: [vè¡¨åç¨±Info, vè¡¨åç¨±Count], // output\r\n            colDefs: [\r\n{3}            ],\r\n            keyMapping: {{              {4}\r\n            }},\r\n            checkInput: true,\r\n            onPostChange: (params) => {{\r\n              if (params.isValidInput) //this._Service.ServiceFun(params.value);\r\n            }},\r\n          }};\r\n        }},\r\n      }},\r\n";
+                string _templateModel_form_Lovl = "      new FormLov({{\r\n        key: '{0}',\r\n        label: '{1}',\r\n        //labelWidth: '10',\r\n        apiParams: {{\r\n          moduleNo: æ¨¡çµ„åç¨±,\r\n          programNo: '{2}',\r\n          commonApiType: ECommonApiType.CallStoreProcedureDataSet,\r\n        }},\r\n        queryAction: SPåç¨±, // spåç¨±\r\n        refCursorKeys: [vè¡¨åç¨±Info, vè¡¨åç¨±Count],\r\n        colDefs: [\r\n{3}        ],\r\n        keyMapping: {{{4}\r\n        }},\r\n        checkInput: true,\r\n        flex: '25',\r\n        class: 'pr-1',\r\n      }}),\r\n";
 
-                /*¨ä¥L*/
-                string _templateModel_grid_select = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'text',\r\n        editable: true, //(params) => {{return params.data?.ITEM === 0;}},// ¥i·s¼W¤£¥i­×§ï\r\n        sortable: true,\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n        valueFormatter: (params) => {{\r\n          const displayValue = params.node?.data?.{1} ?? '';\r\n          return {{ \r\n            // '1': 'Cosmos/KM3¥N¤u', '3': '²Õ©³¥[¤u' \r\n          }}[displayValue] ?? '';\r\n        }},\r\n        // valueSetter: (params) => {{\r\n        //   const optKey = params.newValue?.[0];\r\n        //   params.data.{1} = optKey;\r\n        //   return true;\r\n        // }},\r\n        cellEditor: 'selectRenderer',\r\n        cellEditorParams: {{\r\n          control: {{\r\n            multiple: false,\r\n            field: ['{1}'],\r\n            options: of([\r\n              // {{ key: '1', value: 'Cosmos/KM3¥N¤u' }},\r\n              // {{ key: '3', value: '²Õ©³¥[¤u' }},\r\n            ]),\r\n          }},\r\n        }},\r\n        floatingFilterComponent: 'selectFilterRenderer',\r\n        floatingFilterComponentParams: {{\r\n          options: of([\r\n            // {{ key: '1', value: 'Cosmos/KM3¥N¤u' }},\r\n            // {{ key: '3', value: '²Õ©³¥[¤u' }},\r\n          ]),\r\n        }},\r\n      }},\r\n";
+                /*å…¶ä»–*/
                 string resultStr = string.Empty;
                 List<string> list_resultStr = new List<string>();
 
@@ -1879,7 +1891,7 @@ namespace DLPCodeCreater
                     resultStr += _templateModel_form_header_start;
                 else if (_dataType == null || _dataType == "") { }
                 else
-                    MessageBox.Show("Grid/Form Äæ¦ì¶ñ¼g¦³»~");
+                    MessageBox.Show("Grid/Form æ¬„ä½å¡«å¯«æœ‰èª¤");
 
                 foreach (innerObj obj in current_list)
                 {
@@ -1893,34 +1905,43 @@ namespace DLPCodeCreater
                     //textBoxResults.AppendText(String.Format(_templateModel2, obj.itemChtName, obj.dbColumn));
                     if (_dataType == "Grid")
                     {
-                        if (obj.itemType == "¤å¦r¶µ¥Ø" || obj.itemType == "Åã¥Ü¶µ¥Ø"
-                            || obj.itemType == "Text Item" || obj.itemType == "Dispaly Item")
-                            if (obj.itemChtName == null || obj.itemChtName == string.Empty)
-                            {
-                                string _templateModel_grid_noChtName = _templateModel_grid_normal.Replace("headerValueGetter: this._agService.headerValueGetter,", "//headerValueGetter: this._agService.headerValueGetter,");
-                                list_resultStr.Add(String.Format(_templateModel_grid_noChtName, obj.itemChtName, obj.dbColumn));
-                            }
-                            else
-                                list_resultStr.Add(String.Format(_templateModel_grid_normal, obj.itemChtName, obj.dbColumn));
-                        else if (obj.itemType == "®Ö¨ú¤è¶ô" || obj.itemType == "Check Box")
+                        string _templateModel = "";
+                        if (obj.itemType == "æ–‡å­—é …ç›®" || obj.itemType == "é¡¯ç¤ºé …ç›®"
+                            || obj.itemType == "Text Item" || obj.itemType == "Display Item")
+                        {
+                            _templateModel = Fun_Replace_GridView_String("View", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
+                            list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
+                        }
+                        else if (obj.itemType == "æ§åˆ¶é …ç›®")
+                        {
+                            _templateModel = Fun_Replace_GridView_String("noView", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
+                            list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
+                        }
+                        else if (obj.itemType == "æ ¸å–æ–¹å¡Š" || obj.itemType == "Check Box")
                             list_resultStr.Add(String.Format(_templateModel_grid_confirm, obj.itemChtName, obj.dbColumn));
+                        else if (obj.itemType == "å€¼é¸æ“‡æ¡†")
+                            list_resultStr.Add(String.Format(_templateModel_grid_check, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType.Contains("LOV_"))
                             list_resultStr.Add(String.Format(_templateModel_grid_Lovl, obj.itemChtName, obj.dbColumn, Path.GetFileNameWithoutExtension(filePath), Fun_Lov_Detail_String(obj.itemType, 0), Fun_Lov_Detail_String(obj.itemType, 1)));
-                        else if (obj.itemType == "²M³æ¶µ¥Ø" || obj.itemType == "List Item")
+                        else if (obj.itemType == "æ¸…å–®é …ç›®" || obj.itemType == "List Item")
                             list_resultStr.Add(String.Format(_templateModel_grid_select, obj.itemChtName, obj.dbColumn));
                         else
-                            list_resultStr.Add(String.Format(_templateModel_grid_normal, obj.itemChtName, obj.dbColumn));
+                            list_resultStr.Add(String.Format(_templateModel_grid_view_normal, obj.itemChtName, obj.dbColumn));
                     }
                     else if (_dataType == "Form")
                     {
-                        if (obj.itemType == "¤å¦r¶µ¥Ø" || obj.itemType == "Åã¥Ü¶µ¥Ø"
-                            || obj.itemType == "Text Item" || obj.itemType == "Dispaly Item")
+                        if (obj.itemType == "æ–‡å­—é …ç›®" || obj.itemType == "é¡¯ç¤ºé …ç›®"
+                            || obj.itemType == "Text Item" || obj.itemType == "Display Item")
                             list_resultStr.Add(String.Format(_templateModel_form_normal, obj.itemChtName, obj.dbColumn));
-                        else if (obj.itemType == "«ö¶s" || obj.itemType == "Push Button")
+                        else if (obj.itemType == "æŒ‰éˆ•" || obj.itemType == "Push Button")
                             list_resultStr.Add(String.Format(_templateModel_form_btn, obj.itemChtName));
                         else if (obj.itemType.Contains("LOV_"))
                             list_resultStr.Add(String.Format(_templateModel_form_Lovl, obj.itemChtName, obj.dbColumn, Path.GetFileNameWithoutExtension(filePath), Fun_Lov_Detail_String(obj.itemType, 0), Fun_Lov_Detail_String(obj.itemType, 1)));
-                        else if (obj.itemType == "FormÁôÂÃ®æ¦¡")
+                        else if (obj.itemType == "åœ“éˆ•ç¾¤çµ„" || obj.itemType == "Radio Group") //
+                            list_resultStr.Add(String.Format(_templateModel_form_radio_btn, obj.itemEngName));
+                        else if (obj.itemType == "æ¸…å–®é …ç›®" || obj.itemType == "List Item") //
+                            list_resultStr.Add(String.Format(_templateModel_form_drop_down_list, obj.itemEngName, obj.itemChtName));
+                        else if (obj.itemType == "Forméš±è—æ ¼å¼")
                             list_resultStr.Add(_templateModel_form_hidden);
                         else
                             list_resultStr.Add(String.Format(_templateModel_form_normal, obj.itemChtName, obj.dbColumn));
@@ -1945,9 +1966,111 @@ namespace DLPCodeCreater
             }
 
             FileWrite(allResultStr, false, "");
-            //¶}±Òtemp.txt
+            //é–‹å•Ÿtemp.txt
             System.Diagnostics.Process.Start("explorer.exe", "temp.txt");
 
+        }
+
+
+        /// <summary>
+        /// GridViewè…³æœ¬æ›¿æ›ç´°ç¯€éƒ¨åˆ†
+        /// </summary>
+        /// <param name="datarow"></param>
+        public string Fun_Replace_GridView_String(string _type_flag, innerObj obj, string _view_number, string _view_date, string _view_normal)
+        {
+            string _templateModel = "";
+
+            obj.itemEngName = obj.itemEngName is not null ? obj.itemEngName : "";
+
+            if (obj.itemEngName.ToLower().Contains("qty") || obj.itemEngName.ToLower().Contains("price")
+                || obj.itemEngName.ToLower().Contains("gw") || obj.itemEngName.ToLower().Contains("gw"))
+            {
+                if (_type_flag == "View")
+                    _templateModel = _view_number;
+                else
+                    _templateModel = _view_number.Replace("      }},\r\n", "        cellEditor: 'textBoxRenderer',\r\n        cellEditorParams: () => ({{\r\n          control: {{\r\n            type: 'number',\r\n            max: '99999',\r\n            min: '0',\r\n            step: '1',\r\n            decimal: 0, //é¡¯ç¤ºå°æ•¸é»ä½æ•¸\r\n            allowEmpty: true,\r\n          }},\r\n        }}),\r\n      }},\r\n");
+            }
+            else if (obj.itemEngName.ToLower().Contains("date") || obj.itemEngName.ToLower().Contains("yymm"))
+                _templateModel = _view_date;
+            else
+                _templateModel = _view_normal;
+
+            if (obj.itemChtName == null || obj.itemChtName == string.Empty)
+            {
+                string _templateModel_grid_noChtName = _templateModel.Replace("headerValueGetter: this._agService.headerValueGetter,", "//headerValueGetter: this._agService.headerValueGetter,");
+                _templateModel = _templateModel_grid_noChtName;
+            }
+
+
+            return _templateModel;
+        }
+
+        private void lstVwSubItems_MouseUp(object sender, MouseEventArgs e)
+        {
+            lvi = this.lstVwSubItems.GetItemAt(e.X, e.Y);
+            if (lvi != null)
+            {
+                string itemType = lvi.SubItems[5].Text;
+
+                if (itemType == "æ–‡å­—é …ç›®" || itemType == "é¡¯ç¤ºé …ç›®"
+                    || itemType == "Text Item" || itemType == "Display Item"
+                    || itemType == "æ§åˆ¶é …ç›®" || itemType == "é¡¯ç¤ºé …ç›®"
+                    )
+                {
+                    this.comboBox1.Items.Clear();
+                    this.comboBox1.Visible = true;
+                    this.comboBox1.Items.Add("æ§åˆ¶é …ç›®");
+                    this.comboBox1.Items.Add("é¡¯ç¤ºé …ç›®");
+                }
+                else if (itemType == "æ ¸å–æ–¹å¡Š" || itemType == "Check Box"
+                    || itemType == "å€¼é¸æ“‡æ¡†" || itemType == "æ ¸å–æ–¹å¡Š"
+                    )
+                {
+                    this.comboBox1.Items.Clear();
+                    this.comboBox1.Visible = true;
+                    this.comboBox1.Items.Add("å€¼é¸æ“‡æ¡†");
+                    this.comboBox1.Items.Add("æ ¸å–æ–¹å¡Š");
+                }
+                else
+                {
+                    this.comboBox1.Visible = false;
+                    return;
+                }
+
+                //è·å–é€‰ä¸­è¡Œçš„Bounds 
+                Rectangle Rect = lvi.Bounds;
+
+                // Right side of cell is in view.
+                Rect.Width = lstVwSubItems.Columns[5].Width + Rect.Left;
+                Rect.Y = this.lstVwSubItems.Top + 2 + Rect.Y;
+                Rect.X = lstVwSubItems.Left +
+                    lstVwSubItems.Columns[0].Width +
+                    lstVwSubItems.Columns[1].Width +
+                    lstVwSubItems.Columns[2].Width +
+                    lstVwSubItems.Columns[3].Width +
+                    lstVwSubItems.Columns[4].Width + 2;
+
+                this.comboBox1.Bounds = Rect;
+                this.comboBox1.Text = lvi.SubItems[5].Text;
+                this.comboBox1.Visible = true;
+                this.comboBox1.BringToFront();
+                this.comboBox1.Focus();
+
+            }
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            // Set text of ListView item to match the ComboBox.
+            lvi.SubItems[5].Text = comboBox1.Text;
+            this.comboBox1.Visible = false;
+        }
+
+        private void comboBox1_MouseLeave(object sender, EventArgs e)
+        {
+            // Set text of ListView item to match the ComboBox.
+            lvi.SubItems[5].Text = comboBox1.Text;
+            this.comboBox1.Visible = false;
         }
 
 

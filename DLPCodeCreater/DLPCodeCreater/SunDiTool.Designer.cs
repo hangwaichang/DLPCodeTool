@@ -90,19 +90,20 @@
             cbx_tab2_frommodule = new ComboBox();
             lab_tab2_module = new Label();
             tabPage3 = new TabPage();
+            comboBox1 = new ComboBox();
             dGV_innerObj = new DataGridView();
             textBoxResults = new TextBox();
             btn_run = new Button();
             btn_clearMessege = new Button();
             dGdVwHeaders = new DataGridView();
-            Index = new DataGridViewTextBoxColumn();
-            Type = new DataGridViewTextBoxColumn();
             lstVwSubItems = new ListView();
             btnPath = new Button();
             txtSelectPath = new TextBox();
             tim_tab2 = new System.Windows.Forms.Timer(components);
             cmt_tab2_deleterow = new ContextMenuStrip(components);
             delectRowToolStripMenuItem = new ToolStripMenuItem();
+            Index = new DataGridViewTextBoxColumn();
+            Type = new DataGridViewComboBoxColumn();
             tbc_main.SuspendLayout();
             tabPage1.SuspendLayout();
             pnl_tab1.SuspendLayout();
@@ -728,6 +729,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(comboBox1);
             tabPage3.Controls.Add(dGV_innerObj);
             tabPage3.Controls.Add(textBoxResults);
             tabPage3.Controls.Add(btn_run);
@@ -743,6 +745,16 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "ColDef";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(695, 47);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(88, 23);
+            comboBox1.TabIndex = 15;
+            comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
+            comboBox1.MouseLeave += comboBox1_MouseLeave;
             // 
             // dGV_innerObj
             // 
@@ -799,20 +811,6 @@
             dGdVwHeaders.CellMouseDown += dGdVwHeaders_CellMouseDown;
             dGdVwHeaders.SelectionChanged += dGdVwHeaders_SelectionChanged;
             // 
-            // Index
-            // 
-            Index.HeaderText = "區段代號";
-            Index.Name = "Index";
-            Index.ReadOnly = true;
-            Index.Width = 60;
-            // 
-            // Type
-            // 
-            Type.HeaderText = "Model類型";
-            Type.Name = "Type";
-            Type.ToolTipText = "111";
-            Type.Width = 70;
-            // 
             // lstVwSubItems
             // 
             lstVwSubItems.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -823,6 +821,7 @@
             lstVwSubItems.TabIndex = 10;
             lstVwSubItems.UseCompatibleStateImageBehavior = false;
             lstVwSubItems.ItemCheck += lstVwSubItems_ItemCheck;
+            lstVwSubItems.MouseUp += lstVwSubItems_MouseUp;
             // 
             // btnPath
             // 
@@ -860,6 +859,23 @@
             delectRowToolStripMenuItem.Name = "delectRowToolStripMenuItem";
             delectRowToolStripMenuItem.Size = new Size(139, 22);
             delectRowToolStripMenuItem.Text = "Delete Row";
+            // 
+            // Index
+            // 
+            Index.HeaderText = "區段代號";
+            Index.Name = "Index";
+            Index.ReadOnly = true;
+            Index.Width = 60;
+            // 
+            // Type
+            // 
+            Type.HeaderText = "選擇類型(Grid/Form)";
+            Type.Items.AddRange(new object[] { "", "Form", "Grid" });
+            Type.Name = "Type";
+            Type.Resizable = DataGridViewTriState.True;
+            Type.SortMode = DataGridViewColumnSortMode.Automatic;
+            Type.ToolTipText = "Type";
+            Type.Width = 75;
             // 
             // Form1
             // 
@@ -965,7 +981,8 @@
         private ListView lstVwSubItems;
         private Button btnPath;
         private TextBox txtSelectPath;
+        private ComboBox comboBox1;
         private DataGridViewTextBoxColumn Index;
-        private DataGridViewTextBoxColumn Type;
+        private DataGridViewComboBoxColumn Type;
     }
 }
