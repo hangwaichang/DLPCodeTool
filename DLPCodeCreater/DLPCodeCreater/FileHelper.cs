@@ -74,6 +74,30 @@ namespace DLPCodeCreater
             return result;
         }
 
+        public Boolean FolderDelete(string TargetFolder)
+        {
+            Boolean result = false;
+            try
+            {
+
+                // 檢查目錄是否存在
+                if (Directory.Exists(TargetFolder))
+                {
+                    // 刪除目錄及其所有內容
+                    Directory.Delete(TargetFolder, true);
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
+
 
         public Boolean FileReplace(string FilePath, string Text, string ReplaceText)
         {

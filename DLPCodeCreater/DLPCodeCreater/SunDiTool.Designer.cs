@@ -32,6 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             tim_checkinput = new System.Windows.Forms.Timer(components);
             tbc_main = new TabControl();
+            tabPage5 = new TabPage();
+            lab_setting_frontendpath = new Label();
+            btn_setting_selectfrontendpath = new Button();
+            tbx_setting_frontendpath = new TextBox();
+            lab_setting_projectpath = new Label();
+            btn_setting_selectpath = new Button();
+            tbx_setting_projectpath = new TextBox();
             tabPage1 = new TabPage();
             pnl_tab1 = new Panel();
             cbx_copydiff = new CheckBox();
@@ -96,15 +103,43 @@
             btn_run = new Button();
             btn_clearMessege = new Button();
             dGdVwHeaders = new DataGridView();
+            Index = new DataGridViewTextBoxColumn();
+            Type = new DataGridViewComboBoxColumn();
             lstVwSubItems = new ListView();
             btnPath = new Button();
             txtSelectPath = new TextBox();
+            tabPage4 = new TabPage();
+            tbx_APIGo_resultMsg = new TextBox();
+            grb_front_end = new GroupBox();
+            btn_move2develop = new Button();
+            dgv_component_list = new DataGridView();
+            Col_Check = new DataGridViewCheckBoxColumn();
+            Col_Component = new DataGridViewTextBoxColumn();
+            Col_Version = new DataGridViewTextBoxColumn();
+            Col_OldVersion = new DataGridViewTextBoxColumn();
+            btn_com_movekill = new Button();
+            btn_install_component = new Button();
+            btn_ng_build = new Button();
+            btn_dotnet_close_all = new Button();
+            cbx_DV = new CheckBox();
+            cbx_PM = new CheckBox();
+            cbx_MP = new CheckBox();
+            cbx_WO = new CheckBox();
+            cbx_XX = new CheckBox();
+            cbx_OA = new CheckBox();
+            cbx_MI = new CheckBox();
+            cbx_MG = new CheckBox();
+            cbx_MD = new CheckBox();
+            cbx_SD = new CheckBox();
+            cbx_SingnalR = new CheckBox();
+            cbx_AppPortal = new CheckBox();
+            btn_dotnet_run = new Button();
             tim_tab2 = new System.Windows.Forms.Timer(components);
             cmt_tab2_deleterow = new ContextMenuStrip(components);
             delectRowToolStripMenuItem = new ToolStripMenuItem();
-            Index = new DataGridViewTextBoxColumn();
-            Type = new DataGridViewComboBoxColumn();
+            oracleCommand1 = new Oracle.ManagedDataAccess.Client.OracleCommand();
             tbc_main.SuspendLayout();
+            tabPage5.SuspendLayout();
             tabPage1.SuspendLayout();
             pnl_tab1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -117,6 +152,9 @@
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dGV_innerObj).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dGdVwHeaders).BeginInit();
+            tabPage4.SuspendLayout();
+            grb_front_end.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_component_list).BeginInit();
             cmt_tab2_deleterow.SuspendLayout();
             SuspendLayout();
             // 
@@ -128,15 +166,87 @@
             // 
             // tbc_main
             // 
+            tbc_main.Controls.Add(tabPage5);
             tbc_main.Controls.Add(tabPage1);
             tbc_main.Controls.Add(tabPage2);
             tbc_main.Controls.Add(tabPage3);
+            tbc_main.Controls.Add(tabPage4);
             tbc_main.Location = new Point(-6, 3);
             tbc_main.Name = "tbc_main";
             tbc_main.SelectedIndex = 0;
             tbc_main.Size = new Size(797, 598);
             tbc_main.TabIndex = 30;
             tbc_main.Tag = "";
+            tbc_main.SelectedIndexChanged += tbc_main_SelectedIndexChanged;
+            // 
+            // tabPage5
+            // 
+            tabPage5.Controls.Add(lab_setting_frontendpath);
+            tabPage5.Controls.Add(btn_setting_selectfrontendpath);
+            tabPage5.Controls.Add(tbx_setting_frontendpath);
+            tabPage5.Controls.Add(lab_setting_projectpath);
+            tabPage5.Controls.Add(btn_setting_selectpath);
+            tabPage5.Controls.Add(tbx_setting_projectpath);
+            tabPage5.Location = new Point(4, 24);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Size = new Size(789, 570);
+            tabPage5.TabIndex = 4;
+            tabPage5.Text = "Setting";
+            tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // lab_setting_frontendpath
+            // 
+            lab_setting_frontendpath.AutoSize = true;
+            lab_setting_frontendpath.Location = new Point(14, 97);
+            lab_setting_frontendpath.Name = "lab_setting_frontendpath";
+            lab_setting_frontendpath.Size = new Size(71, 15);
+            lab_setting_frontendpath.TabIndex = 58;
+            lab_setting_frontendpath.Text = "ProjectPath";
+            // 
+            // btn_setting_selectfrontendpath
+            // 
+            btn_setting_selectfrontendpath.Location = new Point(509, 89);
+            btn_setting_selectfrontendpath.Name = "btn_setting_selectfrontendpath";
+            btn_setting_selectfrontendpath.Size = new Size(75, 23);
+            btn_setting_selectfrontendpath.TabIndex = 57;
+            btn_setting_selectfrontendpath.Text = "Select";
+            btn_setting_selectfrontendpath.UseVisualStyleBackColor = true;
+            btn_setting_selectfrontendpath.Click += btn_setting_selectfrontendpath_Click;
+            // 
+            // tbx_setting_frontendpath
+            // 
+            tbx_setting_frontendpath.Location = new Point(115, 89);
+            tbx_setting_frontendpath.Name = "tbx_setting_frontendpath";
+            tbx_setting_frontendpath.Size = new Size(388, 23);
+            tbx_setting_frontendpath.TabIndex = 56;
+            tbx_setting_frontendpath.Text = "D:\\DLP_Git\\dlp-front-end";
+            // 
+            // lab_setting_projectpath
+            // 
+            lab_setting_projectpath.AutoSize = true;
+            lab_setting_projectpath.Location = new Point(14, 37);
+            lab_setting_projectpath.Name = "lab_setting_projectpath";
+            lab_setting_projectpath.Size = new Size(71, 15);
+            lab_setting_projectpath.TabIndex = 55;
+            lab_setting_projectpath.Text = "ProjectPath";
+            // 
+            // btn_setting_selectpath
+            // 
+            btn_setting_selectpath.Location = new Point(509, 29);
+            btn_setting_selectpath.Name = "btn_setting_selectpath";
+            btn_setting_selectpath.Size = new Size(75, 23);
+            btn_setting_selectpath.TabIndex = 54;
+            btn_setting_selectpath.Text = "Select";
+            btn_setting_selectpath.UseVisualStyleBackColor = true;
+            btn_setting_selectpath.Click += btn_setting_selectpath_Click;
+            // 
+            // tbx_setting_projectpath
+            // 
+            tbx_setting_projectpath.Location = new Point(115, 29);
+            tbx_setting_projectpath.Name = "tbx_setting_projectpath";
+            tbx_setting_projectpath.Size = new Size(388, 23);
+            tbx_setting_projectpath.TabIndex = 53;
+            tbx_setting_projectpath.Text = ".\\dlp-develop";
             // 
             // tabPage1
             // 
@@ -474,7 +584,6 @@
             tbx_projectpath.Name = "tbx_projectpath";
             tbx_projectpath.Size = new Size(388, 23);
             tbx_projectpath.TabIndex = 30;
-            tbx_projectpath.Text = ".\\dlp-develop";
             // 
             // tabPage2
             // 
@@ -623,7 +732,6 @@
             tbx_tab2_projectpath.Name = "tbx_tab2_projectpath";
             tbx_tab2_projectpath.Size = new Size(388, 23);
             tbx_tab2_projectpath.TabIndex = 50;
-            tbx_tab2_projectpath.Text = ".\\dlp-develop";
             // 
             // btn_gettranslate
             // 
@@ -811,6 +919,23 @@
             dGdVwHeaders.CellMouseDown += dGdVwHeaders_CellMouseDown;
             dGdVwHeaders.SelectionChanged += dGdVwHeaders_SelectionChanged;
             // 
+            // Index
+            // 
+            Index.HeaderText = "區段代號";
+            Index.Name = "Index";
+            Index.ReadOnly = true;
+            Index.Width = 60;
+            // 
+            // Type
+            // 
+            Type.HeaderText = "選擇類型(Grid/Form)";
+            Type.Items.AddRange(new object[] { "", "Form", "Grid" });
+            Type.Name = "Type";
+            Type.Resizable = DataGridViewTriState.True;
+            Type.SortMode = DataGridViewColumnSortMode.Automatic;
+            Type.ToolTipText = "Type";
+            Type.Width = 75;
+            // 
             // lstVwSubItems
             // 
             lstVwSubItems.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -841,6 +966,273 @@
             txtSelectPath.Size = new Size(384, 56);
             txtSelectPath.TabIndex = 8;
             // 
+            // tabPage4
+            // 
+            tabPage4.Controls.Add(tbx_APIGo_resultMsg);
+            tabPage4.Controls.Add(grb_front_end);
+            tabPage4.Controls.Add(btn_dotnet_close_all);
+            tabPage4.Controls.Add(cbx_DV);
+            tabPage4.Controls.Add(cbx_PM);
+            tabPage4.Controls.Add(cbx_MP);
+            tabPage4.Controls.Add(cbx_WO);
+            tabPage4.Controls.Add(cbx_XX);
+            tabPage4.Controls.Add(cbx_OA);
+            tabPage4.Controls.Add(cbx_MI);
+            tabPage4.Controls.Add(cbx_MG);
+            tabPage4.Controls.Add(cbx_MD);
+            tabPage4.Controls.Add(cbx_SD);
+            tabPage4.Controls.Add(cbx_SingnalR);
+            tabPage4.Controls.Add(cbx_AppPortal);
+            tabPage4.Controls.Add(btn_dotnet_run);
+            tabPage4.Location = new Point(4, 24);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Size = new Size(789, 570);
+            tabPage4.TabIndex = 3;
+            tabPage4.Text = "APIGo";
+            tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tbx_APIGo_resultMsg
+            // 
+            tbx_APIGo_resultMsg.Location = new Point(25, 369);
+            tbx_APIGo_resultMsg.Multiline = true;
+            tbx_APIGo_resultMsg.Name = "tbx_APIGo_resultMsg";
+            tbx_APIGo_resultMsg.ScrollBars = ScrollBars.Both;
+            tbx_APIGo_resultMsg.Size = new Size(736, 180);
+            tbx_APIGo_resultMsg.TabIndex = 40;
+            // 
+            // grb_front_end
+            // 
+            grb_front_end.Controls.Add(btn_move2develop);
+            grb_front_end.Controls.Add(dgv_component_list);
+            grb_front_end.Controls.Add(btn_com_movekill);
+            grb_front_end.Controls.Add(btn_install_component);
+            grb_front_end.Controls.Add(btn_ng_build);
+            grb_front_end.Location = new Point(25, 99);
+            grb_front_end.Name = "grb_front_end";
+            grb_front_end.Size = new Size(736, 264);
+            grb_front_end.TabIndex = 14;
+            grb_front_end.TabStop = false;
+            grb_front_end.Text = "底層發粄工具";
+            // 
+            // btn_move2develop
+            // 
+            btn_move2develop.Location = new Point(459, 192);
+            btn_move2develop.Name = "btn_move2develop";
+            btn_move2develop.Size = new Size(116, 46);
+            btn_move2develop.TabIndex = 19;
+            btn_move2develop.Text = "Move To Develop";
+            btn_move2develop.UseVisualStyleBackColor = true;
+            btn_move2develop.Click += btn_move2develop_Click;
+            // 
+            // dgv_component_list
+            // 
+            dgv_component_list.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_component_list.Columns.AddRange(new DataGridViewColumn[] { Col_Check, Col_Component, Col_Version, Col_OldVersion });
+            dgv_component_list.Location = new Point(6, 22);
+            dgv_component_list.Name = "dgv_component_list";
+            dgv_component_list.RowTemplate.Height = 25;
+            dgv_component_list.Size = new Size(724, 150);
+            dgv_component_list.TabIndex = 18;
+            // 
+            // Col_Check
+            // 
+            Col_Check.DataPropertyName = "Check";
+            Col_Check.HeaderText = "";
+            Col_Check.Name = "Col_Check";
+            Col_Check.Width = 50;
+            // 
+            // Col_Component
+            // 
+            Col_Component.DataPropertyName = "ComponentName";
+            Col_Component.HeaderText = "元件名稱";
+            Col_Component.Name = "Col_Component";
+            Col_Component.ReadOnly = true;
+            Col_Component.Width = 300;
+            // 
+            // Col_Version
+            // 
+            Col_Version.DataPropertyName = "NewVersion";
+            Col_Version.HeaderText = "版本";
+            Col_Version.Name = "Col_Version";
+            Col_Version.Width = 150;
+            // 
+            // Col_OldVersion
+            // 
+            Col_OldVersion.DataPropertyName = "OldVersion";
+            Col_OldVersion.HeaderText = "OldVersion";
+            Col_OldVersion.Name = "Col_OldVersion";
+            Col_OldVersion.Visible = false;
+            // 
+            // btn_com_movekill
+            // 
+            btn_com_movekill.Location = new Point(144, 192);
+            btn_com_movekill.Name = "btn_com_movekill";
+            btn_com_movekill.Size = new Size(116, 46);
+            btn_com_movekill.TabIndex = 17;
+            btn_com_movekill.Text = "Component Move Kill";
+            btn_com_movekill.UseVisualStyleBackColor = true;
+            btn_com_movekill.Click += btn_com_movekill_Click;
+            // 
+            // btn_install_component
+            // 
+            btn_install_component.Location = new Point(597, 192);
+            btn_install_component.Name = "btn_install_component";
+            btn_install_component.Size = new Size(116, 46);
+            btn_install_component.TabIndex = 16;
+            btn_install_component.Text = "Install Component";
+            btn_install_component.UseVisualStyleBackColor = true;
+            btn_install_component.Click += btn_install_component_Click;
+            // 
+            // btn_ng_build
+            // 
+            btn_ng_build.Location = new Point(6, 192);
+            btn_ng_build.Name = "btn_ng_build";
+            btn_ng_build.Size = new Size(116, 46);
+            btn_ng_build.TabIndex = 15;
+            btn_ng_build.Text = "ng build";
+            btn_ng_build.UseVisualStyleBackColor = true;
+            btn_ng_build.Click += btn_ng_build_Click;
+            // 
+            // btn_dotnet_close_all
+            // 
+            btn_dotnet_close_all.Location = new Point(622, 26);
+            btn_dotnet_close_all.Name = "btn_dotnet_close_all";
+            btn_dotnet_close_all.Size = new Size(116, 46);
+            btn_dotnet_close_all.TabIndex = 13;
+            btn_dotnet_close_all.Text = "Close All";
+            btn_dotnet_close_all.UseVisualStyleBackColor = true;
+            btn_dotnet_close_all.Click += btn_dotnet_close_all_Click;
+            // 
+            // cbx_DV
+            // 
+            cbx_DV.AutoSize = true;
+            cbx_DV.Location = new Point(412, 62);
+            cbx_DV.Name = "cbx_DV";
+            cbx_DV.Size = new Size(43, 19);
+            cbx_DV.TabIndex = 12;
+            cbx_DV.Text = "DV";
+            cbx_DV.UseVisualStyleBackColor = true;
+            // 
+            // cbx_PM
+            // 
+            cbx_PM.AutoSize = true;
+            cbx_PM.Location = new Point(348, 62);
+            cbx_PM.Name = "cbx_PM";
+            cbx_PM.Size = new Size(45, 19);
+            cbx_PM.TabIndex = 11;
+            cbx_PM.Text = "PM";
+            cbx_PM.UseVisualStyleBackColor = true;
+            // 
+            // cbx_MP
+            // 
+            cbx_MP.AutoSize = true;
+            cbx_MP.Location = new Point(284, 26);
+            cbx_MP.Name = "cbx_MP";
+            cbx_MP.Size = new Size(45, 19);
+            cbx_MP.TabIndex = 10;
+            cbx_MP.Text = "MP";
+            cbx_MP.UseVisualStyleBackColor = true;
+            // 
+            // cbx_WO
+            // 
+            cbx_WO.AutoSize = true;
+            cbx_WO.Location = new Point(139, 26);
+            cbx_WO.Name = "cbx_WO";
+            cbx_WO.Size = new Size(48, 19);
+            cbx_WO.TabIndex = 9;
+            cbx_WO.Text = "WO";
+            cbx_WO.UseVisualStyleBackColor = true;
+            // 
+            // cbx_XX
+            // 
+            cbx_XX.AutoSize = true;
+            cbx_XX.Location = new Point(412, 26);
+            cbx_XX.Name = "cbx_XX";
+            cbx_XX.Size = new Size(42, 19);
+            cbx_XX.TabIndex = 8;
+            cbx_XX.Text = "XX";
+            cbx_XX.UseVisualStyleBackColor = true;
+            // 
+            // cbx_OA
+            // 
+            cbx_OA.AutoSize = true;
+            cbx_OA.Location = new Point(139, 62);
+            cbx_OA.Name = "cbx_OA";
+            cbx_OA.Size = new Size(44, 19);
+            cbx_OA.TabIndex = 7;
+            cbx_OA.Text = "OA";
+            cbx_OA.UseVisualStyleBackColor = true;
+            // 
+            // cbx_MI
+            // 
+            cbx_MI.AutoSize = true;
+            cbx_MI.Location = new Point(284, 62);
+            cbx_MI.Name = "cbx_MI";
+            cbx_MI.Size = new Size(41, 19);
+            cbx_MI.TabIndex = 6;
+            cbx_MI.Text = "MI";
+            cbx_MI.UseVisualStyleBackColor = true;
+            // 
+            // cbx_MG
+            // 
+            cbx_MG.AutoSize = true;
+            cbx_MG.Location = new Point(348, 26);
+            cbx_MG.Name = "cbx_MG";
+            cbx_MG.Size = new Size(47, 19);
+            cbx_MG.TabIndex = 5;
+            cbx_MG.Text = "MG";
+            cbx_MG.UseVisualStyleBackColor = true;
+            // 
+            // cbx_MD
+            // 
+            cbx_MD.AutoSize = true;
+            cbx_MD.Location = new Point(210, 62);
+            cbx_MD.Name = "cbx_MD";
+            cbx_MD.Size = new Size(47, 19);
+            cbx_MD.TabIndex = 4;
+            cbx_MD.Text = "MD";
+            cbx_MD.UseVisualStyleBackColor = true;
+            // 
+            // cbx_SD
+            // 
+            cbx_SD.AutoSize = true;
+            cbx_SD.Location = new Point(210, 26);
+            cbx_SD.Name = "cbx_SD";
+            cbx_SD.Size = new Size(42, 19);
+            cbx_SD.TabIndex = 3;
+            cbx_SD.Text = "SD";
+            cbx_SD.UseVisualStyleBackColor = true;
+            // 
+            // cbx_SingnalR
+            // 
+            cbx_SingnalR.AutoSize = true;
+            cbx_SingnalR.Location = new Point(25, 62);
+            cbx_SingnalR.Name = "cbx_SingnalR";
+            cbx_SingnalR.Size = new Size(69, 19);
+            cbx_SingnalR.TabIndex = 2;
+            cbx_SingnalR.Text = "SignalR";
+            cbx_SingnalR.UseVisualStyleBackColor = true;
+            // 
+            // cbx_AppPortal
+            // 
+            cbx_AppPortal.AutoSize = true;
+            cbx_AppPortal.Location = new Point(25, 26);
+            cbx_AppPortal.Name = "cbx_AppPortal";
+            cbx_AppPortal.Size = new Size(83, 19);
+            cbx_AppPortal.TabIndex = 1;
+            cbx_AppPortal.Text = "AppPortal";
+            cbx_AppPortal.UseVisualStyleBackColor = true;
+            // 
+            // btn_dotnet_run
+            // 
+            btn_dotnet_run.Location = new Point(484, 26);
+            btn_dotnet_run.Name = "btn_dotnet_run";
+            btn_dotnet_run.Size = new Size(116, 46);
+            btn_dotnet_run.TabIndex = 0;
+            btn_dotnet_run.Text = "Dotnet Run";
+            btn_dotnet_run.UseVisualStyleBackColor = true;
+            btn_dotnet_run.Click += btn_base_api_Click;
+            // 
             // tim_tab2
             // 
             tim_tab2.Enabled = true;
@@ -860,22 +1252,9 @@
             delectRowToolStripMenuItem.Size = new Size(139, 22);
             delectRowToolStripMenuItem.Text = "Delete Row";
             // 
-            // Index
+            // oracleCommand1
             // 
-            Index.HeaderText = "區段代號";
-            Index.Name = "Index";
-            Index.ReadOnly = true;
-            Index.Width = 60;
-            // 
-            // Type
-            // 
-            Type.HeaderText = "選擇類型(Grid/Form)";
-            Type.Items.AddRange(new object[] { "", "Form", "Grid" });
-            Type.Name = "Type";
-            Type.Resizable = DataGridViewTriState.True;
-            Type.SortMode = DataGridViewColumnSortMode.Automatic;
-            Type.ToolTipText = "Type";
-            Type.Width = 75;
+            oracleCommand1.Transaction = null;
             // 
             // Form1
             // 
@@ -889,6 +1268,8 @@
             Text = "SunDiTool";
             Load += Form1_Load;
             tbc_main.ResumeLayout(false);
+            tabPage5.ResumeLayout(false);
+            tabPage5.PerformLayout();
             tabPage1.ResumeLayout(false);
             pnl_tab1.ResumeLayout(false);
             pnl_tab1.PerformLayout();
@@ -905,6 +1286,10 @@
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dGV_innerObj).EndInit();
             ((System.ComponentModel.ISupportInitialize)dGdVwHeaders).EndInit();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
+            grb_front_end.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgv_component_list).EndInit();
             cmt_tab2_deleterow.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -984,5 +1369,39 @@
         private ComboBox comboBox1;
         private DataGridViewTextBoxColumn Index;
         private DataGridViewComboBoxColumn Type;
+        private TabPage tabPage4;
+        private Button btn_dotnet_run;
+        private TabPage tabPage5;
+        private Label lab_setting_projectpath;
+        private Button btn_setting_selectpath;
+        private TextBox tbx_setting_projectpath;
+        private Oracle.ManagedDataAccess.Client.OracleCommand oracleCommand1;
+        private CheckBox cbx_DV;
+        private CheckBox cbx_PM;
+        private CheckBox cbx_MP;
+        private CheckBox cbx_WO;
+        private CheckBox cbx_XX;
+        private CheckBox cbx_OA;
+        private CheckBox cbx_MI;
+        private CheckBox cbx_MG;
+        private CheckBox cbx_MD;
+        private CheckBox cbx_SD;
+        private CheckBox cbx_SingnalR;
+        private CheckBox cbx_AppPortal;
+        private Button btn_dotnet_close_all;
+        private GroupBox grb_front_end;
+        private Label lab_setting_frontendpath;
+        private Button btn_setting_selectfrontendpath;
+        private TextBox tbx_setting_frontendpath;
+        private Button btn_com_movekill;
+        private Button btn_install_component;
+        private Button btn_ng_build;
+        private DataGridView dgv_component_list;
+        private TextBox tbx_APIGo_resultMsg;
+        private DataGridViewCheckBoxColumn Col_Check;
+        private DataGridViewTextBoxColumn Col_Component;
+        private DataGridViewTextBoxColumn Col_Version;
+        private DataGridViewTextBoxColumn Col_OldVersion;
+        private Button btn_move2develop;
     }
 }

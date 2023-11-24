@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {}
+    "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {}
   },
   "projects": {
-    "D:\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
-      "version": "2.0.0-20231011",
+    "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
+      "version": "2.0.0-20231124",
       "restore": {
-        "projectUniqueName": "D:\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+        "projectUniqueName": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
         "projectName": "DLPCodeCreater",
-        "projectPath": "D:\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
-        "packagesPath": "C:\\Users\\Wei_Pan\\.nuget\\packages\\",
-        "outputPath": "D:\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
+        "projectPath": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
+        "packagesPath": "C:\\Users\\Jason_Chang\\.nuget\\packages\\",
+        "outputPath": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Wei_Pan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jason_Chang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -98,7 +98,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

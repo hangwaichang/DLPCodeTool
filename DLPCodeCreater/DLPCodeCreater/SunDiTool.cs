@@ -6,6 +6,12 @@ using Classes;
 using Oracle.ManagedDataAccess.Client;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
+using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
+using System;
+using System.IO;
+using System.IO.Packaging;
+using System.Runtime.Intrinsics.Arm;
 
 namespace DLPCodeCreater
 {
@@ -28,6 +34,10 @@ namespace DLPCodeCreater
         public const string DTOpath = @"\DLP.Model\DLP.Model.{0}Types\DTO\{1}";
         public const string Interfacepath = @"\DLP.Model\DLP.Model.{0}Types\Interface\{1}";
         public const string Repositoriespath = @"\DLP.Model\DLP.Model.{0}\Repositories\{1}";
+        public const string Librariespath = @"\DLP.Web\DLP.Web.AppPortal\ClientApp\libraries\{0}";
+        public const string Packagepath = @"\DLP.Web\DLP.Web.AppPortal\ClientApp\package.json";
+
+
 
         public string fModulepath = "";
         public string fAreapath = "";
@@ -38,6 +48,10 @@ namespace DLPCodeCreater
         public string tAreapath = "";
         public string tProgrampath = "";
         public string tProgram = "";
+
+        public string fCompath = "";
+        List<Component> ComponentLists = new List<Component>();
+
 
         public int rowIndex = 0;
 
@@ -138,7 +152,7 @@ namespace DLPCodeCreater
             this.Text = String.Format("SunDiTool {0}", version);
         }
 
-        #region Tab1
+        #region SunDiRo
 
         //From
         private void btn_selectpath_Click(object sender, EventArgs e)
@@ -831,7 +845,7 @@ namespace DLPCodeCreater
         }
         #endregion
 
-        #region Tab2
+        #region DoGoRo
         private void cbx_tab2_frommodule_SelectedIndexChanged(object sender, EventArgs e)
         {
             fModulepath = this.tbx_tab2_projectpath.Text + AppPortalpath + this.cbx_tab2_frommodule.Text;
@@ -1173,7 +1187,7 @@ namespace DLPCodeCreater
 
         #endregion
 
-        #region Tab3 
+        #region Tab4
         private void InitialListView()
         {
 
@@ -2076,6 +2090,41 @@ namespace DLPCodeCreater
 
         #endregion  --------------------- Tab3 --------------------------
 
+        #region Setting Tab
+        private void btn_setting_selectpath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog path = new FolderBrowserDialog();
+                path.ShowDialog();
+                this.tbx_setting_projectpath.Text = path.SelectedPath;
+                //加入tab1 tab2
+                this.tbx_projectpath.Text = path.SelectedPath;
+                this.tbx_tab2_projectpath.Text = path.SelectedPath;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void btn_setting_selectfrontendpath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog path = new FolderBrowserDialog();
+                path.ShowDialog();
+                this.tbx_setting_frontendpath.Text = path.SelectedPath;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #endregion
         private void cbx_copydiff_Click(object sender, EventArgs e)
         {
             if (this.cbx_copydiff.Checked)
@@ -2089,6 +2138,370 @@ namespace DLPCodeCreater
 
         }
 
+        //切換Tab執行事件
+        private void tbc_main_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((sender as TabControl).SelectedIndex)
+            {
+                case 1:
+                    {
+                        if (this.tbx_projectpath.Text == "")
+                        {
+                            break;
+                        }
+                        //取得模組列表
+                        List<string> ds = fhelper.DirSearch(this.tbx_projectpath.Text + AppPortalpath);
+
+                        BindingSource bs = new BindingSource();
+                        //放入from_module
+                        this.cbx_frommodule.DataSource = ds;
+                        //放入target_module
+                        this.cbx_targetmodule.DataSource = ds;
+                    }
+
+                    break;
+                case 2:
+                    {
+                        if (this.tbx_tab2_projectpath.Text == "")
+                        {
+                            break;
+                        }
+                        //取得模組列表
+                        List<string> ds = fhelper.DirSearch(this.tbx_tab2_projectpath.Text + AppPortalpath);
+
+                        BindingSource bs = new BindingSource();
+                        //放入from_module
+                        this.cbx_tab2_frommodule.DataSource = ds;
+                        //放入from_module
+                        this.cbx_tab2_frommodule.DataSource = ds;
+                    }
+                    break;
+                case 4:
+                    {
+                        //AppPortal SingnalR 預設打勾
+                        this.cbx_AppPortal.Checked = true;
+                        this.cbx_SingnalR.Checked = true;
+
+
+
+                        //取得底層元件資訊
+                        fCompath = tbx_setting_frontendpath.Text + @"\projects";
+                        List<string> ds = fhelper.DirSearch(fCompath);
+
+
+                        foreach (var com in ds)
+                        {
+                            string ver = GetComponentVersion(fCompath, com);
+                            ComponentLists.Add(new Component { ComponentName = com, NewVersion = ver, OldVersion = ver });
+
+                        }
+                        this.dgv_component_list.DataSource = ComponentLists;
+                    }
+                    break;
+            }
+        }
+
+        #region APIGo Tab
+        private void btn_base_api_Click(object sender, EventArgs e)
+        {
+            List<string> killProcessText = new List<string>();
+            List<string> startCmdText = new List<string>();
+
+
+            string killProcess = "DLP.WebAPI.{0}.exe";
+            string startCmd = "start cmd /k \"cd /d " + this.tbx_setting_projectpath.Text + "/DLP.WebAPI/DLP.WebAPI.{0} && dotnet run \"";
+
+            if (this.cbx_AppPortal.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_AppPortal.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_AppPortal.Text));
+            }
+            if (this.cbx_SingnalR.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_SingnalR.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_SingnalR.Text));
+            }
+            if (this.cbx_WO.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_WO.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_WO.Text));
+            }
+            if (this.cbx_OA.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_OA.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_OA.Text));
+            }
+            if (this.cbx_SD.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_SD.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_SD.Text));
+            }
+            if (this.cbx_MD.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_MD.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_MD.Text));
+            }
+            if (this.cbx_MP.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_MP.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_MP.Text));
+            }
+            if (this.cbx_MI.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_MI.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_MI.Text));
+            }
+            if (this.cbx_MG.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_MG.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_MG.Text));
+            }
+            if (this.cbx_PM.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_PM.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_PM.Text));
+            }
+            if (this.cbx_XX.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_XX.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_XX.Text));
+            }
+            if (this.cbx_DV.Checked)
+            {
+                killProcessText.Add(String.Format(killProcess, this.cbx_DV.Text));
+                startCmdText.Add(String.Format(startCmd, this.cbx_DV.Text));
+            }
+
+
+
+            killProcessText.Add("CMD.exe");
+            foreach (var cmd in killProcessText)
+            {
+                KillProcessByName(cmd);
+            }
+            foreach (var cmd in startCmdText)
+            {
+                System.Diagnostics.Process.Start("CMD.exe", cmd);
+            }
+
+        }
+
+        static void KillProcessByName(string processName)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "taskkill",
+                    Arguments = $"/F /IM {processName}",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+
+                using (Process process = new Process { StartInfo = psi })
+                {
+                    process.Start();
+                    process.WaitForExit();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+        static void ExecuteCommand(string command)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardError = true
+                };
+
+                using (Process process = new Process { StartInfo = psi })
+                {
+                    process.Start();
+
+                    // Pass the command to cmd.exe
+                    process.StandardInput.WriteLine(command);
+                    process.StandardInput.Flush();
+                    process.StandardInput.Close();
+
+                    // Read the output
+                    //string output = process.StandardOutput.ReadToEnd();
+                    //string error = process.StandardError.ReadToEnd();
+
+                    //Console.WriteLine($"Output: {output}");
+                    //Console.WriteLine($"Error: {error}");
+
+                    process.WaitForExit();
+                    process.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private void btn_dotnet_close_all_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process[] processes = Process.GetProcesses();
+
+                foreach (Process process in processes)
+                {
+                    if (process.ProcessName.StartsWith("DLP.WebAPI", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"Killing process: {process.ProcessName} (ID: {process.Id})");
+                        process.Kill();
+                    }
+
+                    KillProcessByName("CMD.exe");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+        //底層發粄工具
+        private void btn_ng_build_Click(object sender, EventArgs e)
+        {
+            List<string> buildcom = new List<string>();
+
+            string cmd = "start cmd /k \"cd /d " + tbx_setting_frontendpath.Text + " && ng build {0} && cd ./libraries/{0} && npm pack && cd ../..\"";
+            //const string cmd = "cd ng build {0} ; cd ./libraries/{0} ; npm pack ; cd ../..";
+
+            foreach (Component row in ComponentLists)
+            {
+                if (row.Check)
+                {
+
+                    var targetpath = fCompath + @"\" + row.ComponentName + @"\" + "package.json";
+                    if (fhelper.FileReplace(targetpath, row.OldVersion, row.NewVersion))
+                    {
+                        ResultMessageAPIGo(row.ComponentName + " 版本號更新成功" + targetpath);
+                    }
+
+                    buildcom.Add(row.ComponentName);
+                }
+
+            }
+
+            foreach (string name in buildcom)
+            {
+                string strbuildcom = String.Format(cmd, name);
+
+                ExecuteCommand(strbuildcom);
+                ResultMessageAPIGo("確認 [" + name + "] 是否執行成功!");
+            }
+        }
+
+        private void btn_com_movekill_Click(object sender, EventArgs e)
+        {
+            string flibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}\\{1}.tgz";
+            string tlibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}";
+
+
+            foreach (Component row in ComponentLists)
+            {
+                if (row.Check)
+                {
+                    //搬移
+                    string fpath = String.Format(flibpath, row.ComponentName, row.ComponentName + "-" + row.NewVersion);
+                    string tpath = String.Format(tlibpath, row.ComponentName + "-" + row.NewVersion + ".tgz");
+                    if (fhelper.FileMove(fpath, tpath))
+                    {
+                        ResultMessageAPIGo("檔案搬移成功" + tpath);
+                    }
+
+                    fhelper.FolderDelete(String.Format(tlibpath, row.ComponentName));
+                }
+
+            }
+
+
+        }
+
+        private void btn_move2develop_Click(object sender, EventArgs e)
+        {
+            string flibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}";
+            string packagever = "file:libraries/{0}.tgz";
+
+            foreach (Component row in ComponentLists)
+            {
+                if (row.Check)
+                {
+                    //搬移
+                    string fpath = String.Format(flibpath, row.ComponentName + "-" + row.NewVersion + ".tgz");
+                    string tpath = this.tbx_projectpath.Text + String.Format(Librariespath, row.ComponentName + "-" + row.NewVersion + ".tgz");
+                    if (fhelper.FileMove(fpath, tpath))
+                    {
+                        ResultMessageAPIGo("元件搬移成功: " + row.ComponentName + "-" + row.NewVersion + ".tgz");
+                    }
+
+                    //更新 Package
+                    string beforetext = String.Format(packagever, row.ComponentName + "-" + row.OldVersion);
+                    string aftertext = String.Format(packagever, row.ComponentName + "-" + row.NewVersion);
+
+
+                    if (fhelper.FileReplace(this.tbx_projectpath.Text + Packagepath, beforetext, aftertext))
+                    {
+                        ResultMessageAPIGo("Package 版本號更新成功" + row.ComponentName + "-" + row.NewVersion + ".tgz");
+                    }
+                }
+
+            }
+        }
+
+        private void btn_install_component_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string cmd = "start cmd /k \"cd /d D:\\DLP_Git\\dlp-develop\\DLP.Web\\DLP.Web.AppPortal\\ClientApp && npm i \"";
+                ExecuteCommand(cmd);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// 取得版本號
+        /// </summary>
+        /// <param name="compath"></param>
+        /// <param name="com"></param>
+        /// <returns></returns>
+        private string GetComponentVersion(string compath, string com)
+        {
+            var dtoText = fhelper.FileRead(compath + @"\" + com + @"\" + "package.json", "\"version\": \"", "\",");
+
+            return dtoText[0].Split('"')[3];
+        }
+
+
+        //訊息結果
+        public void ResultMessageAPIGo(string msg)
+        {
+            tbx_APIGo_resultMsg.Text += Environment.NewLine;
+            tbx_APIGo_resultMsg.Text += msg;
+        }
+        #endregion
 
     }
 
