@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.IO.Packaging;
 using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
 
 namespace DLPCodeCreater
 {
@@ -920,7 +921,7 @@ namespace DLPCodeCreater
             }
             //validations
             ResultMessageTab2("7.掃描validations");
-            fileName = this.cbx_fromprogram.Text + ".validation.ts";
+            fileName = this.cbx_tab2_fromprogram.Text + ".validation.ts";
             if (File.Exists(fAreapath + @"\validations\" + fileName))
             {
                 thelper.mergeTranslate(thelper.getTranslate(fAreapath + @"\validations\" + fileName));
@@ -2274,14 +2275,16 @@ namespace DLPCodeCreater
 
 
 
-            killProcessText.Add("CMD.exe");
+            //會導致VS code 內的cmd 一起被關閉 所以移除
+            //killProcessText.Add("CMD.exe");
             foreach (var cmd in killProcessText)
             {
                 KillProcessByName(cmd);
             }
             foreach (var cmd in startCmdText)
             {
-                System.Diagnostics.Process.Start("CMD.exe", cmd);
+                ExecuteCommand(cmd);
+                //System.Diagnostics.Process.Start("CMD.exe", cmd);
             }
 
         }
@@ -2317,6 +2320,7 @@ namespace DLPCodeCreater
         {
             try
             {
+
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -2335,6 +2339,7 @@ namespace DLPCodeCreater
                     process.StandardInput.WriteLine(command);
                     process.StandardInput.Flush();
                     process.StandardInput.Close();
+
 
                     // Read the output
                     //string output = process.StandardOutput.ReadToEnd();

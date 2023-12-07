@@ -1,0 +1,101 @@
+
+<<<< Grid >>>>
+//------------------------------------------------
+
+    return [
+      {
+        headerName: '項目',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'ITEM',
+      },
+      {
+        headerName: '進度編號',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_NO',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '客戶別',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_CUST_NO',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '樣品編號',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_LOT_NO',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '型體編號',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_STYLE',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '配色',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_COLOR',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Gender',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_GENDER',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Size',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_SIZE',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '雙數',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_QTY',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: '樣品階段',
+        headerValueGetter: this._agService.headerValueGetter,
+        field: 'DP210_STATE',
+        type: 'text',
+        editable: false,
+        width: 100,
+        suppressSizeToFit: true,
+      },
+    ];
+
+//------------------------------------------------
+
+
+
+
+
+
+
