@@ -2525,8 +2525,20 @@ namespace DLPCodeCreater
 
         private void btn_reserve_Click(object sender, EventArgs e)
         {
-            tim_tab6_reservecheck.Start();
-            ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
+            if (cbx_tab6_branch.Text == "")
+            {
+                MessageBox.Show("請先選擇Branch!");
+            }
+            else if (!this.cbx_tab6_dg.Checked && !this.cbx_tab6_vn.Checked && !this.cbx_tab6_tc.Checked)
+            {
+                MessageBox.Show("請至少選擇一個廠區!");
+            }
+            else
+            {
+                //tim_tab6_reservecheck.Start();
+                //ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
+            }
+
         }
 
         private void btn_cancel_reserve_Click(object sender, EventArgs e)

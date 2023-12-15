@@ -33,6 +33,7 @@
             tim_checkinput = new System.Windows.Forms.Timer(components);
             tbc_main = new TabControl();
             tabPage5 = new TabPage();
+            lab_tab1_notice = new Label();
             lab_setting_frontendpath = new Label();
             btn_setting_selectfrontendpath = new Button();
             tbx_setting_frontendpath = new TextBox();
@@ -83,6 +84,7 @@
             tbx_tab2_resultMsg = new TextBox();
             lab_tab2_projectpath = new Label();
             btn_tab2_selectpath = new Button();
+            lab_atb2_fromarea = new Label();
             tbx_tab2_projectpath = new TextBox();
             btn_gettranslate = new Button();
             dgv_tab2_languagetranslate = new DataGridView();
@@ -93,7 +95,6 @@
             cbx_tab2_fromprogram = new ComboBox();
             lab_tab2_fromprogram = new Label();
             cbx_tab2_fromarea = new ComboBox();
-            lab_atb2_fromarea = new Label();
             cbx_tab2_frommodule = new ComboBox();
             lab_tab2_module = new Label();
             tabPage3 = new TabPage();
@@ -197,6 +198,7 @@
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(lab_tab1_notice);
             tabPage5.Controls.Add(lab_setting_frontendpath);
             tabPage5.Controls.Add(btn_setting_selectfrontendpath);
             tabPage5.Controls.Add(tbx_setting_frontendpath);
@@ -210,18 +212,29 @@
             tabPage5.Text = "Setting";
             tabPage5.UseVisualStyleBackColor = true;
             // 
+            // lab_tab1_notice
+            // 
+            lab_tab1_notice.CausesValidation = false;
+            lab_tab1_notice.Font = new Font("新細明體", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            lab_tab1_notice.ForeColor = Color.Red;
+            lab_tab1_notice.Location = new Point(17, 25);
+            lab_tab1_notice.Name = "lab_tab1_notice";
+            lab_tab1_notice.Size = new Size(521, 31);
+            lab_tab1_notice.TabIndex = 59;
+            lab_tab1_notice.Text = "前請先設定專案路徑";
+            // 
             // lab_setting_frontendpath
             // 
             lab_setting_frontendpath.AutoSize = true;
-            lab_setting_frontendpath.Location = new Point(14, 97);
+            lab_setting_frontendpath.Location = new Point(19, 143);
             lab_setting_frontendpath.Name = "lab_setting_frontendpath";
-            lab_setting_frontendpath.Size = new Size(71, 15);
+            lab_setting_frontendpath.Size = new Size(160, 15);
             lab_setting_frontendpath.TabIndex = 58;
-            lab_setting_frontendpath.Text = "ProjectPath";
+            lab_setting_frontendpath.Text = "ProjectPath (dlp-front-end)";
             // 
             // btn_setting_selectfrontendpath
             // 
-            btn_setting_selectfrontendpath.Location = new Point(509, 89);
+            btn_setting_selectfrontendpath.Location = new Point(595, 135);
             btn_setting_selectfrontendpath.Name = "btn_setting_selectfrontendpath";
             btn_setting_selectfrontendpath.Size = new Size(75, 23);
             btn_setting_selectfrontendpath.TabIndex = 57;
@@ -231,7 +244,7 @@
             // 
             // tbx_setting_frontendpath
             // 
-            tbx_setting_frontendpath.Location = new Point(115, 89);
+            tbx_setting_frontendpath.Location = new Point(201, 135);
             tbx_setting_frontendpath.Name = "tbx_setting_frontendpath";
             tbx_setting_frontendpath.Size = new Size(388, 23);
             tbx_setting_frontendpath.TabIndex = 56;
@@ -240,15 +253,15 @@
             // lab_setting_projectpath
             // 
             lab_setting_projectpath.AutoSize = true;
-            lab_setting_projectpath.Location = new Point(14, 37);
+            lab_setting_projectpath.Location = new Point(19, 83);
             lab_setting_projectpath.Name = "lab_setting_projectpath";
-            lab_setting_projectpath.Size = new Size(71, 15);
+            lab_setting_projectpath.Size = new Size(153, 15);
             lab_setting_projectpath.TabIndex = 55;
-            lab_setting_projectpath.Text = "ProjectPath";
+            lab_setting_projectpath.Text = "ProjectPath (dlp-develop)";
             // 
             // btn_setting_selectpath
             // 
-            btn_setting_selectpath.Location = new Point(509, 29);
+            btn_setting_selectpath.Location = new Point(595, 80);
             btn_setting_selectpath.Name = "btn_setting_selectpath";
             btn_setting_selectpath.Size = new Size(75, 23);
             btn_setting_selectpath.TabIndex = 54;
@@ -258,7 +271,7 @@
             // 
             // tbx_setting_projectpath
             // 
-            tbx_setting_projectpath.Location = new Point(115, 29);
+            tbx_setting_projectpath.Location = new Point(201, 80);
             tbx_setting_projectpath.Name = "tbx_setting_projectpath";
             tbx_setting_projectpath.Size = new Size(388, 23);
             tbx_setting_projectpath.TabIndex = 53;
@@ -619,13 +632,13 @@
             pnl_tab2.Controls.Add(tbx_tab2_resultMsg);
             pnl_tab2.Controls.Add(lab_tab2_projectpath);
             pnl_tab2.Controls.Add(btn_tab2_selectpath);
+            pnl_tab2.Controls.Add(lab_atb2_fromarea);
             pnl_tab2.Controls.Add(tbx_tab2_projectpath);
             pnl_tab2.Controls.Add(btn_gettranslate);
             pnl_tab2.Controls.Add(dgv_tab2_languagetranslate);
             pnl_tab2.Controls.Add(cbx_tab2_fromprogram);
             pnl_tab2.Controls.Add(lab_tab2_fromprogram);
             pnl_tab2.Controls.Add(cbx_tab2_fromarea);
-            pnl_tab2.Controls.Add(lab_atb2_fromarea);
             pnl_tab2.Controls.Add(cbx_tab2_frommodule);
             pnl_tab2.Controls.Add(lab_tab2_module);
             pnl_tab2.Dock = DockStyle.Fill;
@@ -742,6 +755,15 @@
             btn_tab2_selectpath.UseVisualStyleBackColor = true;
             btn_tab2_selectpath.Click += btn_tab2_selectpath_Click;
             // 
+            // lab_atb2_fromarea
+            // 
+            lab_atb2_fromarea.AutoSize = true;
+            lab_atb2_fromarea.Location = new Point(285, 55);
+            lab_atb2_fromarea.Name = "lab_atb2_fromarea";
+            lab_atb2_fromarea.Size = new Size(67, 15);
+            lab_atb2_fromarea.TabIndex = 44;
+            lab_atb2_fromarea.Text = "From_Area";
+            // 
             // tbx_tab2_projectpath
             // 
             tbx_tab2_projectpath.Location = new Point(119, 14);
@@ -822,16 +844,6 @@
             cbx_tab2_fromarea.Size = new Size(148, 23);
             cbx_tab2_fromarea.TabIndex = 45;
             cbx_tab2_fromarea.SelectedIndexChanged += cbx_tab2_fromarea_SelectedIndexChanged;
-            // 
-            // lab_atb2_fromarea
-            // 
-            lab_atb2_fromarea.AutoSize = true;
-            lab_atb2_fromarea.Font = new Font("新細明體", 90F, FontStyle.Bold, GraphicsUnit.Point);
-            lab_atb2_fromarea.Location = new Point(285, 55);
-            lab_atb2_fromarea.Name = "lab_atb2_fromarea";
-            lab_atb2_fromarea.Size = new Size(579, 120);
-            lab_atb2_fromarea.TabIndex = 44;
-            lab_atb2_fromarea.Text = "From_Area";
             // 
             // cbx_tab2_frommodule
             // 
@@ -1334,7 +1346,7 @@
             // 
             // tbx_tab6_resultMsg
             // 
-            tbx_tab6_resultMsg.Location = new Point(29, 236);
+            tbx_tab6_resultMsg.Location = new Point(29, 286);
             tbx_tab6_resultMsg.Multiline = true;
             tbx_tab6_resultMsg.Name = "tbx_tab6_resultMsg";
             tbx_tab6_resultMsg.ScrollBars = ScrollBars.Both;
@@ -1573,5 +1585,6 @@
         private Button btn_cancel_reserve;
         private Label lab_tab6_notice;
         private ContextMenuStrip contextMenuStrip1;
+        private Label lab_tab1_notice;
     }
 }
