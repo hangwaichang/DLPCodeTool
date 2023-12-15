@@ -1,18 +1,9 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
+﻿using Classes;
+using Newtonsoft.Json;
 using System.Data;
-using System.Text.RegularExpressions;
-using Classes;
-using Oracle.ManagedDataAccess.Client;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text;
 using System.Diagnostics;
-using System.Runtime.ConstrainedExecution;
-using System;
-using System.IO;
-using System.IO.Packaging;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
+using System.Security.Policy;
+using System.Text;
 
 namespace DLPCodeCreater
 {
@@ -2199,6 +2190,13 @@ namespace DLPCodeCreater
                         this.dgv_component_list.DataSource = ComponentLists;
                     }
                     break;
+                case 5:
+                    {
+                        cbx_tab6_branch.Items.Add(new GitBranch("sit", "SIT"));
+                        cbx_tab6_branch.Items.Add(new GitBranch("uat", "UAT"));
+                        cbx_tab6_branch.Items.Add(new GitBranch("release/v1.3", "PRD"));
+                    }
+                    break;
             }
         }
 
@@ -2505,6 +2503,154 @@ namespace DLPCodeCreater
         {
             tbx_APIGo_resultMsg.Text += Environment.NewLine;
             tbx_APIGo_resultMsg.Text += msg;
+        }
+        #endregion
+
+        #region PokemonGo
+        //發版計時器
+        private void tim_tab6_reservecheck_Tick(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            DateTime reserveTime = dtp_checkTime.Value;
+
+            if (now > reserveTime)
+            {
+                ResultMessageTab6("現在時間 [ " + now + " ] 已大於設定時間 [ " + reserveTime + " ]");
+                ResultMessageTab6("開始發版");
+                gitprocess();
+                tim_tab6_reservecheck.Stop();
+            }
+
+        }
+
+        private void btn_reserve_Click(object sender, EventArgs e)
+        {
+            tim_tab6_reservecheck.Start();
+            ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
+        }
+
+        private void btn_cancel_reserve_Click(object sender, EventArgs e)
+        {
+            tim_tab6_reservecheck.Stop();
+            ResultMessageTab6("取消預約!");
+        }
+        //訊息結果
+        public void ResultMessageTab6(string msg)
+        {
+            tbx_tab6_resultMsg.Text += Environment.NewLine;
+            tbx_tab6_resultMsg.Text += msg;
+        }
+
+        //Git 發版流程
+        public void gitprocess()
+        {
+
+            string gitcmd = "restore .";
+            string commit = "";
+            string repositoryPath = this.tbx_setting_projectpath.Text;  // 路徑
+            GitBranch branch = cbx_tab6_branch.Items[cbx_tab6_branch.SelectedIndex] as GitBranch;
+            //restore clean
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
+            gitcmd = "clean -f";
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
+
+            // 切換分支
+            gitcmd = "switch " + branch.BranchKey;
+
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
+
+            // 拉取最新版本
+            ResultMessageTab6("Git Cmd> " + "pull");
+            ExecuteGitCommand(repositoryPath, "pull");
+
+            //更新版號
+            var oldVersion = fhelper.FileRead(this.tbx_setting_projectpath.Text + Packagepath, "\"version\": \"", "\"")[0].Split(':')[1].Split('\"')[1];
+            //版號+1
+            var newVersion = oldVersion.Split('.')[0] + "." + oldVersion.Split('.')[1] + "." + (Int32.Parse(oldVersion.Split('.')[2]) + 1).ToString();
+
+            //更新版號
+            fhelper.FileReplace(this.tbx_setting_projectpath.Text + Packagepath, oldVersion, newVersion);
+
+            //commit 
+            if (this.cbx_tab6_dg.Checked)
+            {
+                commit += "dg_";
+            }
+            if (this.cbx_tab6_vn.Checked)
+            {
+                commit += "vn_";
+            }
+            if (this.cbx_tab6_tc.Checked)
+            {
+                commit += "tc_";
+            }
+            var yyyyMMdd = DateTime.Now.ToString("yyyyMMdd");
+            var HHmm = DateTime.Now.ToString("HHmm");
+
+            commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
+            gitcmd = "commit -am \"" + commit + "\"";
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
+
+            //Push depoly
+            switch (branch.BranchValue)
+            {
+                case "SIT":
+                    gitcmd = "push origin " + branch.BranchKey + ":sit_deploy";
+                    break;
+                case "UAT":
+                    gitcmd = "push origin " + branch.BranchKey + ":uat_deploy";
+                    break;
+                case "PRD":
+                    gitcmd = "push origin " + branch.BranchKey + ":rel_deploy";
+                    break;
+                default:
+                    break;
+            }
+
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
+
+        }
+
+        public void ExecuteGitCommand(string repositoryPath, string command)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "git",
+                    WorkingDirectory = repositoryPath,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardError = true
+                };
+
+                using (Process process = new Process { StartInfo = psi })
+                {
+                    process.StartInfo.Arguments = command;
+                    process.Start();
+
+                    // 等待命令執行完成
+                    process.WaitForExit();
+
+                    // 讀取輸出和錯誤信息
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    ResultMessageTab6(output);
+                    ResultMessageTab6(error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
         #endregion
 

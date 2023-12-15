@@ -134,10 +134,24 @@
             cbx_SingnalR = new CheckBox();
             cbx_AppPortal = new CheckBox();
             btn_dotnet_run = new Button();
+            tabPage6 = new TabPage();
+            lab_tab6_notice = new Label();
+            btn_cancel_reserve = new Button();
+            cbx_tab6_vn = new CheckBox();
+            cbx_tab6_tc = new CheckBox();
+            cbx_tab6_dg = new CheckBox();
+            btn_reserve = new Button();
+            tbx_tab6_resultMsg = new TextBox();
+            cbx_tab6_branch = new ComboBox();
+            lab_tab6_branch = new Label();
+            lab_tab6_checkTime = new Label();
+            dtp_checkTime = new DateTimePicker();
             tim_tab2 = new System.Windows.Forms.Timer(components);
             cmt_tab2_deleterow = new ContextMenuStrip(components);
             delectRowToolStripMenuItem = new ToolStripMenuItem();
             oracleCommand1 = new Oracle.ManagedDataAccess.Client.OracleCommand();
+            tim_tab6_reservecheck = new System.Windows.Forms.Timer(components);
+            contextMenuStrip1 = new ContextMenuStrip(components);
             tbc_main.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -155,6 +169,7 @@
             tabPage4.SuspendLayout();
             grb_front_end.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_component_list).BeginInit();
+            tabPage6.SuspendLayout();
             cmt_tab2_deleterow.SuspendLayout();
             SuspendLayout();
             // 
@@ -171,6 +186,7 @@
             tbc_main.Controls.Add(tabPage2);
             tbc_main.Controls.Add(tabPage3);
             tbc_main.Controls.Add(tabPage4);
+            tbc_main.Controls.Add(tabPage6);
             tbc_main.Location = new Point(-6, 3);
             tbc_main.Name = "tbc_main";
             tbc_main.SelectedIndex = 0;
@@ -810,9 +826,10 @@
             // lab_atb2_fromarea
             // 
             lab_atb2_fromarea.AutoSize = true;
+            lab_atb2_fromarea.Font = new Font("新細明體", 90F, FontStyle.Bold, GraphicsUnit.Point);
             lab_atb2_fromarea.Location = new Point(285, 55);
             lab_atb2_fromarea.Name = "lab_atb2_fromarea";
-            lab_atb2_fromarea.Size = new Size(67, 15);
+            lab_atb2_fromarea.Size = new Size(579, 120);
             lab_atb2_fromarea.TabIndex = 44;
             lab_atb2_fromarea.Text = "From_Area";
             // 
@@ -1233,6 +1250,133 @@
             btn_dotnet_run.UseVisualStyleBackColor = true;
             btn_dotnet_run.Click += btn_base_api_Click;
             // 
+            // tabPage6
+            // 
+            tabPage6.Controls.Add(lab_tab6_notice);
+            tabPage6.Controls.Add(btn_cancel_reserve);
+            tabPage6.Controls.Add(cbx_tab6_vn);
+            tabPage6.Controls.Add(cbx_tab6_tc);
+            tabPage6.Controls.Add(cbx_tab6_dg);
+            tabPage6.Controls.Add(btn_reserve);
+            tabPage6.Controls.Add(tbx_tab6_resultMsg);
+            tabPage6.Controls.Add(cbx_tab6_branch);
+            tabPage6.Controls.Add(lab_tab6_branch);
+            tabPage6.Controls.Add(lab_tab6_checkTime);
+            tabPage6.Controls.Add(dtp_checkTime);
+            tabPage6.Location = new Point(4, 24);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Padding = new Padding(3);
+            tabPage6.Size = new Size(789, 570);
+            tabPage6.TabIndex = 5;
+            tabPage6.Text = "PokemonGo";
+            tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // lab_tab6_notice
+            // 
+            lab_tab6_notice.CausesValidation = false;
+            lab_tab6_notice.Font = new Font("新細明體", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            lab_tab6_notice.ForeColor = Color.Red;
+            lab_tab6_notice.Location = new Point(29, 94);
+            lab_tab6_notice.Name = "lab_tab6_notice";
+            lab_tab6_notice.Size = new Size(521, 56);
+            lab_tab6_notice.TabIndex = 47;
+            lab_tab6_notice.Text = "使用前請先確認是否有已異動檔案未處理此排程會 Restore 所有異動檔";
+            // 
+            // btn_cancel_reserve
+            // 
+            btn_cancel_reserve.Location = new Point(644, 88);
+            btn_cancel_reserve.Name = "btn_cancel_reserve";
+            btn_cancel_reserve.Size = new Size(116, 46);
+            btn_cancel_reserve.TabIndex = 46;
+            btn_cancel_reserve.Text = "Reserve Cancel";
+            btn_cancel_reserve.UseVisualStyleBackColor = true;
+            btn_cancel_reserve.Click += btn_cancel_reserve_Click;
+            // 
+            // cbx_tab6_vn
+            // 
+            cbx_tab6_vn.AutoSize = true;
+            cbx_tab6_vn.Location = new Point(594, 42);
+            cbx_tab6_vn.Name = "cbx_tab6_vn";
+            cbx_tab6_vn.Size = new Size(44, 19);
+            cbx_tab6_vn.TabIndex = 45;
+            cbx_tab6_vn.Text = "VN";
+            cbx_tab6_vn.UseVisualStyleBackColor = true;
+            // 
+            // cbx_tab6_tc
+            // 
+            cbx_tab6_tc.AutoSize = true;
+            cbx_tab6_tc.Location = new Point(547, 42);
+            cbx_tab6_tc.Name = "cbx_tab6_tc";
+            cbx_tab6_tc.Size = new Size(41, 19);
+            cbx_tab6_tc.TabIndex = 44;
+            cbx_tab6_tc.Text = "TC";
+            cbx_tab6_tc.UseVisualStyleBackColor = true;
+            // 
+            // cbx_tab6_dg
+            // 
+            cbx_tab6_dg.AutoSize = true;
+            cbx_tab6_dg.Location = new Point(497, 42);
+            cbx_tab6_dg.Name = "cbx_tab6_dg";
+            cbx_tab6_dg.Size = new Size(44, 19);
+            cbx_tab6_dg.TabIndex = 43;
+            cbx_tab6_dg.Text = "DG";
+            cbx_tab6_dg.UseVisualStyleBackColor = true;
+            // 
+            // btn_reserve
+            // 
+            btn_reserve.Location = new Point(644, 27);
+            btn_reserve.Name = "btn_reserve";
+            btn_reserve.Size = new Size(116, 46);
+            btn_reserve.TabIndex = 42;
+            btn_reserve.Text = "Reserve";
+            btn_reserve.UseVisualStyleBackColor = true;
+            btn_reserve.Click += btn_reserve_Click;
+            // 
+            // tbx_tab6_resultMsg
+            // 
+            tbx_tab6_resultMsg.Location = new Point(29, 236);
+            tbx_tab6_resultMsg.Multiline = true;
+            tbx_tab6_resultMsg.Name = "tbx_tab6_resultMsg";
+            tbx_tab6_resultMsg.ScrollBars = ScrollBars.Both;
+            tbx_tab6_resultMsg.Size = new Size(736, 251);
+            tbx_tab6_resultMsg.TabIndex = 41;
+            // 
+            // cbx_tab6_branch
+            // 
+            cbx_tab6_branch.AutoCompleteCustomSource.AddRange(new string[] { "SIT", "UAT", "PRD" });
+            cbx_tab6_branch.FormattingEnabled = true;
+            cbx_tab6_branch.Location = new Point(357, 40);
+            cbx_tab6_branch.Name = "cbx_tab6_branch";
+            cbx_tab6_branch.Size = new Size(121, 23);
+            cbx_tab6_branch.TabIndex = 3;
+            // 
+            // lab_tab6_branch
+            // 
+            lab_tab6_branch.AutoSize = true;
+            lab_tab6_branch.Location = new Point(293, 46);
+            lab_tab6_branch.Name = "lab_tab6_branch";
+            lab_tab6_branch.Size = new Size(45, 15);
+            lab_tab6_branch.TabIndex = 2;
+            lab_tab6_branch.Text = "Branch";
+            // 
+            // lab_tab6_checkTime
+            // 
+            lab_tab6_checkTime.AutoSize = true;
+            lab_tab6_checkTime.Location = new Point(29, 46);
+            lab_tab6_checkTime.Name = "lab_tab6_checkTime";
+            lab_tab6_checkTime.Size = new Size(79, 15);
+            lab_tab6_checkTime.TabIndex = 1;
+            lab_tab6_checkTime.Text = "預計發版時間";
+            // 
+            // dtp_checkTime
+            // 
+            dtp_checkTime.CustomFormat = "yyyy-MM-dd HH:mm";
+            dtp_checkTime.Format = DateTimePickerFormat.Custom;
+            dtp_checkTime.Location = new Point(131, 40);
+            dtp_checkTime.Name = "dtp_checkTime";
+            dtp_checkTime.Size = new Size(141, 23);
+            dtp_checkTime.TabIndex = 0;
+            // 
             // tim_tab2
             // 
             tim_tab2.Enabled = true;
@@ -1255,6 +1399,16 @@
             // oracleCommand1
             // 
             oracleCommand1.Transaction = null;
+            // 
+            // tim_tab6_reservecheck
+            // 
+            tim_tab6_reservecheck.Interval = 1000;
+            tim_tab6_reservecheck.Tick += tim_tab6_reservecheck_Tick;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(61, 4);
             // 
             // Form1
             // 
@@ -1290,6 +1444,8 @@
             tabPage4.PerformLayout();
             grb_front_end.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgv_component_list).EndInit();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
             cmt_tab2_deleterow.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -1403,5 +1559,19 @@
         private DataGridViewTextBoxColumn Col_Version;
         private DataGridViewTextBoxColumn Col_OldVersion;
         private Button btn_move2develop;
+        private TabPage tabPage6;
+        private Label lab_tab6_branch;
+        private Label lab_tab6_checkTime;
+        private Button btn_reserve;
+        private TextBox tbx_tab6_resultMsg;
+        private ComboBox cbx_tab6_branch;
+        private System.Windows.Forms.Timer tim_tab6_reservecheck;
+        public DateTimePicker dtp_checkTime;
+        private CheckBox cbx_tab6_vn;
+        private CheckBox cbx_tab6_tc;
+        private CheckBox cbx_tab6_dg;
+        private Button btn_cancel_reserve;
+        private Label lab_tab6_notice;
+        private ContextMenuStrip contextMenuStrip1;
     }
 }
