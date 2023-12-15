@@ -2575,8 +2575,9 @@ namespace DLPCodeCreater
             ExecuteGitCommand(repositoryPath, gitcmd);
 
             // 拉取最新版本
-            ResultMessageTab6("Git Cmd> " + "pull");
-            ExecuteGitCommand(repositoryPath, "pull");
+            gitcmd = "pull origin " + branch.BranchKey;
+            ResultMessageTab6("Git Cmd> " + gitcmd);
+            ExecuteGitCommand(repositoryPath, gitcmd);
 
             //更新版號
             var oldVersion = fhelper.FileRead(this.tbx_setting_projectpath.Text + Packagepath, "\"version\": \"", "\"")[0].Split(':')[1].Split('\"')[1];
