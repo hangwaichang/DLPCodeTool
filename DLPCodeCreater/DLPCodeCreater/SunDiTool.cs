@@ -2535,8 +2535,8 @@ namespace DLPCodeCreater
             }
             else
             {
-                //tim_tab6_reservecheck.Start();
-                //ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
+                tim_tab6_reservecheck.Start();
+                ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
             }
 
         }
