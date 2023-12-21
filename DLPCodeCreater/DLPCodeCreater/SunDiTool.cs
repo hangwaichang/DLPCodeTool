@@ -2,12 +2,9 @@
 using Newtonsoft.Json;
 using System.Data;
 using System.Diagnostics;
-using System.Security.Policy;
 using System.Text;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using System.Runtime.InteropServices;
-using static DLPCodeCreater.Form1;
+
 
 namespace DLPCodeCreater
 {
