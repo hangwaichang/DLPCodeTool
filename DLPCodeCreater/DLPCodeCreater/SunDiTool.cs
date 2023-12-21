@@ -4,6 +4,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Security.Policy;
 using System.Text;
+using static System.Formats.Asn1.AsnWriter;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using System.Runtime.InteropServices;
+using static DLPCodeCreater.Form1;
 
 namespace DLPCodeCreater
 {
@@ -117,6 +121,31 @@ namespace DLPCodeCreater
 
         }
 
+        public class JsonData
+        {
+            /*GRID部分*/
+            public string grid_view_normal { get; set; }
+            public string grid_view_number { get; set; }
+            public string grid_view_date   { get; set; }
+            public string grid_confirm     { get; set; }
+            public string grid_check       { get; set; }
+            public string grid_select      { get; set; }
+
+            /*FORM部分*/
+            public string form_normal          { get; set; }
+            public string form_btn             { get; set; }
+            public string form_radio_btn       { get; set; }
+            public string form_hidden          { get; set; }
+            public string form_drop_down_list  { get; set; }
+            public string form_hidden2         { get; set; }
+
+            /*LOV部分*/
+            public string grid_Lovl { get; set; }
+            public string form_Lovl { get; set; }
+    }
+        JsonData jsonData = new JsonData();
+
+
         private ContextMenuStrip contextMenu;//宣告一個右鍵選單的物件
 
         ListViewItem lvi;
@@ -130,6 +159,7 @@ namespace DLPCodeCreater
             #region Tab3
             InitialListView();
             InitialContextMenu();
+            ReadJsonSetting();
             #endregion Tab3
 
         }
@@ -1200,6 +1230,12 @@ namespace DLPCodeCreater
 
         }
 
+
+        private void ReadJsonSetting()
+        {
+            ReadConfiguration(@"D:\Users\Wei_Pan\Desktop\DLPCodeTool+ColDef\Template.json", jsonData);
+        }
+
         //設定右鍵選單
         private void InitialContextMenu()
         {
@@ -1248,6 +1284,13 @@ namespace DLPCodeCreater
                 //openFileDialog.Filter = "所有檔案|*.*";
                 openFileDialog.Filter = "文本檔案 (*.txt)|*.txt";
                 openFileDialog.Title = "選擇要打開的檔案";
+
+
+                //IniManager ini_data = new IniManager(@"D:\Users\Wei_Pan\Desktop\DLPCodeTool+ColDef\Template.ini");
+
+                //string iniresult= ini_data.ReadIniFile("Section_A", "Key_A", "default");
+                //textBoxResults.AppendText($"Section_A:{iniresult}{Environment.NewLine}");
+
 
                 // 使用者選擇了檔案
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -1710,7 +1753,7 @@ namespace DLPCodeCreater
             {
                 del_strng += String.Format(_template_Lovl, item.itemChtName, item.itemEngName);
 
-                if (item.dbColumn != string.Empty)
+                if (item.dbColumn != null && item.dbColumn != string.Empty)
                 {
                     string[] splitStr = item.dbColumn.Split('.');
                     map_string += String.Format(_template_Lov2, splitStr[1], item.itemEngName);
@@ -1839,6 +1882,7 @@ namespace DLPCodeCreater
         {
             textBoxResults.Clear();
             List<string> allResultStr = new List<string>();
+            List<string> allstrJson = new List<string>();
             foreach (DataGridViewRow row in this.dGdVwHeaders.Rows)
             {
                 // 檢查行的類型，以排除 Header 和其他非資料行
@@ -1865,7 +1909,7 @@ namespace DLPCodeCreater
 
                 /*GRID部分*/
                 string _templateModel_grid_view_normal = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'text',\r\n        editable: false,\r\n        width: 100,\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
-                string _templateModel_grid_view_number = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'number',\r\n        valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //含 千份位＋顯示小數點後幾位\r\n        cellStyle: this._pubFunction.rightTextAlign,\r\n        floatingFilterComponent: 'numberFilterRenderer',\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
+                string _templateModel_grid_view_number = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'number',\r\n        editable: false,\r\n        width: 80,\r\n        valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //含 千份位＋顯示小數點後幾位\r\n        cellStyle: this._pubFunction.rightTextAlign,\r\n        floatingFilterComponent: 'numberFilterRenderer',\r\n        suppressSizeToFit: true,\r\n      }},\r\n";
                 string _templateModel_grid_view_date = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: 'date',\r\n        editable: false,\r\n        width: 120,\r\n        suppressSizeToFit: true,\r\n        valueFormatter: this._pubFunction.formatDate,\r\n        // valueFormatter: (params) => {{\r\n        //   return this._pubFunction.formatDate({{ value: params.data?.{1} }}, 'yyyy/MM/dd');\r\n        // }},\r\n      }},\r\n";
                 string _templateModel_grid_confirm = "      {{\r\n        headerName: '{0}', //勾選\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        editable: false,\r\n        filter: false,\r\n        sortable: false,\r\n        cellRenderer: 'confirmRenderer',\r\n        width: 50,\r\n        suppressSizeToFit: true,\r\n        cellRendererParams: (params) => {{\r\n          // if (params.data?.ITEM === 0) return {{ disabled: true }};\r\n\r\n          return {{\r\n            checkValueType: EAgGridCheckValueType.booleanType,\r\n            // afterCheckedFunc: (value: boolean) => {{\r\n            //   if (value) {{\r\n            //     //判斷通過，勾選\r\n            //     params.data.{1} = true;\r\n            //   }} else {{\r\n            //     //取消勾選\r\n            //     params.data.{1} = false;\r\n            //   }}\r\n            //   params.node.setData(params.data);\r\n            // }},\r\n          }};\r\n        }},\r\n      }},\r\n";
                 string _templateModel_grid_check = "      {{\r\n        headerName: '{0}', \r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        type: ['wrappingHeader'],\r\n        editable: false,\r\n        filter: false,\r\n        sortable: false,\r\n        cellRenderer: 'checkRenderer',\r\n        width: 50,\r\n        suppressSizeToFit: true,\r\n        valueGetter: (params) => {{\r\n          return params.data?.{1} === 'Y';\r\n        }},\r\n        valueSetter: (params) => {{\r\n          params.data.{1} = params.newValue ? 'Y' : null;\r\n          return true;\r\n        }},\r\n        cellRendererParams: (params) => {{\r\n          // if (params.data?.ITEM === 0) return {{ disabled: true }};\r\n          return {{\r\n            checkValueType: EAgGridCheckValueType.stringType,\r\n            onCheckedFunc: (value: string) => {{\r\n              // if (value == 'Y')\r\n              //   params.data.{1} = 'Y';  //勾選\r\n              // else\r\n              //   params.data.{1} = 'N';  //取消勾選\r\n              // params.node.setData(params.data);\r\n            }},\r\n          }};\r\n        }},\r\n      }},\r\n";
@@ -1888,6 +1932,41 @@ namespace DLPCodeCreater
                 /*其他*/
                 string resultStr = string.Empty;
                 List<string> list_resultStr = new List<string>();
+
+
+                _templateModel_grid_view_normal = jsonData.grid_view_normal;
+                _templateModel_grid_view_number = jsonData.grid_view_number;
+                _templateModel_grid_view_date = jsonData.grid_view_date;
+                _templateModel_grid_confirm = jsonData.grid_confirm;
+                _templateModel_grid_check = jsonData.grid_check;
+                _templateModel_grid_select = jsonData.grid_select;
+
+                _templateModel_form_normal = jsonData.form_normal;
+                _templateModel_form_btn = jsonData.form_btn;
+                _templateModel_form_radio_btn = jsonData.form_radio_btn;
+                _templateModel_form_hidden = jsonData.form_hidden;
+                _templateModel_form_drop_down_list = jsonData.form_drop_down_list;
+                _templateModel_form_hidden2 = jsonData.form_hidden2;
+
+                _templateModel_grid_Lovl = jsonData.grid_Lovl;
+                _templateModel_form_Lovl = jsonData.form_Lovl;
+
+
+
+                ////用Linq直接組
+                //var result = new
+                //{
+                //    grid_view_normal = _templateModel_grid_view_normal,
+                //    grid_view_number = _templateModel_grid_view_number,
+
+                //};
+
+                ////物件序列化
+                //string strJson = JsonConvert.SerializeObject(result, Formatting.Indented);
+                //allstrJson.Add(strJson);
+
+                //textBoxResults.AppendText(strJson);
+                //File.WriteAllText(@"D:\Users\Wei_Pan\Desktop\DLPCodeTool+ColDef\Template.josn", strJson);
 
 
 
@@ -1974,6 +2053,8 @@ namespace DLPCodeCreater
             FileWrite(allResultStr, false, "");
             //開啟temp.txt
             System.Diagnostics.Process.Start("explorer.exe", "temp.txt");
+
+
 
         }
 
@@ -2077,6 +2158,56 @@ namespace DLPCodeCreater
             // Set text of ListView item to match the ComboBox.
             lvi.SubItems[5].Text = comboBox1.Text;
             this.comboBox1.Visible = false;
+        }
+
+        public static void ReadConfiguration(string FilePath, JsonData Data)
+        {
+            if (!File.Exists(FilePath)) File.WriteAllText(FilePath, JsonConvert.SerializeObject(Data));
+
+            var fileData = File.ReadAllText(FilePath);
+
+            try
+            {
+                JsonConvert.PopulateObject(fileData, Data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("設定檔內容有誤，請確認!\n" + e.Message, "設定檔內容有誤");
+            }
+        }
+
+        public class IniManager
+        {
+            private string filePath;
+            private StringBuilder lpReturnedString;
+            private int bufferSize;
+
+            [DllImport("kernel32")]
+            private static extern long WritePrivateProfileString(string section, string key, string lpString, string lpFileName);
+
+            [DllImport("kernel32")]
+            private static extern int GetPrivateProfileString(string section, string key, string lpDefault, StringBuilder lpReturnedString, int nSize, string lpFileName);
+
+            public IniManager(string iniPath)
+            {
+                filePath = iniPath;
+                bufferSize = 512;
+                lpReturnedString = new StringBuilder(bufferSize);
+            }
+
+            // read ini date depend on section and key
+            public string ReadIniFile(string section, string key, string defaultValue)
+            {
+                lpReturnedString.Clear();
+                GetPrivateProfileString(section, key, defaultValue, lpReturnedString, bufferSize, filePath);
+                return lpReturnedString.ToString();
+            }
+
+            // write ini data depend on section and key
+            public void WriteIniFile(string section, string key, Object value)
+            {
+                WritePrivateProfileString(section, key, value.ToString(), filePath);
+            }
         }
 
 
@@ -2666,6 +2797,8 @@ namespace DLPCodeCreater
             }
         }
         #endregion
+
+
 
     }
 
