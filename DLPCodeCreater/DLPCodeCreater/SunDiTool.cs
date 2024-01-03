@@ -2680,8 +2680,8 @@ namespace DLPCodeCreater
 
         private void btn_com_movekill_Click(object sender, EventArgs e)
         {
-            string flibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}\\{1}.tgz";
-            string tlibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}";
+            string flibpath = tbx_setting_frontendpath.Text + "\\libraries\\{0}\\{1}.tgz";
+            string tlibpath = tbx_setting_frontendpath.Text + "\\libraries\\{0}";
 
 
             foreach (Component row in ComponentLists)
@@ -2706,7 +2706,7 @@ namespace DLPCodeCreater
 
         private void btn_move2develop_Click(object sender, EventArgs e)
         {
-            string flibpath = "D:\\DLP_Git\\dlp-front-end\\libraries\\{0}";
+            string flibpath = tbx_setting_frontendpath.Text + "\\libraries\\{0}";
             string packagever = "file:libraries/{0}.tgz";
 
             foreach (Component row in ComponentLists)
