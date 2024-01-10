@@ -211,9 +211,20 @@ namespace DLPCodeCreater
 
         private void cbx_fromarea_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string programPath = "";
             fAreapath = fModulepath + @"\" + this.cbx_fromarea.Text;
+
+            //WO 程式可能有pages路徑
+            if (this.cbx_iswo.Checked)
+            {
+                programPath = fAreapath + @"\pages";
+            }
+            else
+            {
+                programPath = fAreapath;
+            }
             //取得程式列表
-            List<string> ds = fhelper.DirSearch(fAreapath);
+            List<string> ds = fhelper.DirSearch(programPath);
             //放入from_program
             BindingSource bs = new BindingSource();
             this.cbx_fromprogram.DataSource = ds;
@@ -233,9 +244,20 @@ namespace DLPCodeCreater
 
         private void cbx_targetarea_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string programPath = "";
             tAreapath = tModulepath + @"\" + this.cbx_targetarea.Text;
+
+            //WO 程式可能有pages路徑
+            if (this.cbx_iswo.Checked)
+            {
+                programPath = tAreapath + @"\pages";
+            }
+            else {
+                programPath = tAreapath;
+            }
+
             //取得程式列表
-            List<string> ds = fhelper.DirSearch(tAreapath);
+            List<string> ds = fhelper.DirSearch(programPath);
             //放入from_program
             BindingSource bs = new BindingSource();
             this.cbx_targetprogram.DataSource = ds;
@@ -245,8 +267,17 @@ namespace DLPCodeCreater
         private void btn_Move_Click(object sender, EventArgs e)
         {
             ResultMessage("===============1.前端檔案搬移開始================");
-            fProgrampath = fAreapath + @"\" + this.cbx_fromprogram.Text;
-            tProgrampath = tAreapath + @"\" + this.cbx_targetprogram.Text;
+            //WO 程式可能有pages路徑
+            if (this.cbx_iswo.Checked)
+            {
+                fProgrampath = fAreapath + @"\pages\" + this.cbx_fromprogram.Text;
+                tProgrampath = tAreapath + @"\pages\" + this.cbx_targetprogram.Text;
+            }
+            else {
+                fProgrampath = fAreapath + @"\" + this.cbx_fromprogram.Text;
+                tProgrampath = tAreapath + @"\" + this.cbx_targetprogram.Text;
+            }
+
             string fileName = "";
             string tfileName = "";
             //ts,css,html
@@ -504,7 +535,15 @@ namespace DLPCodeCreater
             string area = this.cbx_targetarea.Text.ToLower();
             string module = this.cbx_targetmodule.Text.ToLower();
             string program_area = program.ToUpper() + area.ToUpper();
-            string componentpath = "./" + area + "/" + program + "/" + program + ".component";
+            string componentpath = "";
+            if (this.cbx_iswo.Checked)
+            {
+                componentpath = "./" + area + "/pages/" + program + "/" + program + ".component";
+            }
+            else {
+                componentpath = "./" + area + "/" + program + "/" + program + ".component";
+            }
+
 
             string _importString = "import {{ {0}Component as {1}{2}Component }} from '{3}';";
             string _declarations = "{0}{1}Component,";
