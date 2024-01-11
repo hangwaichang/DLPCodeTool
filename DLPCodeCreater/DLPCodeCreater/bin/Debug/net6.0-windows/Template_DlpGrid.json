@@ -2,38 +2,36 @@
   "grid_view_normal": 
 "      {{
         headerName: '{0}',
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        type: 'text',
         editable: false,
         width: 100,
-        suppressSizeToFit: true,
+        // forceUpper: true,
+        type: EDlpGridColumnType.text,
       }},
 ",
   "grid_view_number": 
 "      {{
         headerName: '{0}',
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        type: 'number',
         editable: false,
         width: 80,
-        valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //含 千份位＋顯示小數點後幾位
+        type: EDlpGridColumnType.number,
+        //valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //含 千份位＋顯示小數點後幾位
         cellStyle: this._pubFunction.rightTextAlign,
-        floatingFilterComponent: 'numberFilterRenderer',
-        suppressSizeToFit: true,
+        precision: 2, //小數精確度 (預設為 0，即整數)
+        // min: -999.99,
+        // max: 999.99,
       }},
 ",
   "grid_view_date" : 
 "      {{
         headerName: '{0}',
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        type: 'date',
         editable: false,
         width: 120,
-        suppressSizeToFit: true,
-        valueFormatter: this._pubFunction.formatDate,
+        type: EDlpGridColumnType.date,
+        dateFormat: 'yyyy/MM/dd', //日期格式 (使用 Angular DatePipe 格式，預設為 yyyy-MM-dd)
+        //valueFormatter: this._pubFunction.formatDate,
         // valueFormatter: (params) => {{
         //   return this._pubFunction.formatDate({{ value: params.data?.{1} }}, 'yyyy/MM/dd');
         // }},
@@ -42,101 +40,44 @@
   "grid_confirm" : 
 "      {{
         headerName: '{0}', //勾選
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        editable: false,
+        //cellRendererEditable: true, //(params) => {{return params.data?.ITEM === 0;}},// 可新增不可修改
         filter: false,
         sortable: false,
-        cellRenderer: 'confirmRenderer',
         width: 50,
-        suppressSizeToFit: true,
-        cellRendererParams: (params) => {{
-          // if (params.data?.ITEM === 0) return {{ disabled: true }};
-
-          return {{
-            checkValueType: EAgGridCheckValueType.booleanType,
-            // afterCheckedFunc: (value: boolean) => {{
-            //   if (value) {{
-            //     //判斷通過，勾選
-            //     params.data.{1} = true;
-            //   }} else {{
-            //     //取消勾選
-            //     params.data.{1} = false;
-            //   }}
-            //   params.node.setData(params.data);
-            // }},
-          }};
-        }},
+        type: EDlpGridColumnType.checkbox,
+        //checkboxValueType: EDlpGridCheckboxValueType.boolean,  // 預設即為常用的 'Y' 'N'
+        //onCellValueChanged: ($event: NewValueParams) => {{
+        //}},
       }},
 ",
   "grid_check" : 
 "      {{
         headerName: '{0}', 
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        type: ['wrappingHeader'],
-        editable: false,
+        cellRendererEditable: true,
         filter: false,
         sortable: false,
-        cellRenderer: 'checkRenderer',
         width: 50,
-        suppressSizeToFit: true,
-        valueGetter: (params) => {{
-          return params.data?.{1} === 'Y';
-        }},
-        valueSetter: (params) => {{
-          params.data.{1} = params.newValue ? 'Y' : null;
-          return true;
-        }},
-        cellRendererParams: (params) => {{
-          // if (params.data?.ITEM === 0) return {{ disabled: true }};
-          return {{
-            checkValueType: EAgGridCheckValueType.stringType,
-            onCheckedFunc: (value: string) => {{
-              // if (value == 'Y')
-              //   params.data.{1} = 'Y';  //勾選
-              // else
-              //   params.data.{1} = 'N';  //取消勾選
-              // params.node.setData(params.data);
-            }},
-          }};
-        }},
+        type: 'EDlpGridColumnType.checkbox',
+        //checkDirty: true,
+        //checkboxValueType: EDlpGridCheckboxValueType.number, // 預設即為常用的 'Y' 'N'
+        //onCellValueChanged: ($event: NewValueParams) => {{
+        //   if ($event.node.data?.ITEM === 0) return {{ disabled: true }};
+        //}},
       }},
 ",
   "grid_select" : 
 "      {{
         headerName: '{0}',
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        type: 'text',
-        editable: true, //(params) => {{return params.data?.ITEM === 0;}},// 可新增不可修改
+        type: EDlpGridColumnType.select,
+        cellRendererEditable: true, //(params) => {{return params.data?.ITEM === 0;}},// 可新增不可修改
         sortable: true,
         width: 100,
-        suppressSizeToFit: true,
-        valueFormatter: (params) => {{
-          const displayValue = params.node?.data?.{1} ?? '';
-          return {{ 
-{2}          }}[displayValue] ?? '';
-        }},
-        // valueSetter: (params) => {{
-        //   const optKey = params.newValue?.[0];
-        //   params.data.{1} = optKey;
-        //   return true;
-        // }},
-        cellEditor: 'selectRenderer',
-        cellEditorParams: {{
-          control: {{
-            multiple: false,
-            field: ['{1}'],
-            options: of([
-{3}            ]),
-          }},
-        }},
-        floatingFilterComponent: 'selectFilterRenderer',
-        floatingFilterComponentParams: {{
-            options: of([
-{3}            ]),
-        }},
+        selectableOptions: of<IDlpGridSelectOption[]>([
+{3}
+        ]),
       }},
 ",
 
@@ -147,7 +88,6 @@
         label: '{0}',
         // labelWidth: 5,
         flex: '20',
-        order: 1,
         class: 'pr-1',
         // readonly: true,
       }}),
@@ -169,7 +109,6 @@
           }},
         ],
         flex: '20',
-        order: 1,
         class: 'pr-1',
       }}),
 ",
@@ -187,12 +126,10 @@
       }}),
 ",
   "form_hidden" : 
-"      new FormHidden({
+"      new FormHidden({{
         key: '',
-        label: '',
-        order: 1,
         flex: '20',
-      }),
+      }}),
 ",
   "form_drop_down_list" : 
 "      new FormDropDownList({{
@@ -209,31 +146,29 @@
       }}),
 ",
   "form_hidden2" : 
-"      new FormHidden({}),
+"      new FormHidden({{}}),
 ",
   "form_caption" : 
 "      new FormCaption({{
         value: `{0}`,
-        order: 1,
         flex: '100',
         //customStyle: {{
-        //  color: 'blue',//FormCaption 字體顏色
+        //  color: 'blue',//字體顏色
         //}},
       }}),
 ",
 
 
+
   "grid_Lovl" : 
 "      {{
         headerName: '{0}',
-        headerValueGetter: this._agService.headerValueGetter,
         field: '{1}',
-        suppressSizeToFit: true,
         editable: true, //(params) => {{ return params.data.ITEM === 0; // 可新增不可修改 }},
         sortable: true,
         width: 120,
-        type: 'text',
-        cellEditor: 'lovEditor',
+        type: EDlpGridColumnType.lov,
+        //cellEditor: 'lovEditor',
         cellEditorParams: (params) => {{
           return <ILovEditorParams>{{
             apiParams: {{

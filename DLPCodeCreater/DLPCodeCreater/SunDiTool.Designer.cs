@@ -99,14 +99,13 @@
             cbx_tab2_frommodule = new ComboBox();
             lab_tab2_module = new Label();
             tabPage3 = new TabPage();
+            chk_Gridtype = new CheckBox();
             comboBox1 = new ComboBox();
             dGV_innerObj = new DataGridView();
             textBoxResults = new TextBox();
             btn_run = new Button();
             btn_clearMessege = new Button();
             dGdVwHeaders = new DataGridView();
-            Index = new DataGridViewTextBoxColumn();
-            Type = new DataGridViewComboBoxColumn();
             lstVwSubItems = new ListView();
             btnPath = new Button();
             txtSelectPath = new TextBox();
@@ -154,6 +153,8 @@
             oracleCommand1 = new Oracle.ManagedDataAccess.Client.OracleCommand();
             tim_tab6_reservecheck = new System.Windows.Forms.Timer(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
+            Index = new DataGridViewTextBoxColumn();
+            Type = new DataGridViewComboBoxColumn();
             tbc_main.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -332,7 +333,7 @@
             // cbx_copydiff
             // 
             cbx_copydiff.AutoSize = true;
-            cbx_copydiff.Location = new Point(619, 3);
+            cbx_copydiff.Location = new Point(619, 17);
             cbx_copydiff.Name = "cbx_copydiff";
             cbx_copydiff.Size = new Size(131, 19);
             cbx_copydiff.TabIndex = 50;
@@ -883,6 +884,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(chk_Gridtype);
             tabPage3.Controls.Add(comboBox1);
             tabPage3.Controls.Add(dGV_innerObj);
             tabPage3.Controls.Add(textBoxResults);
@@ -895,15 +897,28 @@
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
+            tabPage3.RightToLeft = RightToLeft.No;
             tabPage3.Size = new Size(789, 570);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "ColDef";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // chk_Gridtype
+            // 
+            chk_Gridtype.AutoSize = true;
+            chk_Gridtype.Checked = true;
+            chk_Gridtype.CheckState = CheckState.Checked;
+            chk_Gridtype.Location = new Point(695, 51);
+            chk_Gridtype.Name = "chk_Gridtype";
+            chk_Gridtype.Size = new Size(70, 19);
+            chk_Gridtype.TabIndex = 16;
+            chk_Gridtype.Text = "DlpGrid";
+            chk_Gridtype.UseVisualStyleBackColor = true;
+            // 
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(695, 47);
+            comboBox1.Location = new Point(694, 14);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(88, 23);
             comboBox1.TabIndex = 15;
@@ -966,25 +981,6 @@
             dGdVwHeaders.TabIndex = 11;
             dGdVwHeaders.CellMouseDown += dGdVwHeaders_CellMouseDown;
             dGdVwHeaders.SelectionChanged += dGdVwHeaders_SelectionChanged;
-            // 
-            // Index
-            // 
-            Index.HeaderText = "區段代號";
-            Index.MinimumWidth = 6;
-            Index.Name = "Index";
-            Index.ReadOnly = true;
-            Index.Width = 70;
-            // 
-            // Type
-            // 
-            Type.HeaderText = "選擇類型(Grid/Form)";
-            Type.Items.AddRange(new object[] { "", "Form", "Grid" });
-            Type.MinimumWidth = 6;
-            Type.Name = "Type";
-            Type.Resizable = DataGridViewTriState.True;
-            Type.SortMode = DataGridViewColumnSortMode.Automatic;
-            Type.ToolTipText = "Type";
-            Type.Width = 95;
             // 
             // lstVwSubItems
             // 
@@ -1451,6 +1447,25 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
+            // Index
+            // 
+            Index.HeaderText = "區段代號";
+            Index.MinimumWidth = 6;
+            Index.Name = "Index";
+            Index.ReadOnly = true;
+            Index.Width = 70;
+            // 
+            // Type
+            // 
+            Type.HeaderText = "選擇類型(Grid/Form)";
+            Type.Items.AddRange(new object[] { "", "Form", "Grid" });
+            Type.MinimumWidth = 6;
+            Type.Name = "Type";
+            Type.Resizable = DataGridViewTriState.True;
+            Type.SortMode = DataGridViewColumnSortMode.Automatic;
+            Type.ToolTipText = "依據選擇產出，為空則不產出";
+            Type.Width = 95;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1613,8 +1628,9 @@
         private Label lab_tab6_notice;
         private ContextMenuStrip contextMenuStrip1;
         private Label lab_tab1_notice;
+        private CheckBox cbx_iswo;
+        private CheckBox chk_Gridtype;
         private DataGridViewTextBoxColumn Index;
         private DataGridViewComboBoxColumn Type;
-        private CheckBox cbx_iswo;
     }
 }
