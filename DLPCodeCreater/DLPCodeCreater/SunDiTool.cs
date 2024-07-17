@@ -2038,9 +2038,9 @@ namespace DLPCodeCreater
                 item1.SubItems.Add(resultstr2.itemEngName);
                 item1.SubItems.Add(resultstr2.itemType);
                 item1.SubItems.Add(resultstr2.innerIndex.ToString());
-                item1.SubItems.Add(resultstr2.datablock.ToString());
-                //Add the items to the ListView.
-                lstVwSubItems.Items.AddRange(new ListViewItem[] { item1 });
+                item1.SubItems.Add(resultstr2.datablock);//.ToString()
+				//Add the items to the ListView.
+				lstVwSubItems.Items.AddRange(new ListViewItem[] { item1 });
             }
         }
 
@@ -2400,9 +2400,9 @@ namespace DLPCodeCreater
                             list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
                         }
                         else if (obj.itemType == "number")
-                            list_resultStr.Add(String.Format(_templateModel_grid_view_date, obj.itemChtName, obj.dbColumn));
-                        else if (obj.itemType == "date")
                             list_resultStr.Add(String.Format(_templateModel_grid_view_number, obj.itemChtName, obj.dbColumn));
+                        else if (obj.itemType == "date")
+                            list_resultStr.Add(String.Format(_templateModel_grid_view_date, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "核取方塊" || obj.itemType == "Check Box")
                             list_resultStr.Add(String.Format(_templateModel_grid_confirm, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "值選擇框")
@@ -2424,9 +2424,9 @@ namespace DLPCodeCreater
                             list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
                         }
                         else if (obj.itemType == "number")
-                            list_resultStr.Add(String.Format(_templateModel_form_date, obj.itemChtName, obj.dbColumn));
-                        else if (obj.itemType == "date")
                             list_resultStr.Add(String.Format(_templateModel_form_number, obj.itemChtName, obj.dbColumn));
+                        else if (obj.itemType == "date")
+                            list_resultStr.Add(String.Format(_templateModel_form_date, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "按鈕" || obj.itemType == "Push Button")
                             list_resultStr.Add(String.Format(_templateModel_form_btn, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType.Contains("LOV_"))
@@ -2514,10 +2514,19 @@ namespace DLPCodeCreater
 
             // 使用HitTest方法確定點擊位置的相關資訊
             ListViewHitTestInfo hit = lstVwSubItems.HitTest(e.Location);
-            // 取得點擊的列索引
-            int columnIndex = hit.Item.SubItems.IndexOf(hit.SubItem);
-            // 取得點擊的行索引
-            int rowIndex = hit.Item.Index;
+
+            int columnIndex;
+
+			if (hit.SubItem is null) columnIndex = 0;
+            else
+            {
+				// 取得點擊的列索引
+				columnIndex = hit.Item.SubItems.IndexOf(hit.SubItem);
+				textBoxResults.AppendText($"columnIndex: " + columnIndex + Environment.NewLine);
+			}
+
+			// 取得點擊的行索引
+			//int rowIndex = hit.Item.Index;
 
             if (lvi != null && columnIndex == 5)
             {
@@ -2751,7 +2760,13 @@ namespace DLPCodeCreater
                     datablock = "",
                 });
 
-             this.Fun_Reload_SubDataGridView(datarow);
+
+            //多紀錄index
+            foreach (var obj in list_innerObj.Select((Value, Index) => new { Value, Index }))
+                obj.Value.innerIndex = obj.Index;
+
+
+            this.Fun_Reload_SubDataGridView(datarow);
     }
 
 
