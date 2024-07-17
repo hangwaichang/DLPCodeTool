@@ -6,7 +6,12 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System;
-
+using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComboBox = System.Windows.Forms.ComboBox;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Linq;
 
 namespace DLPCodeCreater
 {
@@ -81,7 +86,7 @@ namespace DLPCodeCreater
         {
 
             public int innerIndex { get; set; }    //內部索引
-            public int index { get; set; }    //分類索引
+            public int? index { get; set; }    //分類索引
             public string dbColumn { get; set; }    //* 資料欄名稱
             public string itemEngName { get; set; } //* 名稱
             public string itemChtName { get; set; } //* 標籤 or * 提示(first)
@@ -92,6 +97,11 @@ namespace DLPCodeCreater
             public int? SubSeq { get; set; }    //順序索引
 
             public bool Checked { get; set; }    //選取
+
+            public string canvas { get; set; }    //* 工作區 * canvas
+
+            public string datablock { get; set; }    //* 頁籤頁面 * 資料區塊
+
 
         }
 
@@ -137,13 +147,15 @@ namespace DLPCodeCreater
 
             /*FORM部分*/
             public string form_normal { get; set; }
+            public string form_number { get; set; }
+            public string form_date { get; set; }
             public string form_btn { get; set; }
             public string form_radio_btn { get; set; }
             public string form_hidden { get; set; }
             public string form_drop_down_list { get; set; }
             public string form_hidden2 { get; set; }
             public string form_caption { get; set; }
-
+            public string form_checkbox { get; set; }
 
             /*LOV部分*/
             public string grid_Lovl { get; set; }
@@ -1283,7 +1295,7 @@ namespace DLPCodeCreater
         private void ReadJsonSetting()
         {
             if (this.chk_Gridtype.Checked == true)
-                ReadConfiguration(@"Template_DlpGrid.json", jsonData);
+                ReadConfiguration(@"Template_DlpGridForm.json", jsonData);
             else
                 //ReadConfiguration(@"D:\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Template.json", jsonData);
                 ReadConfiguration(@"Template.json", jsonData);
@@ -1335,7 +1347,7 @@ namespace DLPCodeCreater
 
                 // 設定預設的檔案類型篩選器
                 //openFileDialog.Filter = "所有檔案|*.*";
-                openFileDialog.Filter = "文本檔案 (*.txt)|*.txt";
+                openFileDialog.Filter = "文本檔案 (*.txt), Excel Files(*.xls)|*.txt;*.xls;*.xlsx;*.xlsm";
                 openFileDialog.Title = "選擇要打開的檔案";
 
 
@@ -1348,6 +1360,33 @@ namespace DLPCodeCreater
 
                     string selectedFilePath = openFileDialog.FileName;
                     this.txtSelectPath.Text = selectedFilePath;
+
+                    if (Path.GetExtension(selectedFilePath) != ".txt")  //副檔名
+                    {
+                        textBoxResults.AppendText($"副檔名： {Path.GetExtension(selectedFilePath)}]{Environment.NewLine}");
+
+                        ReadExcelFile(selectedFilePath, list_innerObj);
+
+
+                        dGV_innerObj.DataSource = list_innerObj;
+
+
+                        List<IGrouping<int?, innerObj>> headerlist2 = list_innerObj.GroupBy(x => x.index).ToList();//取header使用
+
+                        headerlist2.ForEach(group =>
+                        {
+                            this.dGdVwHeaders.Rows.Add(group.Key, "");  //改用combobox，預設值為空
+                            //group.ToList().ForEach(item => textBoxResults.AppendText($"\tindex:{item.index}"));//, Score:{item.Score}  分組後內容取得
+                        });
+
+
+                        var datarow2 = this.dGdVwHeaders.Rows[0];   // 母表選澤ROW DATA
+                        this.Fun_Reload_SubDataGridView(datarow2);
+
+
+                        return;
+                    }
+
 
                     //textBoxResults.AppendText($" 取得檔名(不包含附檔名)： {Path.GetFileNameWithoutExtension(openFileDialog.FileName)}]{Environment.NewLine}");
                     filePath = openFileDialog.FileName; //(全域)
@@ -1429,6 +1468,7 @@ namespace DLPCodeCreater
                     string[] searchStrings = new string[]
                     {
                     " * 區塊                                              ",
+                    //"   * 名稱                                            ", // 資料區塊
                     "   * 項目                                            ",
                     "     * 名稱                                          ",
                     "     * 項目類型                                      ",
@@ -1466,6 +1506,8 @@ namespace DLPCodeCreater
                     "     * Title                                         ",        // LOV MAPPING
                     "     * Return Item                                   ",        // LOV MAPPING
                     "     * Display Width                                 ",        // LOV MAPPING
+                    "     * 工作區                                        ",        // 取工作區CANVAS用
+                    "     * 頁籤頁面                                      ",        // 取資料區塊用
                     };
 
                     // 儲存符合搜尋字串的索引和字串
@@ -1563,9 +1605,10 @@ namespace DLPCodeCreater
 
 
                     int temp_index = 0;
+                    string temp_canvas = "";
                     bool flag = false;
                     //textBoxResults.Clear();
-                    string _temp_dbColumn = string.Empty, _temp_itemEngName = string.Empty, _temp_itemChtName = string.Empty, _temp_itemType = string.Empty;
+                    string _temp_dbColumn = string.Empty, _temp_itemEngName = string.Empty, _temp_itemChtName = string.Empty, _temp_itemType = string.Empty, _temp_canvas = string.Empty, _temp_datablock = string.Empty;
 
                     string _LOV_dbColumn = string.Empty, _LOV_itemEngName = string.Empty, _LOV_itemChtName = string.Empty, _LOV_key = string.Empty;
 
@@ -1732,7 +1775,9 @@ namespace DLPCodeCreater
                                     dbColumn = _temp_dbColumn,
                                     itemEngName = _temp_itemEngName,
                                     itemChtName = _temp_itemChtName,
-                                    itemType = _temp_itemType
+                                    itemType = _temp_itemType,
+                                    canvas = _temp_canvas == null ? "其他" : _temp_canvas,
+                                    datablock = _temp_datablock == null ? "" : _temp_datablock,
                                 });
 
                                 _temp_dbColumn = string.Empty; _temp_itemEngName = string.Empty; _temp_itemChtName = string.Empty; _temp_itemType = string.Empty;
@@ -1774,40 +1819,63 @@ namespace DLPCodeCreater
                             _temp_itemType = getRealValue(obj.Value.Sub);
                         }
 
-
-                        //分類索引切換之際
-                        if (obj.Value.index != temp_index)
+                        //20240417 add 改為用 CANVAS 作為 [分類索引]
+                        if (obj.Value.Sub.Contains("     * 工作區                                        ")
+                             || obj.Value.Sub.Contains("     * 工作區                                        "))
                         {
-                            //20240109 add Caption string 收集
-                            foreach (var keys in list_CaptionObj)
-                            {
-                                list_innerObj.Add(new innerObj()
-                                {
-                                    HeaderType = "",
-                                    SubSeq = null,
-                                    index = obj.Value.index,
-                                    dbColumn = null,
-                                    itemEngName = null,
-                                    itemChtName = keys.itemChtName,
-                                    itemType = keys.itemType
-                                });
-                            }
-
-                            for (int i = 0; i < 5; i++)
-                                list_innerObj.Add(new innerObj()
-                                {
-                                    HeaderType = "",
-                                    SubSeq = null,
-                                    index = obj.Value.index,
-                                    dbColumn = null,
-                                    itemEngName = null,
-                                    itemChtName = null,
-                                    itemType = "Form隱藏格式"
-                                });
-
-                            temp_index = obj.Value.index;
-                            flag = true;
+                            _temp_canvas = getRealValue(obj.Value.Sub);
                         }
+
+                        //20240417 add
+                        if (obj.Value.Sub.Contains("     * 頁籤頁面                                     ")
+                             || obj.Value.Sub.Contains("     * 頁籤頁面                                     "))
+                        {
+                            _temp_datablock = getRealValue(obj.Value.Sub);
+                        }
+
+                        ////分類索引切換之際
+                        ////if (obj.Value.index != temp_index)
+                        //if (_temp_canvas != temp_canvas)
+                        //{
+                        //    //20240109 add Caption string 收集
+                        //    foreach (var keys in list_CaptionObj)
+                        //    {
+                        //        list_innerObj.Add(new innerObj()
+                        //        {
+                        //            HeaderType = "",
+                        //            SubSeq = null,
+                        //            index = obj.Value.index,
+                        //            dbColumn = null,
+                        //            itemEngName = null,
+                        //            itemChtName = keys.itemChtName,
+                        //            itemType = keys.itemType,
+                        //            canvas = _temp_canvas == null ? "其他" : _temp_canvas,
+                        //            datablock = _temp_datablock == null ? "" : _temp_datablock,
+                        //            //canvas = keys.canvas,
+                        //            //datablock = keys.datablock == null ? "" : keys.datablock,
+                        //        });
+                        //    }
+
+                        //    for (int i = 0; i < 3; i++)
+                        //        list_innerObj.Add(new innerObj()
+                        //        {
+                        //            HeaderType = "",
+                        //            SubSeq = null,
+                        //            index = obj.Value.index,
+                        //            dbColumn = null,
+                        //            itemEngName = null,
+                        //            itemChtName = null,
+                        //            itemType = "Form隱藏格式",
+                        //            canvas = _temp_canvas == null ? "其他" : _temp_canvas,
+                        //            datablock = _temp_datablock == null ? "" : _temp_datablock,
+                        //            //canvas = _temp_canvas,
+                        //            //datablock = _temp_datablock == null ? "" : _temp_datablock,
+                        //        });
+
+                        //    //temp_index = obj.Value.index;
+                        //    temp_canvas = _temp_canvas;
+                        //    flag = true;
+                        //}
 
 
 
@@ -1823,7 +1891,9 @@ namespace DLPCodeCreater
                                 dbColumn = _temp_dbColumn,
                                 itemEngName = _temp_itemEngName,
                                 itemChtName = _temp_itemChtName,
-                                itemType = _temp_itemType
+                                itemType = _temp_itemType,
+                                canvas = _temp_canvas == null ? "其他" : _temp_canvas,
+                                datablock = _temp_datablock == null ? "" : _temp_datablock,
                             });
                         }
 
@@ -1847,7 +1917,8 @@ namespace DLPCodeCreater
                     this.dGdVwHeaders.Rows.Clear();
 
 
-                    List<IGrouping<int, innerObj>> headerlist = list_innerObj.GroupBy(x => x.index).ToList();//取header使用
+                    // List<IGrouping<int, innerObj>> headerlist = list_innerObj.GroupBy(x => x.index).ToList();//取header使用
+                    List<IGrouping<string, innerObj>> headerlist = list_innerObj.GroupBy(x => x.canvas).ToList();//取header使用   測試
 
                     headerlist.ForEach(group =>
                     {
@@ -1856,10 +1927,45 @@ namespace DLPCodeCreater
                         this.dGdVwHeaders.Rows.Add(group.Key, "");  //改用combobox，預設值為空
 
                         //group.ToList().ForEach(item => textBoxResults.AppendText($"\tindex:{item.index}"));//, Score:{item.Score}  分組後內容取得
+
+
+                    //    //20240417 add 分類索引切換之際(每個分類都加入)
+                    //    //----------------------------
+                    //    //20240109 add Caption string 收集
+                    //    foreach (var keys in list_CaptionObj)
+                    //    {
+                    //        list_innerObj.Add(new innerObj()
+                    //        {
+                    //            HeaderType = "",
+                    //            SubSeq = null,
+                    //            index = null,
+                    //            dbColumn = null,
+                    //            itemEngName = null,
+                    //            itemChtName = keys.itemChtName,
+                    //            itemType = keys.itemType,
+                    //            canvas = group.Key == null ? "其他" : group.Key,
+                    //            datablock = "",
+                    //        });
+                    //    }
+
+                    //    for (int i = 0; i < 3; i++)
+                    //        list_innerObj.Add(new innerObj()
+                    //        {
+                    //            HeaderType = "",
+                    //            SubSeq = null,
+                    //            index = null,
+                    //            dbColumn = null,
+                    //            itemEngName = null,
+                    //            itemChtName = null,
+                    //            itemType = "Form隱藏格式",
+                    //            canvas = group.Key == null ? "其他" : group.Key,
+                    //            datablock = "",
+                    //        });
+
                     });
 
 
-                    var datarow = this.dGdVwHeaders.Rows[0];
+                    var datarow = this.dGdVwHeaders.Rows[0];        // 母表選澤ROW DATA
                     this.Fun_Reload_SubDataGridView(datarow);
 
 
@@ -1905,8 +2011,9 @@ namespace DLPCodeCreater
 
             lstVwSubItems.Clear();
             this.count = 0; //全域
-            var templist = this.list_innerObj.Where(x => x.index == Convert.ToInt32(datarow.Cells[0].Value)
-                ).ToList();
+
+            //var templist = this.list_innerObj.Where(x => x.index == Convert.ToInt32(datarow.Cells[0].Value)).ToList();
+            var templist = this.list_innerObj.Where(x => x.canvas == Convert.ToString(datarow.Cells[0].Value)).ToList();      // 測試
 
             lstVwSubItems.Columns.Add("選取順序", 25, HorizontalAlignment.Left);
             lstVwSubItems.Columns.Add("順序", 45, HorizontalAlignment.Left);
@@ -1916,6 +2023,7 @@ namespace DLPCodeCreater
             lstVwSubItems.Columns.Add("itemEngName", 150, HorizontalAlignment.Left);
             lstVwSubItems.Columns.Add("itemType", 120, HorizontalAlignment.Center);
             lstVwSubItems.Columns.Add("index", 10, HorizontalAlignment.Left);
+            lstVwSubItems.Columns.Add("datablock", 10, HorizontalAlignment.Left);
 
 
             foreach (var resultstr2 in templist)
@@ -1930,6 +2038,7 @@ namespace DLPCodeCreater
                 item1.SubItems.Add(resultstr2.itemEngName);
                 item1.SubItems.Add(resultstr2.itemType);
                 item1.SubItems.Add(resultstr2.innerIndex.ToString());
+                item1.SubItems.Add(resultstr2.datablock.ToString());
                 //Add the items to the ListView.
                 lstVwSubItems.Items.AddRange(new ListViewItem[] { item1 });
             }
@@ -1984,9 +2093,9 @@ namespace DLPCodeCreater
                                                                                               //"            options: of([\r\n              { key: '{0}', value: '{1}' },\r\n              { key: '{0}', value: '{1}' },\r\n            ]),\r\n"
             string _template_select1 = "";
             if (this.chk_Gridtype.Checked == true)
-                _template_select1 = "              {{ label: '{1}', value: '{0}' }},\r\n";
+                _template_select1 = "              {{ value: '{1}', label: '{0}' }},\r\n";
             else
-                _template_select1 = "              {{ key: '{1}', value: '{0}' }},\r\n";
+                _template_select1 = "              {{ value: '{1}', key: '{0}' }},\r\n";
             string _template_select2 = "                '{1}': '{0}',\r\n";
             string options_strng = "", obj_string = "";
 
@@ -2045,8 +2154,8 @@ namespace DLPCodeCreater
             var rowsCount = dGdVwHeaders.SelectedRows.Count;
             if (rowsCount == 0 || rowsCount > 1) return;
 
-            var datarow = dGdVwHeaders.SelectedRows[0];
-            this.Fun_Reload_SubDataGridView(datarow);
+            var datarow = dGdVwHeaders.SelectedRows[0];     // 母表選澤ROW DATA
+            this.Fun_Reload_SubDataGridView(datarow);  // 選擇母表任一行需重載子表資料
 
         }
 
@@ -2132,7 +2241,8 @@ namespace DLPCodeCreater
                 if (row.IsNewRow) continue;
 
                 // 逐列取得每個儲存格的內容值
-                int _dataindex = Convert.ToInt16(row.Cells[0].Value);
+                //int _dataindex = Convert.ToInt16(row.Cells[0].Value);  //測試
+                string _canvasindex = Convert.ToString(row.Cells[0].Value);  //測試
                 string _dataType = row.Cells[1].Value?.ToString();
 
                 // 使用取得的值進行後續處理
@@ -2142,16 +2252,23 @@ namespace DLPCodeCreater
 
                 // 使用 Where 方法篩選同類的資料
                 // 使用 OrderBy 方法依據指定的元素欄位進行重新排序
-                List<innerObj> current_list = this.list_innerObj.Where(x => x.index == _dataindex).OrderBy(obj => obj.SubSeq).ToList().FindAll(e => e.SubSeq != null);
+                //List<innerObj> current_list = this.list_innerObj.Where(x => x.index == _dataindex).OrderBy(obj => obj.SubSeq).ToList().FindAll(e => e.SubSeq != null);      //測試
+
+                List<innerObj> current_list = this.list_innerObj.Where(x => x.canvas == _canvasindex).OrderBy(obj => obj.SubSeq).ToList().FindAll(e => e.SubSeq != null);
 
                 /*標題部分  無變數不需修改*/
                 string _templateModel_grid_header_start = "";
+                string _templateModel_form_header_start = "";
                 if (this.chk_Gridtype.Checked == true)
-                    _templateModel_grid_header_start = "<<<< Grid >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n";
+                    _templateModel_grid_header_start = "<<<< Dlp Grid >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n";
                 else
                     _templateModel_grid_header_start = "<<<< Grid >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n      {\r\n        headerName: '項目',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: 'ITEM',\r\n      },\r\n";
                 string _templateModel_grid_header_end = "    ];\r\n\r\n//------------------------------------------------\r\n\r\n\r\n\r\n";
-                string _templateModel_form_header_start = "<<<< Form >>>>\r\n//------------------------------------------------\r\n\r\n    const controls: FormBase<any>[] = [\r\n";
+
+                if (this.chk_Gridtype.Checked == true)
+                    _templateModel_form_header_start = "<<<< Dlp Form >>>>\r\n//------------------------------------------------\r\n\r\n    return [\r\n";
+                else
+                    _templateModel_form_header_start = "<<<< Form >>>>\r\n//------------------------------------------------\r\n\r\n    const controls: FormBase<any>[] = [\r\n";
                 string _templateModel_form_header_end = "    ];\r\n\r\n//------------------------------------------------\r\n\r\n\r\n\r\n";
 
                 /*GRID部分*/
@@ -2165,12 +2282,15 @@ namespace DLPCodeCreater
 
                 /*FORM部分*/
                 string _templateModel_form_normal = "      new FormTextBox({{\r\n        key: '{1}',\r\n        label: '{0}',\r\n        // labelWidth: 5,\r\n        flex: '20',\r\n        order: 1,\r\n        class: 'pr-1',\r\n        // readonly: true,\r\n      }}),\r\n";  // textAlign: 'right',\r\n
+                string _templateModel_form_number = "";
+                string _templateModel_form_date = "";
                 string _templateModel_form_btn = "      new FormButtonAuthority({{\r\n        showButtons: [\r\n          <IButtons>{{\r\n            key: 'confirm',\r\n            color: 'primary',\r\n            text: '{0}',\r\n            icon: 'done_all',\r\n            visible: true,\r\n            //visibledAsync: this.State.FormRefs.visibleAsync$,\r\n            clickFunction: () => {{\r\n              //this.Service.pushSave();\r\n            }},\r\n          }},\r\n        ],\r\n        flex: '20',\r\n        order: 1,\r\n        class: 'pr-1',\r\n      }}),\r\n";
                 string _templateModel_form_radio_btn = "      new FormRadioButton({{\r\n        key: '{0}',\r\n        label: '',\r\n        options: of([\r\n          // {{ key: 'A', value: '中文顯示A' }},\r\n          // {{ key: 'B', value: '中文顯示B' }},\r\n          // {{ key: 'C', value: '中文顯示C' }},\r\n        ]),\r\n        flex: '45',\r\n        // value: 'A',\r\n        inputChangeFunc: (params) => {{\r\n          // this._Service.query();\r\n        }},\r\n      }}),\r\n";
                 string _templateModel_form_hidden = "      new FormHidden({\r\n        key: '',\r\n        label: '',\r\n        order: 1,\r\n        flex: '20',\r\n      }),\r\n";
                 string _templateModel_form_drop_down_list = "      new FormDropDownList({{\r\n        key: '{0}',\r\n        label: '{1}',\r\n        labelWidth: 10,\r\n        flex: 25,\r\n        class: 'pr-1',\r\n        options: of([\r\n          // {{ key: 'A', value: '顯示文字A' }},\r\n          // {{ key: 'B', value: '顯示文字B' }},\r\n          // {{ key: 'C', value: '顯示文字C' }},\r\n        ]),\r\n        inputChangeFunc: (value, form) => {{\r\n          //this._Service.update();\r\n        }},\r\n      }}),\r\n";
                 string _templateModel_form_hidden2 = "      new FormHidden({{}}),\r\n";
                 string _templateModel_form_caption = "      new FormCaption({{\r\n        value: `{0}`,\r\n        order: 1,\r\n        flex: '100',\r\n        //customStyle: {{\r\n        //  color: 'blue',//FormCaption 字體顏色\r\n        //}},\r\n      }}),\r\n";
+                string _templateModel_form_checkbox = "";
 
                 /*LOV部分*/
                 string _templateModel_grid_Lovl = "      {{\r\n        headerName: '{0}',\r\n        headerValueGetter: this._agService.headerValueGetter,\r\n        field: '{1}',\r\n        suppressSizeToFit: true,\r\n        editable: true, //(params) => {{ return params.data.ITEM === 0; // 可新增不可修改 }},\r\n        sortable: true,\r\n        width: 120,\r\n        type: 'text',\r\n        cellEditor: 'lovEditor',\r\n        cellEditorParams: (params) => {{\r\n          return <ILovEditorParams>{{\r\n            apiParams: {{\r\n              // sp前綴\r\n              moduleNo: 模組名稱,\r\n              programNo: '{2}',\r\n              commonApiType: ECommonApiType.CallStoreProcedureDataSet,\r\n            }},\r\n            queryAction: sp名稱, // sp名稱\r\n            //payload: {{}}, // input\r\n            refCursorKeys: [v表名稱Info, v表名稱Count], // output\r\n            colDefs: [\r\n{3}            ],\r\n            keyMapping: {{              {4}\r\n            }},\r\n            checkInput: true,\r\n            onPostChange: (params) => {{\r\n              if (params.isValidInput) //this._Service.ServiceFun(params.value);\r\n            }},\r\n          }};\r\n        }},\r\n      }},\r\n";
@@ -2180,29 +2300,43 @@ namespace DLPCodeCreater
                 string resultStr = string.Empty;
                 List<string> list_resultStr = new List<string>();
 
-                if (!jsonData.GetType().GetProperties()     // 判斷物件是否所有屬性都為NULL: true則採用程式預設 false則套用JSON檔
-                            .Where(pi => pi.PropertyType == typeof(string))
-                            .Select(pi => (string)pi.GetValue(jsonData))
-                            .Any(value => string.IsNullOrEmpty(value)))
-                {
-                    _templateModel_grid_view_normal = jsonData.grid_view_normal;
-                    _templateModel_grid_view_number = jsonData.grid_view_number;
-                    _templateModel_grid_view_date = jsonData.grid_view_date;
-                    _templateModel_grid_confirm = jsonData.grid_confirm;
-                    _templateModel_grid_check = jsonData.grid_check;
-                    _templateModel_grid_select = jsonData.grid_select;
+                PropertyInfo[] myPropertyInfo;
+                // Get the properties of 'Type' class object.
+                myPropertyInfo = jsonData.GetType().GetProperties();
+                //for (int row = 0; row < myPropertyInfo.Length; row++)
+                //{
+                //    Console.WriteLine(myPropertyInfo[row].ToString());
+                //    textBoxResults.AppendText(myPropertyInfo[row].ToString());
+                //    PropertyInfo aa = myPropertyInfo[row];
+                //    textBoxResults.AppendText(aa.GetValue(jsonData));
+                //}
 
-                    _templateModel_form_normal = jsonData.form_normal;
-                    _templateModel_form_btn = jsonData.form_btn;
-                    _templateModel_form_radio_btn = jsonData.form_radio_btn;
-                    _templateModel_form_hidden = jsonData.form_hidden;
-                    _templateModel_form_drop_down_list = jsonData.form_drop_down_list;
-                    _templateModel_form_hidden2 = jsonData.form_hidden2;
-                    _templateModel_form_caption = jsonData.form_caption;
+                //if (!jsonData.GetType().GetProperties()     // 判斷物件是否所有屬性都為NULL: true則採用程式預設 false則套用JSON檔
+                //            .Where(pi => pi.PropertyType == typeof(string))
+                //            .Select(pi => (string)pi.GetValue(jsonData))
+                //            .Any(value => string.IsNullOrEmpty(value)))
+                //{
+                _templateModel_grid_view_normal = jsonData.grid_view_normal;
+                _templateModel_grid_view_number = jsonData.grid_view_number;
+                _templateModel_grid_view_date = jsonData.grid_view_date;
+                _templateModel_grid_confirm = jsonData.grid_confirm;
+                _templateModel_grid_check = jsonData.grid_check;
+                _templateModel_grid_select = jsonData.grid_select;
 
-                    _templateModel_grid_Lovl = jsonData.grid_Lovl;
-                    _templateModel_form_Lovl = jsonData.form_Lovl;
-                }
+                _templateModel_form_normal = jsonData.form_normal;
+                _templateModel_form_number = jsonData.form_number;
+                _templateModel_form_date = jsonData.form_date;
+                _templateModel_form_btn = jsonData.form_btn;
+                _templateModel_form_radio_btn = jsonData.form_radio_btn;
+                _templateModel_form_hidden = jsonData.form_hidden;
+                _templateModel_form_drop_down_list = jsonData.form_drop_down_list;
+                _templateModel_form_hidden2 = jsonData.form_hidden2;
+                _templateModel_form_caption = jsonData.form_caption;
+                _templateModel_form_checkbox = jsonData.form_checkbox;
+
+                _templateModel_grid_Lovl = jsonData.grid_Lovl;
+                _templateModel_form_Lovl = jsonData.form_Lovl;
+                //}
 
 
 
@@ -2241,21 +2375,34 @@ namespace DLPCodeCreater
                     if (obj.dbColumn != null)
                         obj.dbColumn = obj.dbColumn.ToUpper();
 
+                    string _templateModel = "";
                     //textBoxResults.AppendText(String.Format(_templateModel2, obj.itemChtName, obj.dbColumn));
                     if (_dataType == "Grid")
                     {
-                        string _templateModel = "";
+                        //string _templateModel = "";
+                        // --- OLD ---
+                        //if (obj.itemType == "文字項目" || obj.itemType == "顯示項目"
+                        //    || obj.itemType == "Text Item" || obj.itemType == "Display Item")
+                        //{
+                        //    _templateModel = Fun_Replace_GridView_String("View", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
+                        //    list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
+                        //}
+                        //else if (obj.itemType == "控制項目")
+                        //{
+                        //    _templateModel = Fun_Replace_GridView_String("noView", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
+                        //    list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
+                        //}
+
                         if (obj.itemType == "文字項目" || obj.itemType == "顯示項目"
                             || obj.itemType == "Text Item" || obj.itemType == "Display Item")
                         {
-                            _templateModel = Fun_Replace_GridView_String("View", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
+                            _templateModel = _templateModel_grid_view_normal;
                             list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
                         }
-                        else if (obj.itemType == "控制項目")
-                        {
-                            _templateModel = Fun_Replace_GridView_String("noView", obj, _templateModel_grid_view_number, _templateModel_grid_view_date, _templateModel_grid_view_normal);
-                            list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
-                        }
+                        else if (obj.itemType == "number")
+                            list_resultStr.Add(String.Format(_templateModel_grid_view_date, obj.itemChtName, obj.dbColumn));
+                        else if (obj.itemType == "date")
+                            list_resultStr.Add(String.Format(_templateModel_grid_view_number, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "核取方塊" || obj.itemType == "Check Box")
                             list_resultStr.Add(String.Format(_templateModel_grid_confirm, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "值選擇框")
@@ -2271,17 +2418,30 @@ namespace DLPCodeCreater
                     {
                         if (obj.itemType == "文字項目" || obj.itemType == "顯示項目"
                             || obj.itemType == "Text Item" || obj.itemType == "Display Item")
-                            list_resultStr.Add(String.Format(_templateModel_form_normal, obj.itemChtName, obj.dbColumn));
+                        //list_resultStr.Add(String.Format(_templateModel_form_normal, obj.itemChtName, obj.dbColumn));
+                        {
+                            _templateModel = _templateModel_form_normal;
+                            list_resultStr.Add(String.Format(_templateModel, obj.itemChtName, obj.dbColumn));
+                        }
+                        else if (obj.itemType == "number")
+                            list_resultStr.Add(String.Format(_templateModel_form_date, obj.itemChtName, obj.dbColumn));
+                        else if (obj.itemType == "date")
+                            list_resultStr.Add(String.Format(_templateModel_form_number, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "按鈕" || obj.itemType == "Push Button")
-                            list_resultStr.Add(String.Format(_templateModel_form_btn, obj.itemChtName));
+                            list_resultStr.Add(String.Format(_templateModel_form_btn, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType.Contains("LOV_"))
                             list_resultStr.Add(String.Format(_templateModel_form_Lovl, obj.itemChtName, obj.dbColumn, Path.GetFileNameWithoutExtension(filePath), Fun_Lov_Detail_String(obj.itemType, 0), Fun_Lov_Detail_String(obj.itemType, 1)));
                         else if (obj.itemType == "圓鈕群組" || obj.itemType == "Radio Group") //
                             list_resultStr.Add(String.Format(_templateModel_form_radio_btn, obj.itemEngName, Fun_Select_Detail_String(obj.itemEngName, 1)));
+                        else if (obj.itemType == "核取方塊" || obj.itemType == "Check Box")
+                            list_resultStr.Add(String.Format(_templateModel_form_checkbox, obj.itemChtName, obj.dbColumn));
                         else if (obj.itemType == "清單項目" || obj.itemType == "List Item") //
                             list_resultStr.Add(String.Format(_templateModel_form_drop_down_list, obj.itemEngName, obj.itemChtName, Fun_Select_Detail_String(obj.itemEngName, 1)));
                         else if (obj.itemType == "Form隱藏格式")
+                        {
                             list_resultStr.Add(_templateModel_form_hidden);
+                            list_resultStr.Add(_templateModel_form_hidden2);
+                        }
                         else if (obj.itemType == "Caption")
                             list_resultStr.Add(String.Format(_templateModel_form_caption, obj.itemChtName));
                         else
@@ -2351,19 +2511,30 @@ namespace DLPCodeCreater
         private void lstVwSubItems_MouseUp(object sender, MouseEventArgs e)
         {
             lvi = this.lstVwSubItems.GetItemAt(e.X, e.Y);
-            if (lvi != null)
+
+            // 使用HitTest方法確定點擊位置的相關資訊
+            ListViewHitTestInfo hit = lstVwSubItems.HitTest(e.Location);
+            // 取得點擊的列索引
+            int columnIndex = hit.Item.SubItems.IndexOf(hit.SubItem);
+            // 取得點擊的行索引
+            int rowIndex = hit.Item.Index;
+
+            if (lvi != null && columnIndex == 5)
             {
+
                 string itemType = lvi.SubItems[5].Text;
 
                 if (itemType == "文字項目" || itemType == "顯示項目"
                     || itemType == "Text Item" || itemType == "Display Item"
-                    || itemType == "控制項目" || itemType == "顯示項目"
+                    //|| itemType == "控制項目" || itemType == "顯示項目"
+                    || itemType == "text" || itemType == "number" || itemType == "date"
                     )
                 {
                     this.comboBox1.Items.Clear();
                     this.comboBox1.Visible = true;
-                    this.comboBox1.Items.Add("控制項目");
-                    this.comboBox1.Items.Add("顯示項目");
+                    this.comboBox1.Items.Add("text");
+                    this.comboBox1.Items.Add("number");
+                    this.comboBox1.Items.Add("date");
                 }
                 else if (itemType == "核取方塊" || itemType == "Check Box"
                     || itemType == "值選擇框" || itemType == "核取方塊"
@@ -2406,6 +2577,14 @@ namespace DLPCodeCreater
         {
             // Set text of ListView item to match the ComboBox.
             lvi.SubItems[5].Text = comboBox1.Text;
+
+            // 取得點擊的列索引
+            int columnIndex = lvi.Index;
+            // 取得點擊的行索引
+            //int rowIndex = lstVwSubItems.Items.IndexOf(lvi);
+
+            int innerindex = Convert.ToInt16(this.lstVwSubItems.Items[columnIndex].SubItems[6].Text);   // [6]:index => 從ListView畫面取得list_innerObj中真實對應的index
+            this.list_innerObj[innerindex].itemType = comboBox1.Text;
             this.comboBox1.Visible = false;
         }
 
@@ -2466,11 +2645,120 @@ namespace DLPCodeCreater
             }
         }
 
+        private DataTable ReadExcelFile(string filePath, List<innerObj> list_innerObj)
+        {
+            DataTable dataTable = new DataTable();
 
-        #endregion  --------------------- Tab3 --------------------------
+            Excel.Application excelApp = new Excel.Application();
+            Excel.Workbook workbook = excelApp.Workbooks.Open(filePath, ReadOnly: true);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+            Excel.Range range = worksheet.UsedRange;
 
-        #region Setting Tab
-        private void btn_setting_selectpath_Click(object sender, EventArgs e)
+            try
+            {
+                // 將Excel資料讀取到DataTable中
+                for (int row = 1; row <= range.Rows.Count; row++)
+                {
+                    DataRow dataRow = dataTable.NewRow();
+                    for (int col = 1; col <= range.Columns.Count; col++)
+                    {
+                        if (row == 1)
+                        {
+                            // 將第一行作為DataTable的欄位名稱
+                            Excel.Range cell = worksheet.Cells[row, col];
+                            string cellValue = cell.Value != null ? cell.Value.ToString() : "";
+                            dataTable.Columns.Add(cellValue);
+                        }
+                        else
+                        {
+                            dataRow[col - 1] = worksheet.Cells[row, col].Value;
+
+                        }
+                    }
+                    if (row != 1 && (dataRow != null && !dataRow.ItemArray.All(x => x is DBNull)))
+                    {
+
+                        list_innerObj.Add(new innerObj()
+                        {
+                            HeaderType = "",
+                            SubSeq = null,
+                            index = 0,
+                            dbColumn = dataRow[1].ToString(),
+                            itemEngName = dataRow[2].ToString(),
+                            itemChtName = dataRow[0].ToString(),
+                            itemType = dataRow[3].ToString(),
+                            innerIndex = row - 2  //去除第一列header跟index由0開始
+                        });
+
+                        dataTable.Rows.Add(dataRow);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error reading Excel file: " + ex.Message);
+            }
+            finally
+            {
+                // 釋放Excel相關資源
+                workbook.Close(false);
+                excelApp.Quit();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            }
+
+            return dataTable;
+        }
+
+
+        private void btn_othercolumn_Click(object sender, EventArgs e)
+        {
+
+            var datarow = this.dGdVwHeaders.CurrentRow;        // 母表選澤ROW DATA
+            string header_canvas = Convert.ToString(datarow.Cells[0].Value == null ? "其他" : datarow.Cells[0].Value);
+
+            //20240417 add 分類索引切換之際
+            //----------------------------
+            //20240109 add Caption string 收集
+            foreach (var keys in list_CaptionObj)
+            {
+                list_innerObj.Add(new innerObj()
+                {
+                    HeaderType = "",
+                    SubSeq = null,
+                    index = null,
+                    dbColumn = null,
+                    itemEngName = null,
+                    itemChtName = keys.itemChtName,
+                    itemType = keys.itemType,
+                    canvas = header_canvas ,
+                    datablock = "",
+                });
+            }
+
+            for (int i = 0; i < 3; i++)
+                list_innerObj.Add(new innerObj()
+                {
+                    HeaderType = "",
+                    SubSeq = null,
+                    index = null,
+                    dbColumn = null,
+                    itemEngName = null,
+                    itemChtName = null,
+                    itemType = "Form隱藏格式",
+                    canvas = header_canvas,
+                    datablock = "",
+                });
+
+             this.Fun_Reload_SubDataGridView(datarow);
+    }
+
+
+    #endregion  --------------------- Tab4 --------------------------
+
+    #region Setting Tab
+    private void btn_setting_selectpath_Click(object sender, EventArgs e)
         {
             try
             {
@@ -2860,7 +3148,7 @@ namespace DLPCodeCreater
         {
             try
             {
-                string cmd = "start cmd /k \"cd /d D:\\DLP_Git\\dlp-develop\\DLP.Web\\DLP.Web.AppPortal\\ClientApp && npm i \"";
+                string cmd = "start cmd /k \"cd /d D:\\DLP_Git\\dlp-develop\\DLP.Web\\DLP.Web.AppPortal\\ClientApp && npm row \"";
                 ExecuteCommand(cmd);
             }
             catch (Exception)
@@ -3053,6 +3341,7 @@ namespace DLPCodeCreater
             }
         }
         #endregion
+
 
 
 
