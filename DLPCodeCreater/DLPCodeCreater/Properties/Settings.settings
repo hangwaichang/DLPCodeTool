@@ -5,5 +5,11 @@
     <Setting Name="EipVS" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=172.32.1.199)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=VSPORTAL)));password=eipdba;user id=eipdba;</Value>
     </Setting>
+    <Setting Name="UserToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
