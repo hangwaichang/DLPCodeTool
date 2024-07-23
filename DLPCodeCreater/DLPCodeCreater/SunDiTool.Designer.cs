@@ -33,6 +33,10 @@
 			tim_checkinput = new System.Windows.Forms.Timer(components);
 			tbc_main = new TabControl();
 			tabPage5 = new TabPage();
+			lab_gitlab_userid = new Label();
+			lab_gitlab_token = new Label();
+			txtUserId = new TextBox();
+			txtToken = new TextBox();
 			lab_tab1_notice = new Label();
 			lab_setting_frontendpath = new Label();
 			btn_setting_selectfrontendpath = new Button();
@@ -139,6 +143,8 @@
 			cbx_AppPortal = new CheckBox();
 			btn_dotnet_run = new Button();
 			tabPage6 = new TabPage();
+			textBox1 = new TextBox();
+			btn_getMRinfo = new Button();
 			btnCreateMergeRequest = new Button();
 			lab_tab6_notice = new Label();
 			btn_cancel_reserve = new Button();
@@ -157,10 +163,6 @@
 			oracleCommand1 = new Oracle.ManagedDataAccess.Client.OracleCommand();
 			tim_tab6_reservecheck = new System.Windows.Forms.Timer(components);
 			contextMenuStrip1 = new ContextMenuStrip(components);
-			txtToken = new TextBox();
-			lab_gitlab_token = new Label();
-			txtUserId = new TextBox();
-			lab_gitlab_userid = new Label();
 			tbc_main.SuspendLayout();
 			tabPage5.SuspendLayout();
 			tabPage1.SuspendLayout();
@@ -223,6 +225,38 @@
 			tabPage5.TabIndex = 4;
 			tabPage5.Text = "Setting";
 			tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// lab_gitlab_userid
+			// 
+			lab_gitlab_userid.AutoSize = true;
+			lab_gitlab_userid.Location = new Point(90, 236);
+			lab_gitlab_userid.Name = "lab_gitlab_userid";
+			lab_gitlab_userid.Size = new Size(84, 15);
+			lab_gitlab_userid.TabIndex = 61;
+			lab_gitlab_userid.Text = "GitLab UserID";
+			// 
+			// lab_gitlab_token
+			// 
+			lab_gitlab_token.AutoSize = true;
+			lab_gitlab_token.Location = new Point(90, 207);
+			lab_gitlab_token.Name = "lab_gitlab_token";
+			lab_gitlab_token.Size = new Size(82, 15);
+			lab_gitlab_token.TabIndex = 61;
+			lab_gitlab_token.Text = "GitLab Token";
+			// 
+			// txtUserId
+			// 
+			txtUserId.Location = new Point(201, 233);
+			txtUserId.Name = "txtUserId";
+			txtUserId.Size = new Size(76, 23);
+			txtUserId.TabIndex = 60;
+			// 
+			// txtToken
+			// 
+			txtToken.Location = new Point(201, 204);
+			txtToken.Name = "txtToken";
+			txtToken.Size = new Size(164, 23);
+			txtToken.TabIndex = 60;
 			// 
 			// lab_tab1_notice
 			// 
@@ -1327,6 +1361,8 @@
 			// 
 			// tabPage6
 			// 
+			tabPage6.Controls.Add(textBox1);
+			tabPage6.Controls.Add(btn_getMRinfo);
 			tabPage6.Controls.Add(btnCreateMergeRequest);
 			tabPage6.Controls.Add(lab_tab6_notice);
 			tabPage6.Controls.Add(btn_cancel_reserve);
@@ -1347,13 +1383,32 @@
 			tabPage6.Text = "PokemonGo";
 			tabPage6.UseVisualStyleBackColor = true;
 			// 
+			// textBox1
+			// 
+			textBox1.Location = new Point(29, 161);
+			textBox1.Name = "textBox1";
+			textBox1.Size = new Size(103, 23);
+			textBox1.TabIndex = 50;
+			textBox1.Visible = false;
+			// 
+			// btn_getMRinfo
+			// 
+			btn_getMRinfo.Location = new Point(138, 161);
+			btn_getMRinfo.Name = "btn_getMRinfo";
+			btn_getMRinfo.Size = new Size(84, 23);
+			btn_getMRinfo.TabIndex = 49;
+			btn_getMRinfo.Text = "Get MR Info";
+			btn_getMRinfo.UseVisualStyleBackColor = true;
+			btn_getMRinfo.Visible = false;
+			btn_getMRinfo.Click += btn_getMRinfo_Click;
+			// 
 			// btnCreateMergeRequest
 			// 
 			btnCreateMergeRequest.Location = new Point(644, 149);
 			btnCreateMergeRequest.Name = "btnCreateMergeRequest";
 			btnCreateMergeRequest.Size = new Size(116, 45);
 			btnCreateMergeRequest.TabIndex = 48;
-			btnCreateMergeRequest.Text = "merge request";
+			btnCreateMergeRequest.Text = "Merge Request";
 			btnCreateMergeRequest.UseVisualStyleBackColor = true;
 			btnCreateMergeRequest.Click += btnCreateMergeRequest_Click;
 			// 
@@ -1497,38 +1552,6 @@
 			contextMenuStrip1.ImageScalingSize = new Size(20, 20);
 			contextMenuStrip1.Name = "contextMenuStrip1";
 			contextMenuStrip1.Size = new Size(61, 4);
-			// 
-			// txtToken
-			// 
-			txtToken.Location = new Point(201, 204);
-			txtToken.Name = "txtToken";
-			txtToken.Size = new Size(164, 23);
-			txtToken.TabIndex = 60;
-			// 
-			// lab_gitlab_token
-			// 
-			lab_gitlab_token.AutoSize = true;
-			lab_gitlab_token.Location = new Point(90, 207);
-			lab_gitlab_token.Name = "lab_gitlab_token";
-			lab_gitlab_token.Size = new Size(82, 15);
-			lab_gitlab_token.TabIndex = 61;
-			lab_gitlab_token.Text = "GitLab Token";
-			// 
-			// txtUserId
-			// 
-			txtUserId.Location = new Point(201, 233);
-			txtUserId.Name = "txtUserId";
-			txtUserId.Size = new Size(76, 23);
-			txtUserId.TabIndex = 60;
-			// 
-			// lab_gitlab_userid
-			// 
-			lab_gitlab_userid.AutoSize = true;
-			lab_gitlab_userid.Location = new Point(90, 236);
-			lab_gitlab_userid.Name = "lab_gitlab_userid";
-			lab_gitlab_userid.Size = new Size(84, 15);
-			lab_gitlab_userid.TabIndex = 61;
-			lab_gitlab_userid.Text = "GitLab UserID";
 			// 
 			// Form1
 			// 
@@ -1702,5 +1725,7 @@
 		private TextBox txtToken;
 		private Label lab_gitlab_userid;
 		private TextBox txtUserId;
+		private Button btn_getMRinfo;
+		private TextBox textBox1;
 	}
 }

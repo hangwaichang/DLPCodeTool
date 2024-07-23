@@ -14,7 +14,6 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json.Linq;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Net.Http.Headers;
-//using Microsoft.Office.Interop.Excel;
 using System.Security.Policy;
 
 
@@ -176,23 +175,22 @@ namespace DLPCodeCreater
 
 		#endregion Tab4 變數宣告
 
-		//private string PrivateToken;  // 私人Token
-		//private int UserId;  // 用戶ID
+		//public class mergeRequest
+		//{
+		//	public int Id { get; set; }
+		//	public int Iid { get; set; }  // 添加 Iid 屬性
+		//	public string Title { get; set; }
+		//	public string SourceBranch { get; set; }
+		//	public string TargetBranch { get; set; }
+		//	public string UserId { get; set; }
+		//}
 
-		private const string GitLabApiUrl = "http://172.20.10.106/api/v4/";//"https://gitlab.com/api/v4/";
-		private const int GroupId = 4;  // 群組ID	//80870873; //
-		private const int ProjectId = 4;  // 項目ID	//53865653; //
-		private string PrivateToken; // 私人Token	//= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
-		private int UserId;  // 用戶ID	//= 19680054;
-
-		//private const string GitLabApiUrl = "https://gitlab.com/api/v4/";
-		//private const int GroupId = 80870873; //
-		//private const int ProjectId = 53865653; //
-		//private string PrivateToken= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
-		//private int UserId= 19680054;
-
-		private string CommitString;
-		MergeRequest MergeRequest = new MergeRequest();
+		private const string GitLabApiUrl = "http://172.20.10.106/api/v4/";
+		private const int GroupId = 4;  // 群組ID
+		private const int ProjectId = 4;  // 項目ID
+		private string PrivateToken; // 私人Token
+		private int UserId;  // 用戶ID
+		mergerequest MergeRequest = new mergerequest();
 
 		public Form1()
 		{
@@ -216,7 +214,7 @@ namespace DLPCodeCreater
 			string version = System.Windows.Forms.Application.ProductVersion;
 			this.Text = String.Format("SunDiTool {0}", version);
 
-
+			//讀取紀錄資訊
 			PrivateToken = Properties.Settings.Default.UserToken;
 			UserId = Properties.Settings.Default.UserId;
 
@@ -3329,7 +3327,6 @@ namespace DLPCodeCreater
 			ResultMessageTab6("Git Cmd> " + gitcmd);
 			ExecuteGitCommand(repositoryPath, gitcmd);
 
-			CommitString = commit; //全域暫存
 			MergeRequest.Title = commit;
 
 			//Push depoly
@@ -3405,15 +3402,6 @@ namespace DLPCodeCreater
 		#endregion
 
 
-
-
-		//private const string GitLabApiUrl = "https://gitlab.com/api/v4/";
-		//private const int GroupId = 80870873; //4;  // 群組ID
-		//private const int ProjectId = 53865653; //4;  // 項目ID
-		//private string PrivateToken = "glpat-yrnxCQAjjAu7vJ7UcyBs";  // 私人Token
-		//private int UserId = 19680054;  // 用戶ID
-
-
 		private async void btnCreateMergeRequest_Click(object sender, EventArgs e)
 		{
 			PrivateToken = txtToken.Text;
@@ -3431,7 +3419,6 @@ namespace DLPCodeCreater
 				var mergeRequestCreated = await CreateMergeRequest();
 				if (mergeRequestCreated != null)
 				{
-					//MessageBox.Show("Merge Request created successfully!");
 
 					//設定MR參數
 					bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
@@ -3458,7 +3445,6 @@ namespace DLPCodeCreater
 				}
 				else
 				{
-					//return;
 					MessageBox.Show("Failed or Canceled to create Merge Request.");
 				}
 
@@ -3467,9 +3453,6 @@ namespace DLPCodeCreater
 			{
 				MessageBox.Show($"An error occurred: {ex.Message}");
 			}
-
-			//TestConnect();
-
 
 		}
 
@@ -3483,11 +3466,14 @@ namespace DLPCodeCreater
 
 				try
 				{
-					var response = await client.GetAsync("http://172.20.10.106/api/v4/projects");	//https://gitlab.com/api/v4/projects");
+					var response = await client.GetAsync("http://172.20.10.106/api/v4/merge_requests"+ textBox1.Text);   //https://gitlab.com/api/v4/projects");
 
 					if (response.IsSuccessStatusCode)
 					{
+
+
 						var content = await response.Content.ReadAsStringAsync();
+						MessageBox.Show(content.ToString());
 						MessageBox.Show("連線正常");// ，返回內容：{0},content.ToString()
 
 						if (!string.IsNullOrEmpty(txtToken.Text) && int.TryParse(txtUserId.Text, out int userId))
@@ -3519,7 +3505,7 @@ namespace DLPCodeCreater
 
 
 		// 產MR
-		private async Task<MergeRequest> CreateMergeRequest()
+		private async Task<mergerequest> CreateMergeRequest()
 		{
 			try
 			{
@@ -3528,55 +3514,15 @@ namespace DLPCodeCreater
 					client.BaseAddress = new Uri(GitLabApiUrl);
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
 
-					//if (!this.cbx_tab6_dg.Checked && !this.cbx_tab6_vn.Checked && !this.cbx_tab6_tc.Checked)
-					//{
-					//	MessageBox.Show("請至少選擇一個廠區!");
-					//	return null;
-					//}
-
-					//string commit = "";
-					////commit 
-					//if (this.cbx_tab6_dg.Checked)
-					//{
-					//	commit += "dg_";
-					//}
-					//if (this.cbx_tab6_vn.Checked)
-					//{
-					//	commit += "vn_";
-					//}
-					//if (this.cbx_tab6_tc.Checked)
-					//{
-					//	commit += "tc_";
-					//}
-					//var yyyyMMdd = DateTime.Now.ToString("yyyyMMdd");
-					//var HHmm = DateTime.Now.ToString("HHmm");
-
-					//commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
-
-					//if (CommitString != null) commit = CommitString;
-
 					var mergeRequest = new
 					{
 						source_branch = MergeRequest.SourceBranch, // "uat_deploy",
 						target_branch = MergeRequest.TargetBranch, //"uat",
-						title = MergeRequest.Title, //commit, //"tc_[240719.1710]",//
-						description = MergeRequest.Title,
+						title = MergeRequest.Title, //"tc_[240719.1710]",
+						//description = MergeRequest.Title,
 						assignee_id = UserId,
 						remove_source_branch = true
 					};
-
-					//PrivateToken = "glpat-yrnxCQAjjAu7vJ7UcyBs";
-					//UserId = 19680054;
-					//client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
-					//var mergeRequest = new
-					//{
-					//	source_branch = "newtxt",
-					//	target_branch = "main",
-					//	title = commit,
-					//	assignee_id = UserId,
-					//	remove_source_branch = true,
-					//	//merge_when_pipeline_succeeds = true
-					//};
 
 					string json = JsonConvert.SerializeObject(mergeRequest);
 					StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -3589,23 +3535,21 @@ namespace DLPCodeCreater
 					HttpResponseMessage response = await client.PostAsync($"projects/{ProjectId}/merge_requests", content);//groups/{GroupId}/
 
 					var responseContent = await response.Content.ReadAsStringAsync();
-					if (response.IsSuccessStatusCode) 
+					if (response.IsSuccessStatusCode)
 					{
 
 						//MessageBox.Show(responseContent.ToString());
 
 						// 將JSON響應轉換為MergeRequest對象
-						MergeRequest createdMergeRequest = JsonConvert.DeserializeObject<MergeRequest>(responseContent);
+						mergerequest createdMergeRequest = JsonConvert.DeserializeObject<mergerequest>(responseContent);
 						return createdMergeRequest;
 					}
 					else
 					{
-						//MessageBox.Show(response.ToString());
 						MessageBox.Show($"Error: {response.IsSuccessStatusCode}\n{responseContent}");
 						return null;
 					}
 
-					//return response.IsSuccessStatusCode;
 				}
 
 			}
@@ -3634,7 +3578,8 @@ namespace DLPCodeCreater
 
 					var updateRequest = new
 					{
-						merge_when_pipeline_succeeds = true
+						merge_when_pipeline_succeeds = true,
+						merge_commit_message = MergeRequest.Title,
 					};
 
 					string json = JsonConvert.SerializeObject(updateRequest);
@@ -3668,21 +3613,15 @@ namespace DLPCodeCreater
 			}
 		}
 
-
-
+		private void btn_getMRinfo_Click(object sender, EventArgs e)
+		{
+			TestConnect();
+		}
 	}
 
 
 
-	public class MergeRequest
-	{
-		public int Id { get; set; }
-		public int Iid { get; set; }  // 添加 Iid 屬性
-		public string Title { get; set; }
-		public string SourceBranch { get; set; }
-		public string TargetBranch { get; set; }
-		public string UserId { get; set; }
-	}
+
 
 
 }
