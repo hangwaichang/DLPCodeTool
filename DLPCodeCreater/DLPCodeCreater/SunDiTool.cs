@@ -15,6 +15,8 @@ using Newtonsoft.Json.Linq;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Net.Http.Headers;
 //using Microsoft.Office.Interop.Excel;
+using System.Security.Policy;
+
 
 
 namespace DLPCodeCreater
@@ -177,18 +179,20 @@ namespace DLPCodeCreater
 		//private string PrivateToken;  // 私人Token
 		//private int UserId;  // 用戶ID
 
-		//private const string GitLabApiUrl = "http://172.20.10.106/api/v4/";//"https://gitlab.com/api/v4/";
-		//private const int GroupId = 4;  // 群組ID	//80870873; //
-		//private const int ProjectId = 4;  // 項目ID	//53865653; //
-		//private string PrivateToken; // 私人Token	//= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
-		//private int UserId;  // 用戶ID	//= 19680054;
+		private const string GitLabApiUrl = "http://172.20.10.106/api/v4/";//"https://gitlab.com/api/v4/";
+		private const int GroupId = 4;  // 群組ID	//80870873; //
+		private const int ProjectId = 4;  // 項目ID	//53865653; //
+		private string PrivateToken; // 私人Token	//= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
+		private int UserId;  // 用戶ID	//= 19680054;
 
-		private const string GitLabApiUrl = "https://gitlab.com/api/v4/";
-		private const int GroupId = 80870873; //
-		private const int ProjectId = 53865653; //
-		private string PrivateToken= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
-		private int UserId= 19680054;
+		//private const string GitLabApiUrl = "https://gitlab.com/api/v4/";
+		//private const int GroupId = 80870873; //
+		//private const int ProjectId = 53865653; //
+		//private string PrivateToken= "glpat-yrnxCQAjjAu7vJ7UcyBs"; 
+		//private int UserId= 19680054;
+
 		private string CommitString;
+		MergeRequest MergeRequest = new MergeRequest();
 
 		public Form1()
 		{
@@ -3326,22 +3330,36 @@ namespace DLPCodeCreater
 			ExecuteGitCommand(repositoryPath, gitcmd);
 
 			CommitString = commit; //全域暫存
+			MergeRequest.Title = commit;
 
 			//Push depoly
 			switch (branch.BranchValue)
 			{
 				case "SIT":
 					gitcmd = "push origin " + branch.BranchKey + ":sit_deploy";
+					MergeRequest.TargetBranch = branch.BranchKey;
+					MergeRequest.SourceBranch = "sit_deploy";
 					break;
 				case "UAT":
 					gitcmd = "push origin " + branch.BranchKey + ":uat_deploy";
+					MergeRequest.TargetBranch = branch.BranchKey;
+					MergeRequest.SourceBranch = "uat_deploy";
 					break;
 				case "PRD":
 					gitcmd = "push origin " + branch.BranchKey + ":rel_deploy";
+					MergeRequest.TargetBranch = branch.BranchKey;
+					MergeRequest.SourceBranch = "rel_deploy";
 					break;
 				default:
 					break;
 			}
+
+			// 發LINE訊息
+			ResultMessageTab6("=======================");
+			ResultMessageTab6(branch.BranchValue);
+			ResultMessageTab6(commit);
+			ResultMessageTab6("=======================");
+
 
 			ResultMessageTab6("Git Cmd> " + gitcmd);
 			ExecuteGitCommand(repositoryPath, gitcmd);
@@ -3407,31 +3425,48 @@ namespace DLPCodeCreater
 				return;
 			}
 
-			var mergeRequestCreated = await CreateMergeRequest();
-
-
-
-			if (mergeRequestCreated)
+			try
 			{
-				MessageBox.Show("Merge Request created successfully!");
-
-				if (!string.IsNullOrEmpty(txtToken.Text) && int.TryParse(txtUserId.Text, out int userId))
+				//發MR
+				var mergeRequestCreated = await CreateMergeRequest();
+				if (mergeRequestCreated != null)
 				{
-					Properties.Settings.Default.UserToken = txtToken.Text;
-					Properties.Settings.Default.UserId = UserId;
-					Properties.Settings.Default.Save();
+					//MessageBox.Show("Merge Request created successfully!");
+
+					//設定MR參數
+					bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
+					if (updated)
+					{
+						MessageBox.Show("Merge Request updated successfully!");
+					}
+					else
+					{
+						MessageBox.Show("Failed to update Merge Request.");
+					}
+
+					//儲存設定檔
+					if (!string.IsNullOrEmpty(txtToken.Text) && int.TryParse(txtUserId.Text, out int userId))
+					{
+						Properties.Settings.Default.UserToken = txtToken.Text;
+						Properties.Settings.Default.UserId = Convert.ToInt32(txtUserId.Text);
+						Properties.Settings.Default.Save();
+					}
+					else
+					{
+						MessageBox.Show("Please enter a valid Token and User ID.");
+					}
 				}
 				else
 				{
-					MessageBox.Show("Please enter a valid Token and User ID.");
+					//return;
+					MessageBox.Show("Failed or Canceled to create Merge Request.");
 				}
-			}
-			else
-			{
-				//return;
-				MessageBox.Show("Failed or Canceled to create Merge Request.");
-			}
 
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An error occurred: {ex.Message}");
+			}
 
 			//TestConnect();
 
@@ -3484,86 +3519,169 @@ namespace DLPCodeCreater
 
 
 		// 產MR
-		private async Task<bool> CreateMergeRequest()
+		private async Task<MergeRequest> CreateMergeRequest()
 		{
-			using (HttpClient client = new HttpClient())
+			try
 			{
-				client.BaseAddress = new Uri(GitLabApiUrl);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", txtToken.Text);
-
-				if (!this.cbx_tab6_dg.Checked && !this.cbx_tab6_vn.Checked && !this.cbx_tab6_tc.Checked)
+				using (HttpClient client = new HttpClient())
 				{
-					MessageBox.Show("請至少選擇一個廠區!");
-					return false;
+					client.BaseAddress = new Uri(GitLabApiUrl);
+					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
+
+					//if (!this.cbx_tab6_dg.Checked && !this.cbx_tab6_vn.Checked && !this.cbx_tab6_tc.Checked)
+					//{
+					//	MessageBox.Show("請至少選擇一個廠區!");
+					//	return null;
+					//}
+
+					//string commit = "";
+					////commit 
+					//if (this.cbx_tab6_dg.Checked)
+					//{
+					//	commit += "dg_";
+					//}
+					//if (this.cbx_tab6_vn.Checked)
+					//{
+					//	commit += "vn_";
+					//}
+					//if (this.cbx_tab6_tc.Checked)
+					//{
+					//	commit += "tc_";
+					//}
+					//var yyyyMMdd = DateTime.Now.ToString("yyyyMMdd");
+					//var HHmm = DateTime.Now.ToString("HHmm");
+
+					//commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
+
+					//if (CommitString != null) commit = CommitString;
+
+					var mergeRequest = new
+					{
+						source_branch = MergeRequest.SourceBranch, // "uat_deploy",
+						target_branch = MergeRequest.TargetBranch, //"uat",
+						title = MergeRequest.Title, //commit, //"tc_[240719.1710]",//
+						description = MergeRequest.Title,
+						assignee_id = UserId,
+						remove_source_branch = true
+					};
+
+					//PrivateToken = "glpat-yrnxCQAjjAu7vJ7UcyBs";
+					//UserId = 19680054;
+					//client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
+					//var mergeRequest = new
+					//{
+					//	source_branch = "newtxt",
+					//	target_branch = "main",
+					//	title = commit,
+					//	assignee_id = UserId,
+					//	remove_source_branch = true,
+					//	//merge_when_pipeline_succeeds = true
+					//};
+
+					string json = JsonConvert.SerializeObject(mergeRequest);
+					StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+					//// 讀取資料
+					//HttpResponseMessage response = await client.GetAsync($"projects/{ProjectId}/issues");//groups/{GroupId}/ _statistics
+					//var Content = await response.Content.ReadAsStringAsync();
+					//MessageBox.Show(Content.ToString());
+
+					HttpResponseMessage response = await client.PostAsync($"projects/{ProjectId}/merge_requests", content);//groups/{GroupId}/
+
+					var responseContent = await response.Content.ReadAsStringAsync();
+					if (response.IsSuccessStatusCode) 
+					{
+
+						//MessageBox.Show(responseContent.ToString());
+
+						// 將JSON響應轉換為MergeRequest對象
+						MergeRequest createdMergeRequest = JsonConvert.DeserializeObject<MergeRequest>(responseContent);
+						return createdMergeRequest;
+					}
+					else
+					{
+						//MessageBox.Show(response.ToString());
+						MessageBox.Show($"Error: {response.IsSuccessStatusCode}\n{responseContent}");
+						return null;
+					}
+
+					//return response.IsSuccessStatusCode;
 				}
 
-				string commit = "";
-				//commit 
-				if (this.cbx_tab6_dg.Checked)
-				{
-					commit += "dg_";
-				}
-				if (this.cbx_tab6_vn.Checked)
-				{
-					commit += "vn_";
-				}
-				if (this.cbx_tab6_tc.Checked)
-				{
-					commit += "tc_";
-				}
-				var yyyyMMdd = DateTime.Now.ToString("yyyyMMdd");
-				var HHmm = DateTime.Now.ToString("HHmm");
-
-				commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
-
-				if (CommitString != null) commit = CommitString;
-
-				//var mergeRequest = new
-				//{
-				//	source_branch = "sit_deploy",
-				//	target_branch = "sit",
-				//	title = "tc_[240719.1357]",//commit,
-				//	assignee_id = UserId,
-				//	remove_source_branch = true,
-				//	merge_when_pipeline_succeeds = true
-				//};
-
-				PrivateToken = "glpat-yrnxCQAjjAu7vJ7UcyBs";
-				UserId = 19680054;
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
-				var mergeRequest = new
-				{
-					source_branch = "newtxt",
-					target_branch = "main",
-					title = commit,
-					assignee_id = UserId,
-					remove_source_branch = true,
-					//merge_when_pipeline_succeeds = true
-				};
-
-				string json = JsonConvert.SerializeObject(mergeRequest);
-				StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-				//// 讀取資料
-				//HttpResponseMessage response = await client.GetAsync($"projects/{ProjectId}/issues");//groups/{GroupId}/ _statistics
-				//var Content = await response.Content.ReadAsStringAsync();
-				//MessageBox.Show(Content.ToString());
-
-				HttpResponseMessage response = await client.PostAsync($"projects/{ProjectId}/merge_requests", content);//groups/{GroupId}/
-
-				if (!response.IsSuccessStatusCode) MessageBox.Show(response.ToString());
-				else
-				{
-					var Content = await response.Content.ReadAsStringAsync();
-					MessageBox.Show(Content.ToString());
-
-				}
-
-				return response.IsSuccessStatusCode;
+			}
+			catch (HttpRequestException httpRequestException)
+			{
+				MessageBox.Show($"Request error: {httpRequestException.Message}");
+				return null;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+				return null;
 			}
 		}
 
 
+		// 設定MR中merge_when_pipeline_succeeds
+		private async Task<bool> UpdateMergeRequest(int mergeRequestIid)
+		{
+			try
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.BaseAddress = new Uri(GitLabApiUrl);
+					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
+
+					var updateRequest = new
+					{
+						merge_when_pipeline_succeeds = true
+					};
+
+					string json = JsonConvert.SerializeObject(updateRequest);
+					StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+					HttpResponseMessage response = await client.PutAsync($"projects/{ProjectId}/merge_requests/{mergeRequestIid}/merge", content);
+
+					string responseContent = await response.Content.ReadAsStringAsync();
+					var statusCode = response.StatusCode;
+
+					if (response.IsSuccessStatusCode)
+					{
+						return true;
+					}
+					else
+					{
+						MessageBox.Show($"Error: {statusCode}\n{responseContent}");
+						return false;
+					}
+				}
+			}
+			catch (HttpRequestException httpRequestException)
+			{
+				MessageBox.Show($"Request error: {httpRequestException.Message}");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+				return false;
+			}
+		}
+
+
+
+	}
+
+
+
+	public class MergeRequest
+	{
+		public int Id { get; set; }
+		public int Iid { get; set; }  // 添加 Iid 屬性
+		public string Title { get; set; }
+		public string SourceBranch { get; set; }
+		public string TargetBranch { get; set; }
+		public string UserId { get; set; }
 	}
 
 
