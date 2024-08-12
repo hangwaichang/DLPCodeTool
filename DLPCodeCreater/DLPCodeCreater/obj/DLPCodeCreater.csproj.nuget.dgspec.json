@@ -5,7 +5,7 @@
   },
   "projects": {
     "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj": {
-      "version": "2.0.0-20231221",
+      "version": "2.0.0-20230809",
       "restore": {
         "projectUniqueName": "D:\\Jason_Git\\DLPCodeTool\\DLPCodeCreater\\DLPCodeCreater\\DLPCodeCreater.csproj",
         "projectName": "DLPCodeCreater",
@@ -69,6 +69,10 @@
             "System.ServiceModel.Http": {
               "target": "Package",
               "version": "[4.8.*, )"
+            },
+            "System.ServiceModel.NetFramingBase": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             },
             "System.ServiceModel.NetTcp": {
               "target": "Package",

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Classes;
+using System.Collections;
 
 namespace DLPCodeCreater
 {
@@ -32,7 +33,33 @@ namespace DLPCodeCreater
             }
         }
 
+        public OracleDataReader QueryDB(string sql)
+        {
 
+            try
+            {
+
+                OracleCommand cmd = new OracleCommand(sql, oralceConnection);
+
+                OracleDataReader reader = cmd.ExecuteReader(CommandBehavior.Default);
+
+                return reader;
+
+                //using (OracleDataReader reader = cmd.ExecuteReader())
+                //{
+
+                //    return reader;
+
+                //}
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
         public void insertDB(string sql, MultiLanguage ml,string program)
         {
             try
