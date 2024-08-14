@@ -43,6 +43,8 @@ namespace DLPCodeCreater
 
 
 
+        public const string checkTableSql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='{0}' AND VIEW_NAME IN ( {1} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='{0}' AND TABLE_NAME IN  ( {1} )";
+
         public string fModulepath = "";
         public string fAreapath = "";
         public string fProgrampath = "";
@@ -3648,7 +3650,7 @@ namespace DLPCodeCreater
                         {
                             VgDbcontext = GenericDbFactory<VGDbContext>.Create();
                             VgDbcontext.Connect();
-                            ResultMessage(TabEnum.SqlAnalyze, "VNDBT-連線成功!");
+                            ResultMessage(TabEnum.SqlAnalyze, "VGDBT-連線成功!");
                         }
                         break;
                     case "TC":
@@ -3656,17 +3658,11 @@ namespace DLPCodeCreater
                         {
                             TcDbcontext = GenericDbFactory<TCDbContext>.Create();
                             TcDbcontext.Connect();
-                            ResultMessage(TabEnum.SqlAnalyze, "VNDBT-連線成功!");
+                            ResultMessage(TabEnum.SqlAnalyze, "TCDBT-連線成功!");
                         }
                         break;
                     default:
-                        if (DgDbcontext == null)
-                        {
-                            DgDbcontext = GenericDbFactory<DGDbContext>.Create();
-                            DgDbcontext.Connect();
-                            ResultMessage(TabEnum.SqlAnalyze, "DGDBT-連線成功!");
-                        }
-                        //ResultMessage(TabEnum.SqlAnalyze, "[" + this.cbx_tab7_fromarea.Text + "]，無此地區DB連線!");
+                        ResultMessage(TabEnum.SqlAnalyze, "[" + this.cbx_tab7_fromarea.Text + "]，無此地區DB連線!");
                         break;
                 }
 
@@ -3713,8 +3709,7 @@ namespace DLPCodeCreater
                         ASList = sahelper.getAllSql(TcDbcontext.Query(sql));
                         break;
                     default:
-                        ASList = sahelper.getAllSql(DgDbcontext.Query(sql));
-                        //ResultMessage(TabEnum.SqlAnalyze, "[" + this.cbx_tab7_fromarea.Text + "]，無此地區DB連線!");
+                        ResultMessage(TabEnum.SqlAnalyze, "[" + this.cbx_tab7_fromarea.Text + "]，無此地區DB連線!");
                         break;
                 }
 
@@ -3866,7 +3861,6 @@ namespace DLPCodeCreater
                 }
 
                 //檢核table是否存在
-                string sql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='OADBA' AND VIEW_NAME IN ( {0} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='OADBA' AND TABLE_NAME IN  ( {0} )";
                 string sqlIn = "";
 
                 //step3 檢驗table
@@ -3884,7 +3878,7 @@ namespace DLPCodeCreater
                 sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
-                List<string> dataResult = checkTable(sql, sqlIn.ToUpper());
+                List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
 
                 var printResult = "";
                 //輸出結果
@@ -3973,7 +3967,6 @@ namespace DLPCodeCreater
                 }
 
                 //檢核table是否存在
-                string sql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='OADBA' AND VIEW_NAME IN ( {0} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='OADBA' AND TABLE_NAME IN  ( {0} )";
                 string sqlIn = "";
 
                 //step3 檢驗table
@@ -3989,7 +3982,7 @@ namespace DLPCodeCreater
                 sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
-                List<string> dataResult = checkTable(sql, sqlIn.ToUpper());
+                List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
 
                 var printResult = "";
                 //輸出結果
@@ -4082,7 +4075,6 @@ namespace DLPCodeCreater
                 }
 
                 //檢核table是否存在
-                string sql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='OADBA' AND VIEW_NAME IN ( {0} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='OADBA' AND TABLE_NAME IN  ( {0} )";
                 string sqlIn = "";
 
                 //step3 檢驗table
@@ -4098,7 +4090,7 @@ namespace DLPCodeCreater
                 sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
-                List<string> dataResult = checkTable(sql, sqlIn.ToUpper());
+                List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
 
                 var printResult = "";
                 //輸出結果
@@ -4183,7 +4175,6 @@ namespace DLPCodeCreater
                 }
 
                 //檢核table是否存在
-                string sql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='OADBA' AND VIEW_NAME IN ( {0} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='OADBA' AND TABLE_NAME IN  ( {0} )";
                 string sqlIn = "";
 
                 //step3 檢驗table
@@ -4199,7 +4190,7 @@ namespace DLPCodeCreater
                 sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
-                List<string> dataResult = checkTable(sql, sqlIn.ToUpper());
+                List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
 
                 var printResult = "";
                 //輸出結果
@@ -4378,7 +4369,6 @@ namespace DLPCodeCreater
                 }
 
                 //檢核table是否存在
-                string sql = "SELECT VIEW_NAME TABLES FROM ALL_VIEWS WHERE OWNER='OADBA' AND VIEW_NAME IN ( {0} ) UNION SELECT TABLE_NAME TABLES FROM ALL_TABLES WHERE OWNER='OADBA' AND TABLE_NAME IN  ( {0} )";
                 string sqlIn = "";
 
                 //step3 檢驗table
@@ -4407,7 +4397,7 @@ namespace DLPCodeCreater
                 sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
-                List<string> dataResult = checkTable(sql, sqlIn.ToUpper());
+                List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
 
                 var printResult = "";
                 //輸出結果
@@ -4440,19 +4430,19 @@ namespace DLPCodeCreater
             switch (this.cbx_tab7_fromarea.Text)
             {
                 case "DG":
-                    listCheck = sahelper.verifyTable(DgDbcontext.Query(String.Format(sql, sqlIn)));
+                    listCheck = sahelper.verifyTable(DgDbcontext.Query(String.Format(sql, "OADBA", sqlIn)));
                     break;
                 case "VN":
-                    listCheck = sahelper.verifyTable(VnDbcontext.Query(String.Format(sql, sqlIn)));
+                    listCheck = sahelper.verifyTable(VnDbcontext.Query(String.Format(sql, "OADBA", sqlIn)));
                     break;
                 case "VG":
-                    listCheck = sahelper.verifyTable(VgDbcontext.Query(String.Format(sql, sqlIn)));
+                    listCheck = sahelper.verifyTable(VgDbcontext.Query(String.Format(sql, "OADBA", sqlIn)));
                     break;
                 case "TC":
-                    listCheck = sahelper.verifyTable(TcDbcontext.Query(String.Format(sql, sqlIn)));
+                    listCheck = sahelper.verifyTable(TcDbcontext.Query(String.Format(sql, "DLPDBA", sqlIn)));
                     break;
                 default:
-                    listCheck = sahelper.verifyTable(DgDbcontext.Query(String.Format(sql, sqlIn)));
+                    listCheck = sahelper.verifyTable(DgDbcontext.Query(String.Format(sql, "OADBA", sqlIn)));
                     break;
             }
 
