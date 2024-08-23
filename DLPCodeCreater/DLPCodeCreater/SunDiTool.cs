@@ -3966,7 +3966,7 @@ namespace DLPCodeCreater
                     // 移除多余的空白字符
                     query = System.Text.RegularExpressions.Regex.Replace(query, @"\s+", " ");
 
-                    int fromIndex = query.IndexOf("DELETE FROM");
+                    int fromIndex = query.IndexOf("DELETE FROM") == -1 ? query.IndexOf("DELETE") : query.IndexOf("DELETE FROM");
 
                     // 获取 "DELETE FROM" 之前的子字符串
                     string before = query.Substring(0, fromIndex);
@@ -4164,6 +4164,8 @@ namespace DLPCodeCreater
             List<AllSource> list_from = aslist.FindAll(x => x.TEXT.Contains("INSERT INTO"));
             //移除PK_LOG_UTILITY名稱
             list_from = list_from.Where(x => !x.TEXT.Contains("PK_LOG_UTILITY")).ToList();
+            //移除PK_LOG_UTILITY名稱
+            list_from = list_from.Where(x => !x.TEXT.Contains("EXECUTE IMMEDIATE")).ToList();
 
             if (list_from.Count == 0) return null;
 
