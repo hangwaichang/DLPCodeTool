@@ -3872,10 +3872,17 @@ namespace DLPCodeCreater
 
                 }
 
-                sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
+                if (sqlIn != "")
+                {
+                    sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
 
-                // 移除所有的換行符號 (\r 和 \n)
-                sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
+                    // 移除所有的換行符號 (\r 和 \n)
+                    sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
+                }
+                else
+                {
+                    sqlIn = "''";
+                }
 
                 //檢核table是否存在
                 List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
@@ -3886,7 +3893,12 @@ namespace DLPCodeCreater
                 {
                     printResult += item + ',';
                 }
-                ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+
+                if (printResult != "")
+                {
+                    ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+                }
+
 
                 //ResultMessage(TabEnum.SqlAnalyze, "===============分析Join資料結束================");
 
@@ -3908,10 +3920,14 @@ namespace DLPCodeCreater
         {
             ResultMessage(TabEnum.SqlAnalyze, "4.Delet");
 
-            List<AllSource> list_from = aslist.FindAll(x => x.TEXT.Contains("DELETE FROM"));
+            List<AllSource> list_from = aslist.FindAll(x => x.TEXT.Contains("DELETE"));
             //移除PK_LOG_UTILITY名稱
             list_from = list_from.Where(x => !x.TEXT.Contains("PK_LOG_UTILITY")).ToList();
 
+            //移除PacKage名稱
+            list_from = list_from.Where(x => !x.TEXT.Contains("PROCEDURE")).ToList();
+            //移除PacKage名稱
+            list_from = list_from.Where(x => !x.TEXT.Contains("_DELETE_")).ToList();
 
             if (list_from.Count == 0) return null;
 
@@ -3945,10 +3961,15 @@ namespace DLPCodeCreater
                 //step2 擷取字段
                 foreach (string str in ls_st1)
                 {
-                    int fromIndex = str.IndexOf("DELETE FROM");
+                    //换行符替换为空白
+                    var query = str.Replace(Environment.NewLine, " ").Replace("\n", " ").Replace("\r", " ");
+                    // 移除多余的空白字符
+                    query = System.Text.RegularExpressions.Regex.Replace(query, @"\s+", " ");
+
+                    int fromIndex = query.IndexOf("DELETE FROM");
 
                     // 获取 "DELETE FROM" 之前的子字符串
-                    string before = str.Substring(0, fromIndex);
+                    string before = query.Substring(0, fromIndex);
 
                     // 检查 "--" 是否出现在这个子字符串中
                     //如果沒有-- 才處理
@@ -3956,11 +3977,11 @@ namespace DLPCodeCreater
                     {
                         int endIndex = 0;
                         string result = "";
-                        if (str.IndexOf("WHERE") > 0)
+                        if (query.IndexOf("WHERE") > 0)
                         {
-                            endIndex = str.IndexOf("WHERE");
+                            endIndex = query.IndexOf("WHERE");
                         }
-                        result = str.Substring(fromIndex + "DELETE FROM".Length, endIndex - (fromIndex + "DELETE FROM".Length)).Trim();
+                        result = query.Substring(fromIndex + "DELETE FROM".Length, endIndex - (fromIndex + "DELETE FROM".Length)).Trim();
 
                         ls_st2.Add(result);
                     }
@@ -3976,10 +3997,19 @@ namespace DLPCodeCreater
 
                 }
 
-                sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
+                if (sqlIn != "")
+                {
+                    sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
 
-                // 移除所有的換行符號 (\r 和 \n)
-                sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
+                    // 移除所有的換行符號 (\r 和 \n)
+                    sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
+                }
+                else
+                {
+                    sqlIn = "''";
+                }
+
+
 
                 //檢核table是否存在
                 List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
@@ -3990,7 +4020,11 @@ namespace DLPCodeCreater
                 {
                     printResult += item + ',';
                 }
-                ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+                if (printResult != "")
+                {
+                    ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+                }
+
 
                 //ResultMessage(TabEnum.SqlAnalyze, "===============分析Delet資料結束================");
 
@@ -4083,11 +4117,17 @@ namespace DLPCodeCreater
                     sqlIn += "'" + str + "',";
 
                 }
+                if (sqlIn != "")
+                {
+                    sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
 
-                sqlIn = sqlIn.Substring(0, sqlIn.Length - 1);
+                    // 移除所有的換行符號 (\r 和 \n)
+                    sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
+                }
+                else {
+                    sqlIn = "''";
+                }
 
-                // 移除所有的換行符號 (\r 和 \n)
-                sqlIn = sqlIn.Replace("\r", "").Replace("\n", "");
 
                 //檢核table是否存在
                 List<string> dataResult = checkTable(checkTableSql, sqlIn.ToUpper());
@@ -4098,7 +4138,10 @@ namespace DLPCodeCreater
                 {
                     printResult += item + ',';
                 }
-                ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+                if (printResult != "") {
+                    ResultMessage(TabEnum.SqlAnalyze, printResult.Substring(0, printResult.Length - 1));
+                }
+
 
                 //ResultMessage(TabEnum.SqlAnalyze, "===============分析Update資料結束================");
 
@@ -4473,6 +4516,10 @@ namespace DLPCodeCreater
                 case TabEnum.SqlAnalyze:
                     tbx_tab7_resultMsg.Text += Environment.NewLine;
                     tbx_tab7_resultMsg.Text += msg;
+
+                    tbx_tab7_resultMsg.SelectionStart = tbx_tab7_resultMsg.Text.Length;  // 將光標位置設置到最後
+                    tbx_tab7_resultMsg.ScrollToCaret();  // 滾動到光標位置
+
                     break;
                 default:
                     break;
