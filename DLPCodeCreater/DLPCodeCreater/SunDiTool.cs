@@ -3410,9 +3410,11 @@ namespace DLPCodeCreater
                 var mergeRequestCreated = await CreateMergeRequest();
                 if (mergeRequestCreated != null)
                 {
+					//因實測GITLAB反應較慢，有異常狀態報錯，故加延遲
+					Thread.Sleep(1000);
 
-                    //設定MR參數
-                    bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
+					//設定MR參數
+					bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
                     if (updated)
                     {
                         MessageBox.Show("Merge Request updated successfully!");
