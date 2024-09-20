@@ -60,5 +60,17 @@ namespace DLPCodeCreater.Properties {
                 this["UserId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LineNotifyToken {
+            get {
+                return ((string)(this["LineNotifyToken"]));
+            }
+            set {
+                this["LineNotifyToken"] = value;
+            }
+        }
     }
 }
