@@ -3334,7 +3334,7 @@ namespace DLPCodeCreater
 			commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
 			// 發佈訊息使用
 			ResultMessageTab6("=======================");
-			ResultMessageTab6(branch.BranchValue);
+			ResultMessageTab6(branch.BranchValue + " 發版開始.");
 			ResultMessageTab6(commit);
 			ResultMessageTab6("=======================");
 
@@ -3985,7 +3985,7 @@ namespace DLPCodeCreater
 				//處理join資料
 				mergeData_out("J", getJoinData(ASList), resultList);
 
-				this.dgv_tab7_sqlanalyze.DataSource = resultList;
+				this.dgv_tab7_sqlanalyze.DataSource = resultList.OrderBy(x => x.Table).ToList();
 
 				ResultMessage(TabEnum.SqlAnalyze, "================完成分析：" + package.ToUpper() + "================");
 			}
@@ -4181,14 +4181,14 @@ namespace DLPCodeCreater
 		{
 			ResultMessage(TabEnum.SqlAnalyze, "4.Delet");
 
-			List<AllSource> list_from = aslist.FindAll(x => x.TEXT.Contains("DELETE"));
+			List<AllSource> list_from = aslist.FindAll(x => x.TEXT.Contains("DELETE FROM"));
 			//移除PK_LOG_UTILITY名稱
 			list_from = list_from.Where(x => !x.TEXT.Contains("PK_LOG_UTILITY")).ToList();
 
 			//移除PacKage名稱
 			list_from = list_from.Where(x => !x.TEXT.Contains("PROCEDURE")).ToList();
 			//移除PacKage名稱
-			list_from = list_from.Where(x => !x.TEXT.Contains("_DELETE_")).ToList();
+			list_from = list_from.Where(x => !x.TEXT.Contains("DELETE_")).ToList();
 
 			if (list_from.Count == 0) return null;
 
