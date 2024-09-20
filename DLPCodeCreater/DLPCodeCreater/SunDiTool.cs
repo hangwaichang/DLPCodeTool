@@ -197,7 +197,7 @@ namespace DLPCodeCreater
 		private int UserId;  // 用戶ID
 		mergerequest MergeRequest = new mergerequest();
 		private string pipelineId = null;
-		private string LineNotifyToken; // 私人Line Notify Token = "nt5GSBBTbFs0VNprmQVR12x1Fy980EPytPVLezjDUy6"
+		private string LineNotifyToken; // 私人Line Notify Token 
 
 		public Form1()
 		{
@@ -2834,11 +2834,9 @@ namespace DLPCodeCreater
 			}
 		}
 
-		private async void btn_line_notify_test_Click(object sender, EventArgs e)
+		private void btn_line_notify_test_Click(object sender, EventArgs e)
 		{
 			line_notify("test");
-			//bool aaa = await CheckBrunch("sit_deploy");
-			//MessageBox.Show(aaa.ToString());
 		}
 
 		#endregion
