@@ -3338,7 +3338,7 @@ namespace DLPCodeCreater
 
 			try
 			{
-				Clipboard.SetText(branch.BranchValue + Environment.NewLine + commit);
+				Clipboard.SetText(branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
 			}
 			catch (System.Runtime.InteropServices.ExternalException)
 			{
@@ -3669,12 +3669,11 @@ namespace DLPCodeCreater
 				try
 				{
 					lab_timer_status.Text = "Start to wait ...";
-					//MessageBox.Show("前段等待開始");
 					detect_timing_flag = detect_timing_flag == true ? false : true;
 
-					await Task.Delay(5  * 1000, token);//* 60
+					await Task.Delay(5 * 60 * 1000, token);
 
-					tim_pipelinecheck.Start(); //MessageBox.Show("後段偵測開始");
+					tim_pipelinecheck.Start(); 
 					lab_timer_status.Text = "Start to detect ...";
 					pipelineId = null;
 
@@ -3682,7 +3681,6 @@ namespace DLPCodeCreater
 				catch (TaskCanceledException)
 				{
 					lab_timer_status.Text = "Cancel";
-					//MessageBox.Show("前段等待取消");
 				}
 
 			}
@@ -3695,7 +3693,7 @@ namespace DLPCodeCreater
 					_cancellationTokenSource.Cancel();// 取消 Task.Delay 的延遲
 				}
 
-				tim_pipelinecheck.Stop(); //MessageBox.Show("後段偵測停止");
+				tim_pipelinecheck.Stop(); 
 				lab_timer_status.Text = "Stop";
 
 
@@ -3743,15 +3741,15 @@ namespace DLPCodeCreater
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							console_msg_lineNotify($"{MergeRequest.Title} 執行完成且成功。{reponseObj.status}", "PASS");
+							console_msg_lineNotify($"{MergeRequest.Title}\n 執行完成且成功。{reponseObj.status}", "PASS");
 						}
 						else if (reponseObj.status == "failed")
 						{
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							console_msg_lineNotify($"{MergeRequest.Title} 執行完成但失敗{reponseObj.status}\n\n需自行刪除分支 或 重跑Pokemon", "FAIL");
-							OpenUrl("http://172.20.10.106/root/dlp-develop/-/branches");
+							console_msg_lineNotify($"{MergeRequest.Title}\n 執行完成但失敗{reponseObj.status}\n 需自行刪除分支 或 重跑", "FAIL");
+							OpenUrl("http://172.20.10.106/root/dlp-develop/-/merge_requests");
 						}
 					});
 
@@ -3760,7 +3758,7 @@ namespace DLPCodeCreater
 			{
 				detect_timing_flag = detect_timing_flag == true ? false : true;
 				lab_timer_status.Text = "Stop";
-				tim_pipelinecheck.Stop(); //MessageBox.Show("後段偵測停止(自動)");
+				tim_pipelinecheck.Stop(); 
 
 			}
 
