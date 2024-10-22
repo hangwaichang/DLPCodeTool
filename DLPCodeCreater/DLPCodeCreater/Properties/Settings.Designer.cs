@@ -72,5 +72,17 @@ namespace DLPCodeCreater.Properties {
                 this["LineNotifyToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DlpDevelopProjectPath {
+            get {
+                return ((string)(this["DlpDevelopProjectPath"]));
+            }
+            set {
+                this["DlpDevelopProjectPath"] = value;
+            }
+        }
     }
 }

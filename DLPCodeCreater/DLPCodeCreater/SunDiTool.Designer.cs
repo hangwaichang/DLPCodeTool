@@ -146,6 +146,7 @@
 			cbx_AppPortal = new CheckBox();
 			btn_dotnet_run = new Button();
 			tabPage6 = new TabPage();
+			lab_mr_status = new Label();
 			lab_timer_status = new Label();
 			btn_detect_pipeline = new Button();
 			textBox1 = new TextBox();
@@ -263,6 +264,7 @@
 			btn_line_notify_test.TabIndex = 64;
 			btn_line_notify_test.Text = "test";
 			btn_line_notify_test.UseVisualStyleBackColor = true;
+			btn_line_notify_test.Visible = false;
 			btn_line_notify_test.Click += btn_line_notify_test_Click;
 			// 
 			// lab_line_token
@@ -273,6 +275,7 @@
 			lab_line_token.Size = new Size(106, 15);
 			lab_line_token.TabIndex = 63;
 			lab_line_token.Text = "Line Notify Token";
+			lab_line_token.Visible = false;
 			// 
 			// txtLineNotifyToken
 			// 
@@ -280,6 +283,7 @@
 			txtLineNotifyToken.Name = "txtLineNotifyToken";
 			txtLineNotifyToken.Size = new Size(162, 23);
 			txtLineNotifyToken.TabIndex = 62;
+			txtLineNotifyToken.Visible = false;
 			// 
 			// lab_gitlab_userid
 			// 
@@ -359,6 +363,7 @@
 			lab_setting_projectpath.Size = new Size(153, 15);
 			lab_setting_projectpath.TabIndex = 55;
 			lab_setting_projectpath.Text = "ProjectPath (dlp-develop)";
+			lab_setting_projectpath.Visible = false;
 			// 
 			// btn_setting_selectpath
 			// 
@@ -368,6 +373,7 @@
 			btn_setting_selectpath.TabIndex = 54;
 			btn_setting_selectpath.Text = "Select";
 			btn_setting_selectpath.UseVisualStyleBackColor = true;
+			btn_setting_selectpath.Visible = false;
 			btn_setting_selectpath.Click += btn_setting_selectpath_Click;
 			// 
 			// tbx_setting_projectpath
@@ -377,6 +383,7 @@
 			tbx_setting_projectpath.Size = new Size(388, 23);
 			tbx_setting_projectpath.TabIndex = 53;
 			tbx_setting_projectpath.Text = ".\\dlp-develop";
+			tbx_setting_projectpath.Visible = false;
 			// 
 			// tabPage1
 			// 
@@ -1416,6 +1423,7 @@
 			// 
 			// tabPage6
 			// 
+			tabPage6.Controls.Add(lab_mr_status);
 			tabPage6.Controls.Add(lab_timer_status);
 			tabPage6.Controls.Add(btn_detect_pipeline);
 			tabPage6.Controls.Add(textBox1);
@@ -1439,6 +1447,15 @@
 			tabPage6.TabIndex = 5;
 			tabPage6.Text = "PokemonGo";
 			tabPage6.UseVisualStyleBackColor = true;
+			// 
+			// lab_mr_status
+			// 
+			lab_mr_status.Location = new Point(508, 163);
+			lab_mr_status.Name = "lab_mr_status";
+			lab_mr_status.RightToLeft = RightToLeft.No;
+			lab_mr_status.Size = new Size(119, 21);
+			lab_mr_status.TabIndex = 53;
+			lab_mr_status.TextAlign = ContentAlignment.MiddleRight;
 			// 
 			// lab_timer_status
 			// 
@@ -1972,5 +1989,6 @@
 		private TextBox txtLineNotifyToken;
 		private Label lab_timer_status;
 		private Button btn_line_notify_test;
+		private Label lab_mr_status;
 	}
 }

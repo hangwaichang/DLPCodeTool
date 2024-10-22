@@ -13,5 +13,6 @@ public class mergerequest
 	public string SourceBranch { get; set; }
 	public string TargetBranch { get; set; }
 	public string UserId { get; set; }
+	public string BranchValue { get; set; }
 }
 

@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+//using Microsoft.Office.Interop.Excel;
 
 
 
@@ -197,7 +198,7 @@ namespace DLPCodeCreater
 		private int UserId;  // 用戶ID
 		mergerequest MergeRequest = new mergerequest();
 		private string pipelineId = null;
-		private string LineNotifyToken; // 私人Line Notify Token 
+		private string LineNotifyToken; // Line Notify Token 2025年4月1日起，LINE Notify的所有功能將無法操作
 
 		public Form1()
 		{
@@ -224,11 +225,14 @@ namespace DLPCodeCreater
 			//讀取紀錄資訊
 			PrivateToken = Properties.Settings.Default.UserToken;
 			UserId = Properties.Settings.Default.UserId;
-			LineNotifyToken = Properties.Settings.Default.LineNotifyToken;
+			LineNotifyToken = Properties.Settings.Default.LineNotifyToken is not "" ? Properties.Settings.Default.LineNotifyToken : "Ew785eKNN7DEYkX5Ah4dmoUrwVNioSITS1tdSYgW8yb";
+			tbx_setting_projectpath.Text = Properties.Settings.Default.DlpDevelopProjectPath is not "" ? Properties.Settings.Default.DlpDevelopProjectPath : ".\\dlp-develop";
 
 			txtToken.Text = PrivateToken;
 			txtUserId.Text = UserId.ToString();
 			txtLineNotifyToken.Text = LineNotifyToken;
+
+
 		}
 
 		#region SunDiRo
@@ -2812,6 +2816,8 @@ namespace DLPCodeCreater
 				this.tbx_projectpath.Text = path.SelectedPath;
 				this.tbx_tab2_projectpath.Text = path.SelectedPath;
 
+				Properties.Settings.Default.DlpDevelopProjectPath = tbx_setting_projectpath.Text;
+				Properties.Settings.Default.Save();
 			}
 			catch (Exception)
 			{
@@ -3234,13 +3240,13 @@ namespace DLPCodeCreater
 
 		#region PokemonGo
 
-		bool reserve_flag = false;	// 是否預約判斷
+		bool reserve_flag = false;  // 是否預約判斷
 		//發版計時器
 		private async void tim_tab6_reservecheck_Tick(object sender, EventArgs e)
 		{
 			DateTime now = DateTime.Now;
 			DateTime reserveTime = dtp_checkTime.Value;
-			
+
 
 			if (now > reserveTime)
 			{
@@ -3250,8 +3256,8 @@ namespace DLPCodeCreater
 				GitBranch branch = cbx_tab6_branch.Items[cbx_tab6_branch.SelectedIndex] as GitBranch;
 				if ((await CheckBrunch()))
 				{
-					console_msg_lineNotify($"分支衝突，停止發版", "Failed");
 					tim_tab6_reservecheck.Stop();
+					console_msg_lineNotify($"分支衝突，停止發版", "Failed");
 					OpenUrl("http://172.20.10.106/root/dlp-develop/-/branches");
 					return;
 				}
@@ -3276,7 +3282,7 @@ namespace DLPCodeCreater
 
 		}
 
-		private void btn_reserve_Click(object sender, EventArgs e)
+		private async void btn_reserve_Click(object sender, EventArgs e)
 		{
 			if (cbx_tab6_branch.Text == "")
 			{
@@ -3288,9 +3294,17 @@ namespace DLPCodeCreater
 			}
 			else
 			{
+				if (await GetUserName(this.txtUserId.Text) == false)
+					msg2top("get user name fail on gitlab", "fail");
+
+				lab_timer_status.Text = "";
+				lab_mr_status.Text = "";
+
 				tim_tab6_reservecheck.Start();
 				ResultMessageTab6("預約時間 [ " + dtp_checkTime.Value.ToString() + " ]，版本 [ " + cbx_tab6_branch.Text + " ] ");
 			}
+
+
 
 		}
 
@@ -3330,11 +3344,11 @@ namespace DLPCodeCreater
 			var yyyyMMdd = DateTime.Now.ToString("yyyyMMdd");
 			var HHmm = DateTime.Now.ToString("HHmm");
 			commit += "[" + yyyyMMdd.PadLeft(2).Remove(0, 2) + "." + HHmm + "]";
-			// 發佈訊息使用
-			ResultMessageTab6("=======================");
-			ResultMessageTab6(branch.BranchValue + " 發版開始.");
-			ResultMessageTab6(commit);
-			ResultMessageTab6("=======================");
+			//// 發佈訊息使用
+			//ResultMessageTab6("=======================");
+			//ResultMessageTab6(branch.BranchValue + " 發版開始.");
+			//ResultMessageTab6(commit);
+			//ResultMessageTab6("=======================");
 
 			try
 			{
@@ -3344,6 +3358,10 @@ namespace DLPCodeCreater
 			{
 				ResultMessageTab6("系統登出鎖定，複製剪貼字串失敗");
 			}
+
+			ResultMessageTab6(this.gitUserName + Environment.NewLine + branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
+			line_notify(this.gitUserName + Environment.NewLine + branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
+			MergeRequest.BranchValue = branch.BranchValue;
 
 			//return;
 			//restore clean
@@ -3453,12 +3471,14 @@ namespace DLPCodeCreater
 		{
 			await TestConnect();
 
+			msg2top(this.gitUserName, "test");
+
 		}
 
 		// 測試連線
 		private async Task<bool> TestConnect()
 		{
-			return await CallGitlabApiGet<List<pipelineDTO>>("merge_requests" + textBox1.Text,
+			return await CallGitlabApiGet<List<pipelineDTO>>("" + textBox1.Text,
 				(reponseObjList, content) =>
 				{
 					MessageBox.Show(content.ToString());
@@ -3466,8 +3486,8 @@ namespace DLPCodeCreater
 				});
 		}
 
-		// 確認分支
-		private async Task<bool> CheckBrunch(string branchName="")
+		// user_name
+		private async Task<bool> CheckBrunch(string branchName = "")
 		{
 			switch (branchName)
 			{
@@ -3485,7 +3505,7 @@ namespace DLPCodeCreater
 			}
 
 			var sit_flag = await CallGitlabApiGet<dynamic>($"projects/{ProjectId}/repository/branches/sit_deploy",
-				(reponseObjList, content) =>{});
+				(reponseObjList, content) => { });
 
 			var uat_flag = await CallGitlabApiGet<dynamic>($"projects/{ProjectId}/repository/branches/uat_deploy",
 				(reponseObjList, content) => { });
@@ -3494,6 +3514,18 @@ namespace DLPCodeCreater
 				(reponseObjList, content) => { });
 
 			return sit_flag || uat_flag || rel_flag;
+		}
+
+		string gitUserName;
+
+		private async Task<bool> GetUserName(string userId = "")
+		{
+
+			var flag = await CallGitlabApiGet<dynamic>("" + $"users?id={userId}",
+					(reponseObjList, content) => { gitUserName = reponseObjList[0].name; });
+
+			return flag;
+
 		}
 
 		private void btnCreateMergeRequest_Click(object sender, EventArgs e)
@@ -3525,7 +3557,9 @@ namespace DLPCodeCreater
 					bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
 					if (updated)
 					{
-						MessageBox.Show("Merge Request updated successfully!");
+						//if (!reserve_flag)
+						//	MessageBox.Show("Merge Request updated successfully!");
+						lab_mr_status.Text = "MR success";
 					}
 					else
 					{
@@ -3673,7 +3707,7 @@ namespace DLPCodeCreater
 
 					await Task.Delay(5 * 60 * 1000, token);
 
-					tim_pipelinecheck.Start(); 
+					tim_pipelinecheck.Start();
 					lab_timer_status.Text = "Start to detect ...";
 					pipelineId = null;
 
@@ -3693,7 +3727,7 @@ namespace DLPCodeCreater
 					_cancellationTokenSource.Cancel();// 取消 Task.Delay 的延遲
 				}
 
-				tim_pipelinecheck.Stop(); 
+				tim_pipelinecheck.Stop();
 				lab_timer_status.Text = "Stop";
 
 
@@ -3711,7 +3745,7 @@ namespace DLPCodeCreater
 		{
 
 			bool flag = true;
-			
+
 
 			if (pipelineId is null)
 			{
@@ -3741,14 +3775,16 @@ namespace DLPCodeCreater
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							console_msg_lineNotify($"{MergeRequest.Title}\n 執行完成且成功。{reponseObj.status}", "PASS");
+							//console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.TargetBranch}\n{MergeRequest.Title}\n 執行完成且成功。{reponseObj.status}", "PASS");
+							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue}\n{MergeRequest.Title}\n 成功。", "PASS");
 						}
 						else if (reponseObj.status == "failed")
 						{
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							console_msg_lineNotify($"{MergeRequest.Title}\n 執行完成但失敗{reponseObj.status}\n 需自行刪除分支 或 重跑", "FAIL");
+							//console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.TargetBranch}\n{MergeRequest.Title}\n 執行完成但失敗{reponseObj.status}\n 需自行刪除分支 或 重跑", "FAIL");
+							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue}\n{MergeRequest.Title}\n 失敗。\n 需自行刪除分支 或 重跑", "FAIL");
 							OpenUrl("http://172.20.10.106/root/dlp-develop/-/merge_requests");
 						}
 					});
@@ -3758,7 +3794,7 @@ namespace DLPCodeCreater
 			{
 				detect_timing_flag = detect_timing_flag == true ? false : true;
 				lab_timer_status.Text = "Stop";
-				tim_pipelinecheck.Stop(); 
+				tim_pipelinecheck.Stop();
 
 			}
 
@@ -3849,9 +3885,9 @@ namespace DLPCodeCreater
 		}
 
 		// 置頂彈窗
-		private static void msg2top(string message,string title="")
+		private static void msg2top(string message, string title = "")
 		{
-			MessageBox.Show(message, "FAIL",
+			MessageBox.Show(message, title,
 								MessageBoxButtons.OK, MessageBoxIcon.None,
 								MessageBoxDefaultButton.Button1,
 								MessageBoxOptions.DefaultDesktopOnly);
@@ -4795,7 +4831,6 @@ namespace DLPCodeCreater
 			ResultMessage(tab, msg);
 			ResultMessage(tab, "=============Error Meg End=============");
 		}
-
 
 	}
 
