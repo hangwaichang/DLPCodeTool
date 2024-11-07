@@ -1,0 +1,10 @@
+//===================================[ap.module]===================================//
+import { ApiComponent as ApidgComponent } from './dg/pages/api/api.component';
+ApidgComponent,
+//===================================[ap-routing.module]===================================//
+import { ApiComponent as ApidgComponent } from './dg/pages/api/api.component';
+{
+path: 'APIDG',
+component: ApidgComponent,
+data: { title: 'APIDG', breadcrumb: 'APIDG' },
+},

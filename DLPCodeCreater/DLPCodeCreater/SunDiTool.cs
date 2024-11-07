@@ -13,6 +13,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Net;
 //using Microsoft.Office.Interop.Excel;
 
 
@@ -171,6 +173,18 @@ namespace DLPCodeCreater
 			/*LOV部分*/
 			public string grid_Lovl { get; set; }
 			public string form_Lovl { get; set; }
+
+			/*config部分*/
+			public string DlpDevelopProjectPath { get; set; }
+			public string DlpDevelopFrontendPath { get; set; }
+			public string UserToken { get; set; }
+			public string UserId { get; set; }
+			public string LineNotifyToken { get; set; }
+
+			public string UpdateUrl { get; set; }
+
+
+
 		}
 		JsonData jsonData = new JsonData();
 
@@ -199,6 +213,7 @@ namespace DLPCodeCreater
 		mergerequest MergeRequest = new mergerequest();
 		private string pipelineId = null;
 		private string LineNotifyToken; // Line Notify Token 2025年4月1日起，LINE Notify的所有功能將無法操作
+		private NotifyIcon notifyIcon;
 
 		public Form1()
 		{
@@ -207,33 +222,159 @@ namespace DLPCodeCreater
 			#region Tab4
 			InitialListView();
 			InitialContextMenu();
+			InitializeNotifyIcon();
 			// 將 TabControl 設置為填滿整個窗體
 			tbc_main.Dock = DockStyle.Fill;
 			#endregion Tab4
+
+
 
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
+
 			btn_dto.Enabled = false;
 			btn_repositories.Enabled = false;
 			btn_interface.Enabled = false;
 			//版本號
-			string version = System.Windows.Forms.Application.ProductVersion;
+			string fullversion = System.Windows.Forms.Application.ProductVersion;
+			int position = fullversion.IndexOf("+");
+			string version = fullversion.Substring(0, position); //	2.0.0 - 2024102501
 			this.Text = String.Format("SunDiTool {0}", version);
 
-			//讀取紀錄資訊
-			PrivateToken = Properties.Settings.Default.UserToken;
-			UserId = Properties.Settings.Default.UserId;
-			LineNotifyToken = Properties.Settings.Default.LineNotifyToken is not "" ? Properties.Settings.Default.LineNotifyToken : "Ew785eKNN7DEYkX5Ah4dmoUrwVNioSITS1tdSYgW8yb";
-			tbx_setting_projectpath.Text = Properties.Settings.Default.DlpDevelopProjectPath is not "" ? Properties.Settings.Default.DlpDevelopProjectPath : ".\\dlp-develop";
+			//讀取 config json
+			ReadConfiguration(@"appconfig.json", jsonData);
+			// 檢查更新
+			CheckForUpdates(version);
+
+			//解析/分配 紀錄資訊
+			PrivateToken = jsonData.UserToken;
+			UserId = Convert.ToInt32(jsonData.UserId is not "" ? jsonData.UserId : "0");
+			LineNotifyToken = jsonData.LineNotifyToken is not "" ? jsonData.LineNotifyToken : "Ew785eKNN7DEYkX5Ah4dmoUrwVNioSITS1tdSYgW8yb";
+			tbx_setting_projectpath.Text = jsonData.DlpDevelopProjectPath is not "" ? jsonData.DlpDevelopProjectPath : "D:\\dlp-develop";
+			tbx_setting_frontendpath.Text = jsonData.DlpDevelopFrontendPath is not "" ? jsonData.DlpDevelopFrontendPath : "D:\\DLP_Git\\dlp-front-end";
 
 			txtToken.Text = PrivateToken;
 			txtUserId.Text = UserId.ToString();
 			txtLineNotifyToken.Text = LineNotifyToken;
 
+			tbc_main.SelectedIndex = 5;
+		}
+
+		#region 更新
+
+		private void InitializeNotifyIcon()
+		{
+			notifyIcon = new NotifyIcon
+			{
+				Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+				Visible = true,
+				Text = "SunDiTool"
+			};
+
+			// // 可選：右鍵選單設置
+			// notifyIcon.ContextMenuStrip = new ContextMenuStrip();
+			// notifyIcon.ContextMenuStrip.Items.Add("退出", null, (s, e) =>
+			// {
+			//     notifyIcon.Dispose();
+			//     Application.Current.Shutdown();
+			// });
+		}
+		private void CheckForUpdates(string currentVersion)
+		{
+			notifyIcon.ShowBalloonTip(0, "檢查更新", "檢查version版本", ToolTipIcon.Info);
+			string updateUrl = $"{jsonData.UpdateUrl}/version.txt"; // 放置最新版本號的路徑
+			string newVersion = GetLatestVersion(updateUrl);
+
+			string versionUrl = "https://drive.google.com/uc?export=download&id=" + "1CTYlmUHcfhFeFyTF_AvjcRJtuljBflYb"; // 版本文件的下載URL
+
+			try
+			{
+				using (WebClient webClient = new WebClient())
+				{
+					
+					newVersion = webClient.DownloadString(versionUrl).Trim();       // google下載並檢查版本文件
+					if (newVersion != null && newVersion != currentVersion)
+					{
+						DialogResult result = MessageBox.Show(
+							$"有新版本可以下載。是否要現在更新？\n\n---------------------------------------\n\nNew Version：{newVersion}\n\nNow Version：{currentVersion}",
+							"更新可用",
+							MessageBoxButtons.YesNo);
+
+						if (result == DialogResult.Yes)
+						{
+							notifyIcon.ShowBalloonTip(0, "下載更新", "DLPCodeCreater.msi", ToolTipIcon.Info);
+							DownloadAndUpdate();
+							notifyIcon.Visible = false;
+						}
+					}
+					else
+					{
+						//MessageBox.Show("目前是最新版本。");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"檢查更新時出錯: {ex.Message}");
+			}
+
 
 		}
+
+		private string GetLatestVersion(string versionUrl)
+		{
+			try
+			{
+				WebClient client = new WebClient();
+				return client.DownloadString(versionUrl).Trim();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("檢查版本時出錯：" + ex.Message);
+				return null;
+			}
+		}
+
+		private void DownloadAndUpdate()
+		{
+			string updateExeUrl = $"{jsonData.UpdateUrl}/DLPCodeCreater.msi"; // 新版本安裝檔案路徑
+			string tempFilePath = Path.Combine(Path.GetTempPath(), "DLPCodeCreater.msi");
+
+
+			string updateFileUrl = "https://drive.google.com/uc?export=download&id=" + "1CLgOoK4lPT1QORDxvA5NsrflUVddEtHD"; // 更新文件的下載URL
+			string updateFilePath = Path.Combine(Path.GetTempPath(), "DLPCodeCreater.msi"); // 本地儲存更新檔的路徑
+
+
+			// Call GoogleAPI
+			try
+			{
+				GoogleApiHelper googleObj = new GoogleApiHelper();
+				string fileId = "1CLgOoK4lPT1QORDxvA5NsrflUVddEtHD";  // Google Drive fileID
+				tempFilePath = Path.Combine(Path.GetTempPath(), "DLPCodeCreater.msi");
+
+				googleObj.DownloadFile(fileId, tempFilePath);
+
+				ProcessStartInfo startInfo = new ProcessStartInfo();
+				startInfo.FileName = Path.GetTempPath() + @"\DLPCodeCreater.msi";
+				startInfo.WorkingDirectory = Path.GetTempPath();
+				startInfo.UseShellExecute = true;
+				Process.Start(startInfo);
+
+
+				// 結束當前應用程式，讓新版本安裝
+				Application.Exit();
+			}
+			catch (Exception ex)
+			{
+				notifyIcon.ShowBalloonTip(0, "下載或安裝更新時出錯", ex.Message, ToolTipIcon.Error);
+				MessageBox.Show("下載或安裝更新時出錯：" + ex.Message);
+			}
+
+		}
+		#endregion
+
 
 		#region SunDiRo
 
@@ -2845,6 +2986,32 @@ namespace DLPCodeCreater
 			line_notify("test");
 		}
 
+		private void btn_appconfig_Click(object sender, EventArgs e)
+		{
+			string appfolder_string = System.Windows.Forms.Application.StartupPath;
+			try
+			{
+				this.Hide();
+				Process process = new Process();
+				process.StartInfo.FileName = "notepad.exe";
+				process.StartInfo.Arguments = appfolder_string + "appconfig.json";
+				process.EnableRaisingEvents = true;
+
+				// 當進程結束時，執行 Process_Exited 方法
+				process.Exited += new EventHandler(btn_rebootApp_Click);
+				process.Start();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error: {ex.Message}");
+			}
+		}
+
+		private void btn_rebootApp_Click(object sender, EventArgs e)
+		{
+			Application.Restart();
+		}
+
 		#endregion
 		private void cbx_copydiff_Click(object sender, EventArgs e)
 		{
@@ -3241,7 +3408,7 @@ namespace DLPCodeCreater
 		#region PokemonGo
 
 		bool reserve_flag = false;  // 是否預約判斷
-		//發版計時器
+									//發版計時器
 		private async void tim_tab6_reservecheck_Tick(object sender, EventArgs e)
 		{
 			DateTime now = DateTime.Now;
@@ -3254,26 +3421,32 @@ namespace DLPCodeCreater
 				ResultMessageTab6("開始發版");
 
 				GitBranch branch = cbx_tab6_branch.Items[cbx_tab6_branch.SelectedIndex] as GitBranch;
-				if ((await CheckBrunch()))
+
+				if (await DetectPipelineOnce())
 				{
 					tim_tab6_reservecheck.Stop();
-					console_msg_lineNotify($"分支衝突，停止發版", "Failed");
+					msg2top($"正在發版中，停止發版", "Failed");
+					return;
+				}
+
+				if (await CheckBrunch(branch.BranchKey))
+				{
+					tim_tab6_reservecheck.Stop();
+					msg2top($"分支衝突，停止發版", "Failed");
 					OpenUrl("http://172.20.10.106/root/dlp-develop/-/branches");
 					return;
 				}
 
 				gitprocess();
+				tim_tab6_reservecheck.Stop();
 
-				if (reserve_flag)
-				{
-					Thread.Sleep(20 * 1000);
-					CallGitlabCreateMR();
-					Thread.Sleep(5 * 60 * 1000);
-					tim_pipelinecheck.Start();
-				}
+				await Task.Delay(20 * 1000);
+				CallGitlabCreateMR();
+				await Task.Delay(5 * 60 * 1000);
+				tim_pipelinecheck.Start();
 
 				reserve_flag = false;
-				tim_tab6_reservecheck.Stop();
+
 			}
 			else
 			{
@@ -3295,7 +3468,11 @@ namespace DLPCodeCreater
 			else
 			{
 				if (await GetUserName(this.txtUserId.Text) == false)
-					msg2top("get user name fail on gitlab", "fail");
+				{
+					msg2top("取得使用者資訊有誤，\n請檢查設定檔中gitlab設定", "fail");
+					btn_appconfig_Click(null, null);
+					return;
+				}
 
 				lab_timer_status.Text = "";
 				lab_mr_status.Text = "";
@@ -3391,8 +3568,6 @@ namespace DLPCodeCreater
 			fhelper.FileReplace(this.tbx_setting_projectpath.Text + Packagepath, oldVersion, newVersion);
 
 			//commit 
-
-
 			gitcmd = "commit -am \"" + commit + "\"";
 			ResultMessageTab6("Git Cmd> " + gitcmd);
 			ExecuteGitCommand(repositoryPath, gitcmd);
@@ -3426,6 +3601,42 @@ namespace DLPCodeCreater
 			ResultMessageTab6("Git Cmd> " + gitcmd);
 			ExecuteGitCommand(repositoryPath, gitcmd);
 
+
+		}
+
+		//Git 發版失敗流程
+		public void gitprocess4fail()
+		{
+
+			string gitcmd = "";
+			//string commit = "";
+			string repositoryPath = this.tbx_setting_projectpath.Text;  // 路徑
+			GitBranch branch = cbx_tab6_branch.Items[cbx_tab6_branch.SelectedIndex] as GitBranch;
+
+			// 切換分支
+			gitcmd = "switch " + branch.BranchKey;
+			ResultMessageTab6("Git Cmd> " + gitcmd);
+			ExecuteGitCommand(repositoryPath, gitcmd);
+
+			// 拉取最新版本
+			gitcmd = "pull origin " + branch.BranchKey;
+			ResultMessageTab6("Git Cmd> " + gitcmd);
+			ExecuteGitCommand(repositoryPath, gitcmd);
+
+			// merge deploy分支
+			gitcmd = "merge origin/" + branch.BranchKey + "_deploy";
+			ResultMessageTab6("Git Cmd> " + gitcmd);
+			ExecuteGitCommand(repositoryPath, gitcmd);
+
+			// push 
+			gitcmd = "push origin " + branch.BranchKey;
+			ResultMessageTab6("Git Cmd> " + gitcmd);
+			ExecuteGitCommand(repositoryPath, gitcmd);
+
+			// delete deploy分支
+			gitcmd = "push origin --delete " + branch.BranchKey + "_deploy";
+			ResultMessageTab6("Git Cmd> " + gitcmd);
+			ExecuteGitCommand(repositoryPath, gitcmd);
 
 		}
 
@@ -3470,9 +3681,6 @@ namespace DLPCodeCreater
 		private async void btn_getMRinfo_Click(object sender, EventArgs e)
 		{
 			await TestConnect();
-
-			msg2top(this.gitUserName, "test");
-
 		}
 
 		// 測試連線
@@ -3486,7 +3694,7 @@ namespace DLPCodeCreater
 				});
 		}
 
-		// user_name
+		// 檢查分支
 		private async Task<bool> CheckBrunch(string branchName = "")
 		{
 			switch (branchName)
@@ -3557,8 +3765,6 @@ namespace DLPCodeCreater
 					bool updated = await UpdateMergeRequest(mergeRequestCreated.Iid);
 					if (updated)
 					{
-						//if (!reserve_flag)
-						//	MessageBox.Show("Merge Request updated successfully!");
 						lab_mr_status.Text = "MR success";
 					}
 					else
@@ -3689,6 +3895,44 @@ namespace DLPCodeCreater
 			}
 		}
 
+		// 刪除指定的 Merge Request
+		private async Task<bool> DeleteMergeRequest(int? mergeRequestIid)
+		{
+			try
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.BaseAddress = new Uri(GitLabApiUrl);
+					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PrivateToken);
+
+					// 發出刪除 Merge Request
+					HttpResponseMessage response = await client.DeleteAsync($"projects/{ProjectId}/merge_requests/{mergeRequestIid}");
+
+					string responseContent = await response.Content.ReadAsStringAsync();
+					var statusCode = response.StatusCode;
+
+					if (response.IsSuccessStatusCode)
+					{
+						return true; // 刪除成功
+					}
+					else
+					{
+						MessageBox.Show($"Error: {statusCode}\n{responseContent}"); // 顯示錯誤訊息
+						return false;
+					}
+				}
+			}
+			catch (HttpRequestException httpRequestException)
+			{
+				MessageBox.Show($"Request error: {httpRequestException.Message}"); // 捕捉網路請求錯誤
+				return false;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An unexpected error occurred: {ex.Message}"); // 捕捉其他意外錯誤
+				return false;
+			}
+		}
 
 		bool detect_timing_flag = true;
 		CancellationTokenSource _cancellationTokenSource;
@@ -3775,18 +4019,17 @@ namespace DLPCodeCreater
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							//console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.TargetBranch}\n{MergeRequest.Title}\n 執行完成且成功。{reponseObj.status}", "PASS");
-							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue}\n{MergeRequest.Title}\n 成功。", "PASS");
+							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue} 發版結束.\n{MergeRequest.Title}\n 成功。", "PASS");
 						}
 						else if (reponseObj.status == "failed")
 						{
 							pipelineId = null;
 							lab_timer_status.Text = "Stop";
 							tim_pipelinecheck.Stop();
-							//console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.TargetBranch}\n{MergeRequest.Title}\n 執行完成但失敗{reponseObj.status}\n 需自行刪除分支 或 重跑", "FAIL");
-							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue}\n{MergeRequest.Title}\n 失敗。\n 需自行刪除分支 或 重跑", "FAIL");
-							OpenUrl("http://172.20.10.106/root/dlp-develop/-/merge_requests");
+							console_msg_lineNotify($"{this.gitUserName}\n{MergeRequest.BranchValue} 發版結束.\n{MergeRequest.Title}\n 失敗。", "FAIL");
+							gitprocess4fail();
 						}
+						detect_timing_flag = detect_timing_flag == true ? false : true;
 					});
 
 			}
@@ -3803,6 +4046,23 @@ namespace DLPCodeCreater
 
 
 
+		}
+		// 偵測Pipeline狀態
+		private async Task<bool> DetectPipelineOnce()
+		{
+
+			await CallGitlabApiGet<List<pipelineDTO>>($"projects/{ProjectId}/pipelines",   // 取得pipelines訊息
+				(reponseObjList, content) =>
+				{
+					string messge = "";
+					pipelineId = null;
+					foreach (pipelineDTO reponseObj in reponseObjList)
+					{
+						if (reponseObj.status == "pending") // 正常只有一個
+							pipelineId =  reponseObj.id ;
+					}
+				});
+			return pipelineId != null ?true:false;
 		}
 
 		private async Task<bool> CallGitlabApiGet<T>(string Endpoint, Action<T, string> callback)
@@ -3849,7 +4109,7 @@ namespace DLPCodeCreater
 		private void line_notify(string message)
 		{
 			LineNotifyToken = LineNotifyToken == txtLineNotifyToken.Text ? LineNotifyToken : txtLineNotifyToken.Text;
-			if (LineNotifyToken == null || LineNotifyToken == string.Empty) return;
+			if (LineNotifyToken == null || LineNotifyToken == string.Empty || !cbx_tab6_EnbleNotify.Checked) return;
 
 			HttpClient httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
@@ -4831,6 +5091,7 @@ namespace DLPCodeCreater
 			ResultMessage(tab, msg);
 			ResultMessage(tab, "=============Error Meg End=============");
 		}
+
 
 	}
 

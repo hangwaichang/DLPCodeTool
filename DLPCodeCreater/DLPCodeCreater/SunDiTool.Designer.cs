@@ -33,6 +33,8 @@
 			tim_checkinput = new System.Windows.Forms.Timer(components);
 			tbc_main = new TabControl();
 			tabPage5 = new TabPage();
+			btn_rebootApp = new Button();
+			btn_appconfig = new Button();
 			btn_line_notify_test = new Button();
 			lab_line_token = new Label();
 			txtLineNotifyToken = new TextBox();
@@ -146,6 +148,7 @@
 			cbx_AppPortal = new CheckBox();
 			btn_dotnet_run = new Button();
 			tabPage6 = new TabPage();
+			cbx_tab6_EnbleNotify = new CheckBox();
 			lab_mr_status = new Label();
 			lab_timer_status = new Label();
 			btn_detect_pipeline = new Button();
@@ -235,6 +238,8 @@
 			// 
 			// tabPage5
 			// 
+			tabPage5.Controls.Add(btn_rebootApp);
+			tabPage5.Controls.Add(btn_appconfig);
 			tabPage5.Controls.Add(btn_line_notify_test);
 			tabPage5.Controls.Add(lab_line_token);
 			tabPage5.Controls.Add(txtLineNotifyToken);
@@ -255,6 +260,29 @@
 			tabPage5.TabIndex = 4;
 			tabPage5.Text = "Setting";
 			tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// btn_rebootApp
+			// 
+			btn_rebootApp.Font = new Font("微軟正黑體", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			btn_rebootApp.Location = new Point(447, 23);
+			btn_rebootApp.Name = "btn_rebootApp";
+			btn_rebootApp.Size = new Size(130, 38);
+			btn_rebootApp.TabIndex = 65;
+			btn_rebootApp.Text = "設定後重啟App";
+			btn_rebootApp.UseVisualStyleBackColor = true;
+			btn_rebootApp.Visible = false;
+			btn_rebootApp.Click += btn_rebootApp_Click;
+			// 
+			// btn_appconfig
+			// 
+			btn_appconfig.Font = new Font("微軟正黑體", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			btn_appconfig.Location = new Point(296, 23);
+			btn_appconfig.Name = "btn_appconfig";
+			btn_appconfig.Size = new Size(130, 38);
+			btn_appconfig.TabIndex = 64;
+			btn_appconfig.Text = "開啟參數檔";
+			btn_appconfig.UseVisualStyleBackColor = true;
+			btn_appconfig.Click += btn_appconfig_Click;
 			// 
 			// btn_line_notify_test
 			// 
@@ -293,6 +321,7 @@
 			lab_gitlab_userid.Size = new Size(84, 15);
 			lab_gitlab_userid.TabIndex = 61;
 			lab_gitlab_userid.Text = "GitLab UserID";
+			lab_gitlab_userid.Visible = false;
 			// 
 			// lab_gitlab_token
 			// 
@@ -302,6 +331,7 @@
 			lab_gitlab_token.Size = new Size(82, 15);
 			lab_gitlab_token.TabIndex = 61;
 			lab_gitlab_token.Text = "GitLab Token";
+			lab_gitlab_token.Visible = false;
 			// 
 			// txtUserId
 			// 
@@ -309,6 +339,7 @@
 			txtUserId.Name = "txtUserId";
 			txtUserId.Size = new Size(76, 23);
 			txtUserId.TabIndex = 60;
+			txtUserId.Visible = false;
 			// 
 			// txtToken
 			// 
@@ -316,6 +347,7 @@
 			txtToken.Name = "txtToken";
 			txtToken.Size = new Size(162, 23);
 			txtToken.TabIndex = 60;
+			txtToken.Visible = false;
 			// 
 			// lab_tab1_notice
 			// 
@@ -324,9 +356,9 @@
 			lab_tab1_notice.ForeColor = Color.Red;
 			lab_tab1_notice.Location = new Point(17, 25);
 			lab_tab1_notice.Name = "lab_tab1_notice";
-			lab_tab1_notice.Size = new Size(521, 31);
+			lab_tab1_notice.Size = new Size(282, 31);
 			lab_tab1_notice.TabIndex = 59;
-			lab_tab1_notice.Text = "前請先設定專案路徑";
+			lab_tab1_notice.Text = "前請先設定專案參數";
 			// 
 			// lab_setting_frontendpath
 			// 
@@ -336,6 +368,7 @@
 			lab_setting_frontendpath.Size = new Size(160, 15);
 			lab_setting_frontendpath.TabIndex = 58;
 			lab_setting_frontendpath.Text = "ProjectPath (dlp-front-end)";
+			lab_setting_frontendpath.Visible = false;
 			// 
 			// btn_setting_selectfrontendpath
 			// 
@@ -345,6 +378,7 @@
 			btn_setting_selectfrontendpath.TabIndex = 57;
 			btn_setting_selectfrontendpath.Text = "Select";
 			btn_setting_selectfrontendpath.UseVisualStyleBackColor = true;
+			btn_setting_selectfrontendpath.Visible = false;
 			btn_setting_selectfrontendpath.Click += btn_setting_selectfrontendpath_Click;
 			// 
 			// tbx_setting_frontendpath
@@ -354,6 +388,7 @@
 			tbx_setting_frontendpath.Size = new Size(388, 23);
 			tbx_setting_frontendpath.TabIndex = 56;
 			tbx_setting_frontendpath.Text = "D:\\DLP_Git\\dlp-front-end";
+			tbx_setting_frontendpath.Visible = false;
 			// 
 			// lab_setting_projectpath
 			// 
@@ -1423,6 +1458,7 @@
 			// 
 			// tabPage6
 			// 
+			tabPage6.Controls.Add(cbx_tab6_EnbleNotify);
 			tabPage6.Controls.Add(lab_mr_status);
 			tabPage6.Controls.Add(lab_timer_status);
 			tabPage6.Controls.Add(btn_detect_pipeline);
@@ -1448,6 +1484,18 @@
 			tabPage6.Text = "PokemonGo";
 			tabPage6.UseVisualStyleBackColor = true;
 			// 
+			// cbx_tab6_EnbleNotify
+			// 
+			cbx_tab6_EnbleNotify.AutoSize = true;
+			cbx_tab6_EnbleNotify.Checked = true;
+			cbx_tab6_EnbleNotify.CheckState = CheckState.Checked;
+			cbx_tab6_EnbleNotify.Location = new Point(497, 17);
+			cbx_tab6_EnbleNotify.Name = "cbx_tab6_EnbleNotify";
+			cbx_tab6_EnbleNotify.Size = new Size(87, 19);
+			cbx_tab6_EnbleNotify.TabIndex = 54;
+			cbx_tab6_EnbleNotify.Text = "Line Notify";
+			cbx_tab6_EnbleNotify.UseVisualStyleBackColor = true;
+			// 
 			// lab_mr_status
 			// 
 			lab_mr_status.Location = new Point(508, 163);
@@ -1456,6 +1504,7 @@
 			lab_mr_status.Size = new Size(119, 21);
 			lab_mr_status.TabIndex = 53;
 			lab_mr_status.TextAlign = ContentAlignment.MiddleRight;
+			lab_mr_status.Visible = false;
 			// 
 			// lab_timer_status
 			// 
@@ -1465,6 +1514,7 @@
 			lab_timer_status.Size = new Size(119, 21);
 			lab_timer_status.TabIndex = 52;
 			lab_timer_status.TextAlign = ContentAlignment.MiddleRight;
+			lab_timer_status.Visible = false;
 			// 
 			// btn_detect_pipeline
 			// 
@@ -1474,6 +1524,7 @@
 			btn_detect_pipeline.TabIndex = 51;
 			btn_detect_pipeline.Text = "Detect Finish";
 			btn_detect_pipeline.UseVisualStyleBackColor = true;
+			btn_detect_pipeline.Visible = false;
 			btn_detect_pipeline.Click += btn_detect_pipeline_Click;
 			// 
 			// textBox1
@@ -1486,11 +1537,11 @@
 			// 
 			// btn_getMRinfo
 			// 
-			btn_getMRinfo.Location = new Point(138, 161);
+			btn_getMRinfo.Location = new Point(151, 161);
 			btn_getMRinfo.Name = "btn_getMRinfo";
-			btn_getMRinfo.Size = new Size(84, 23);
+			btn_getMRinfo.Size = new Size(93, 23);
 			btn_getMRinfo.TabIndex = 49;
-			btn_getMRinfo.Text = "Get MR Info";
+			btn_getMRinfo.Text = "testConnect";
 			btn_getMRinfo.UseVisualStyleBackColor = true;
 			btn_getMRinfo.Visible = false;
 			btn_getMRinfo.Click += btn_getMRinfo_Click;
@@ -1503,6 +1554,7 @@
 			btnCreateMergeRequest.TabIndex = 48;
 			btnCreateMergeRequest.Text = "Merge Request";
 			btnCreateMergeRequest.UseVisualStyleBackColor = true;
+			btnCreateMergeRequest.Visible = false;
 			btnCreateMergeRequest.Click += btnCreateMergeRequest_Click;
 			// 
 			// lab_tab6_notice
@@ -1990,5 +2042,8 @@
 		private Label lab_timer_status;
 		private Button btn_line_notify_test;
 		private Label lab_mr_status;
+		private Button btn_appconfig;
+		private CheckBox cbx_tab6_EnbleNotify;
+		private Button btn_rebootApp;
 	}
 }

@@ -1,0 +1,217 @@
+{
+  "grid_view_normal": 
+"      {{
+        headerName: '{0}',
+        field: '{1}',
+        editable: false,
+        width: 100,
+        // forceUpper: true,
+        type: EDlpGridColumnType.text,
+      }},
+",
+  "grid_view_number": 
+"      {{
+        headerName: '{0}',
+        field: '{1}',
+        editable: false,
+        width: 80,
+        type: EDlpGridColumnType.number,
+        //valueFormatter: this._pubFunction.formatNumber.bind(this, 2), //含 千份位＋顯示小數點後幾位
+        cellStyle: this._pubFunction.rightTextAlign,
+        precision: 2, //小數精確度 (預設為 0，即整數)
+        // min: -999.99,
+        // max: 999.99,
+      }},
+",
+  "grid_view_date" : 
+"      {{
+        headerName: '{0}',
+        field: '{1}',
+        editable: false,
+        width: 120,
+        type: EDlpGridColumnType.date,
+        dateFormat: 'yyyy/MM/dd', //日期格式 (使用 Angular DatePipe 格式，預設為 yyyy-MM-dd)
+        //valueFormatter: this._pubFunction.formatDate,
+        // valueFormatter: (params) => {{
+        //   return this._pubFunction.formatDate({{ value: params.data?.{1} }}, 'yyyy/MM/dd');
+        // }},
+      }},
+",
+  "grid_confirm" : 
+"      {{
+        headerName: '{0}', //勾選
+        field: '{1}',
+        //cellRendererEditable: true, //(params) => {{return params.data?.ITEM === 0;}},// 可新增不可修改
+        filter: false,
+        sortable: false,
+        width: 50,
+        type: EDlpGridColumnType.checkbox,
+        //checkboxValueType: EDlpGridCheckboxValueType.boolean,  // 預設即為常用的 'Y' 'N'
+        //onCellValueChanged: ($event: NewValueParams) => {{
+        //}},
+      }},
+",
+  "grid_check" : 
+"      {{
+        headerName: '{0}', 
+        field: '{1}',
+        cellRendererEditable: true,
+        filter: false,
+        sortable: false,
+        width: 50,
+        type: 'EDlpGridColumnType.checkbox',
+        //checkDirty: true,
+        //checkboxValueType: EDlpGridCheckboxValueType.number, // 預設即為常用的 'Y' 'N'
+        //onCellValueChanged: ($event: NewValueParams) => {{
+        //   if ($event.node.data?.ITEM === 0) return {{ disabled: true }};
+        //}},
+      }},
+",
+  "grid_select" : 
+"      {{
+        headerName: '{0}',
+        field: '{1}',
+        type: EDlpGridColumnType.select,
+        cellRendererEditable: true, //(params) => {{return params.data?.ITEM === 0;}},// 可新增不可修改
+        sortable: true,
+        width: 100,
+        selectableOptions: of<IDlpGridSelectOption[]>([
+{3}
+        ]),
+      }},
+",
+
+
+  "form_normal" : 
+"      new FormTextBox({{
+        key: '{1}',
+        label: '{0}',
+        // labelWidth: 5,
+        flex: '20',
+        class: 'pr-1',
+        // readonly: true,
+      }}),
+",
+
+  "form_btn" : 
+"      new FormButtonAuthority({{
+        showButtons: [
+          <IButtons>{{
+            key: 'confirm',
+            color: 'primary',
+            text: '{0}',
+            icon: 'done_all',
+            visible: true,
+            //visibledAsync: this.State.FormRefs.visibleAsync$,
+            clickFunction: () => {{
+              //this.Service.pushSave();
+            }},
+          }},
+        ],
+        flex: '20',
+        class: 'pr-1',
+      }}),
+",
+  "form_radio_btn" : 
+"      new FormRadioButton({{
+        key: '{0}',
+        label: '',
+        options: of([
+{1}        ]),
+        flex: '45',
+        // value: 'A',
+        inputChangeFunc: (params) => {{
+          // this._Service.query();
+        }},
+      }}),
+",
+  "form_hidden" : 
+"      new FormHidden({{
+        key: '',
+        flex: '20',
+      }}),
+",
+  "form_drop_down_list" : 
+"      new FormDropDownList({{
+        key: '{0}',
+        label: '{1}',
+        labelWidth: 10,
+        flex: 25,
+        class: 'pr-1',
+        options: of([
+{2}        ]),
+        inputChangeFunc: (value, form) => {{
+          //this._Service.update();
+        }},
+      }}),
+",
+  "form_hidden2" : 
+"      new FormHidden({{}}),
+",
+  "form_caption" : 
+"      new FormCaption({{
+        value: `{0}`,
+        flex: '100',
+        //customStyle: {{
+        //  color: 'blue',//字體顏色
+        //}},
+      }}),
+",
+
+
+
+  "grid_Lovl" : 
+"      {{
+        headerName: '{0}',
+        field: '{1}',
+        editable: true, //(params) => {{ return params.data.ITEM === 0; // 可新增不可修改 }},
+        sortable: true,
+        width: 120,
+        type: EDlpGridColumnType.lov,
+        //cellEditor: 'lovEditor',
+        cellEditorParams: (params) => {{
+          return <ILovEditorParams>{{
+            apiParams: {{
+              // sp前綴
+              moduleNo: 模組名稱,
+              programNo: '{2}',
+              commonApiType: ECommonApiType.CallStoreProcedureDataSet,
+            }},
+            queryAction: sp名稱, // sp名稱
+            //payload: {{}}, // input
+            refCursorKeys: [v表名稱Info, v表名稱Count], // output
+            colDefs: [
+{3}            ],
+            keyMapping: {{              {4}
+            }},
+            checkInput: true,
+            onPostChange: (params) => {{
+              if (params.isValidInput) //this._Service.ServiceFun(params.value);
+            }},
+          }};
+        }},
+      }},
+",
+  "form_Lovl" : 
+"      new FormLov({{
+        key: '{1}',
+        label: '{0}',
+        //labelWidth: '10',
+        apiParams: {{
+          moduleNo: 模組名稱,
+          programNo: '{2}',
+          commonApiType: ECommonApiType.CallStoreProcedureDataSet,
+        }},
+        queryAction: SP名稱, // sp名稱
+        refCursorKeys: [v表名稱Info, v表名稱Count],
+        colDefs: [
+{3}        ],
+        keyMapping: {{{4}
+        }},
+        checkInput: true,
+        flex: '25',
+        class: 'pr-1',
+      }}),
+",
+
+}
