@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DLPCodeCreater")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0-20230912")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0-2024112605")]
 [assembly: System.Reflection.AssemblyProductAttribute("DLPCodeCreater")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DLPCodeCreater")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.0.0.0")]

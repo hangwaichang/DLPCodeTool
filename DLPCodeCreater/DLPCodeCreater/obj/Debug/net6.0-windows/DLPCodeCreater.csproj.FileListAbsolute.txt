@@ -191,3 +191,17 @@ D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\
 D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\zh-Hant\System.ServiceModel.Primitives.resources.dll
 D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\DLPCodeCreater.dll.config
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Google.Apis.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Google.Apis.Auth.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Google.Apis.Core.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Google.Apis.Drive.v3.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\System.CodeDom.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\System.Management.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Management.dll
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\appconfig.json
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\delete.png
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\form.png
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\grid.png
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Template.json
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Template_DlpGrid.json
+D:\Jason_Git\DLPCodeTool\DLPCodeCreater\DLPCodeCreater\bin\Debug\net6.0-windows\Template_DlpGridForm.json
