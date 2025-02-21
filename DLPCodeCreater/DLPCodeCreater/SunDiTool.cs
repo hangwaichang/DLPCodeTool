@@ -16,6 +16,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Net;
 using System.Security.Cryptography;
+using Google.Apis.Drive.v3.Data;
+using File = System.IO.File;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Office.Interop.Excel;
+using DataTable = System.Data.DataTable;
 //using Microsoft.Office.Interop.Excel;
 
 
@@ -217,8 +222,10 @@ namespace DLPCodeCreater
         private string pipelineId = null;
         private string LineNotifyToken; // Line Notify Token 2025年4月1日起，LINE Notify的所有功能將無法操作
         private NotifyIcon notifyIcon;
+		private string channelAccessToken = "f6ruDVZ2DfINDdL66PUelIN2IMpQOjWY1um0789tRvLdQRVhfPsJRpz5z7uJBSbrFRFwDMWObmqIJdhjrVLUAVlyx2eDH6pR1sHyLTza0tBOPMMT+JJNEBPWfUgOboG6/Jcczj4RQqacnl/cmPM5OQdB04t89/1O/w1cDnyilFU=";  // CA Token
+		private string groupId = "C743f16571be876b9e19d7b9d2f21890a";  // 你的群組 ID
 
-        public Form1()
+		public Form1()
         {
             InitializeComponent();
 
@@ -241,9 +248,8 @@ namespace DLPCodeCreater
             btn_repositories.Enabled = false;
             btn_interface.Enabled = false;
             //版本號
-            string version = System.Windows.Forms.Application.ProductVersion;
-            //int position = fullversion.IndexOf("");
-            //string version = fullversion.Substring(0, position); //	2.0.0 - 2024102501
+            string fullversion = System.Windows.Forms.Application.ProductVersion;
+			string version = fullversion.IndexOf("+") > -1 ? fullversion.Substring(0, fullversion.IndexOf("+")) : fullversion;
             this.Text = String.Format("SunDiTool {0}", version);
 
             //讀取 config json
@@ -293,7 +299,7 @@ namespace DLPCodeCreater
             string versionUrl = "https://drive.google.com/uc?export=download&id=" + "1CTYlmUHcfhFeFyTF_AvjcRJtuljBflYb"; // 版本文件的下載URL
 
 
-            try
+			try
             {
                 using (WebClient webClient = new WebClient())
                 {
@@ -347,7 +353,7 @@ namespace DLPCodeCreater
             string tempFilePath = Path.Combine(Path.GetTempPath(), "DLPCodeCreater.msi");
 
 
-            string updateFileUrl = "https://drive.google.com/uc?export=download&id=" + "1-dhzcE3XKboYtotxQ4ZAi8XgJ1MH0opl"; // 更新文件的下載URL
+			string updateFileUrl = "https://drive.google.com/uc?export=download&id=" + "1-dhzcE3XKboYtotxQ4ZAi8XgJ1MH0opl"; // 更新文件的下載URL
             string updateFilePath = Path.Combine(Path.GetTempPath(), "DLPCodeCreater.msi"); // 本地儲存更新檔的路徑
 
 
@@ -368,7 +374,7 @@ namespace DLPCodeCreater
 
 
                 // 結束當前應用程式，讓新版本安裝
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
             }
             catch (Exception ex)
             {
@@ -2738,7 +2744,7 @@ namespace DLPCodeCreater
                 }
 
                 //获取选中行的Bounds 
-                Rectangle Rect = lvi.Bounds;
+                System.Drawing.Rectangle Rect = lvi.Bounds;
 
                 // Right side of cell is in view.
                 Rect.Width = lstVwSubItems.Columns[5].Width + Rect.Left;
@@ -2985,10 +2991,16 @@ namespace DLPCodeCreater
             }
         }
 
-        private void btn_line_notify_test_Click(object sender, EventArgs e)
-        {
+        private async void btn_line_notify_test_Click(object sender, EventArgs e)
+		{
             line_notify("test");
-        }
+            //await SendMessage(
+            //	"f6ruDVZ2DfINDdL66PUelIN2IMpQOjWY1um0789tRvLdQRVhfPsJRpz5z7uJBSbrFRFwDMWObmqIJdhjrVLUAVlyx2eDH6pR1sHyLTza0tBOPMMT+JJNEBPWfUgOboG6/Jcczj4RQqacnl/cmPM5OQdB04t89/1O/w1cDnyilFU=",
+            //             "Ub17067832c6d0b59bd2cddf862302cfb", "test");
+
+            line_message_to_group("手動發送");
+
+		}
 
         private void btn_appconfig_Click(object sender, EventArgs e)
         {
@@ -3013,7 +3025,7 @@ namespace DLPCodeCreater
 
         private void btn_rebootApp_Click(object sender, EventArgs e)
         {
-            Application.Restart();
+            System.Windows.Forms.Application.Restart();
         }
 
         #endregion
@@ -3542,7 +3554,8 @@ namespace DLPCodeCreater
 
             ResultMessageTab6(this.gitUserName + Environment.NewLine + branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
             line_notify(this.gitUserName + Environment.NewLine + branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
-            MergeRequest.BranchValue = branch.BranchValue;
+			line_message_to_group(this.gitUserName + Environment.NewLine + branch.BranchValue + " 發版開始." + Environment.NewLine + commit);
+			MergeRequest.BranchValue = branch.BranchValue;
 
             //return;
             //restore clean
@@ -3685,21 +3698,35 @@ namespace DLPCodeCreater
         private async void btn_getMRinfo_Click(object sender, EventArgs e)
         {
             await TestConnect();
-        }
+		}
 
         // 測試連線
         private async Task<bool> TestConnect()
         {
-            return await CallGitlabApiGet<List<pipelineDTO>>("" + textBox1.Text,
-                (reponseObjList, content) =>
-                {
-                    MessageBox.Show(content.ToString());
-                    MessageBox.Show("連線正常" + reponseObjList);
-                });
-        }
 
-        // 檢查分支
-        private async Task<bool> CheckBrunch(string branchName = "")
+			//return await CallGitlabApiGet<List<pipelineDTO>>("" + textBox1.Text,
+			//    (reponseObjList, content) =>
+			//    {
+			//        MessageBox.Show(content.ToString());
+			//        MessageBox.Show("連線正常" + reponseObjList);
+			//    });
+
+			return await CallGitlabApiGet<List<pipelineDTO>>($"projects/{ProjectId}/pipelines",   // 取得pipelines訊息
+			(reponseObjList, content) =>
+			{
+				string messge = "";
+
+				if (reponseObjList[0].status == "pending") // 最新
+					pipelineId = pipelineId is null || pipelineId != reponseObjList[0].id ? reponseObjList[0].id : pipelineId;
+
+				MessageBox.Show(content.ToString());
+				MessageBox.Show("連線正常" + pipelineId);
+			});
+
+		}
+
+		// 檢查分支
+		private async Task<bool> CheckBrunch(string branchName = "")
         {
             switch (branchName)
             {
@@ -3997,20 +4024,34 @@ namespace DLPCodeCreater
 
             if (pipelineId is null)
             {
-                //https://docs.gitlab.com/ee/api/pipelines.html
-                flag = await CallGitlabApiGet<List<pipelineDTO>>($"projects/{ProjectId}/pipelines",   // 取得pipelines訊息
-                (reponseObjList, content) =>
-                {
-                    string messge = "";
-                    foreach (pipelineDTO reponseObj in reponseObjList)
-                    {
-                        if (reponseObj.status == "pending") // 正常只有一個
-                            pipelineId = pipelineId is null || pipelineId != reponseObj.id ? reponseObj.id : pipelineId;
-                    }
-                });
+				//https://docs.gitlab.com/ee/api/pipelines.html
+				//flag = await CallGitlabApiGet<List<pipelineDTO>>($"projects/{ProjectId}/pipelines",   // 取得pipelines訊息
+				//(reponseObjList, content) =>
+				//{
+				//    string messge = "";
+				//    foreach (pipelineDTO reponseObj in reponseObjList)
+				//    {
+				//        if (reponseObj.status == "pending") // 正常只有一個
+				//            pipelineId = pipelineId is null || pipelineId != reponseObj.id ? reponseObj.id : pipelineId;
+				//    }
+				//});
+				flag = await CallGitlabApiGet<List<pipelineDTO>>($"projects/{ProjectId}/pipelines",   // 取得pipelines訊息
+				(reponseObjList, content) =>
+				{
+					//string messge = "";
+					//foreach (pipelineDTO reponseObj in reponseObjList)
+					//{
+					//	if (reponseObj.status == "pending") // 正常只有一個
+					//		pipelineId = pipelineId is null || pipelineId != reponseObj.id ? reponseObj.id : pipelineId;
+					//}
 
-                if (!flag) pipelineId = null;
-            }
+					if (reponseObjList[0].status == "pending") // 最新
+						pipelineId = pipelineId is null || pipelineId != reponseObjList[0].id ? reponseObjList[0].id : pipelineId;
+				});
+
+
+				if (!flag) pipelineId = null;
+			}
 
 
             if (pipelineId is not null && flag)
@@ -4131,8 +4172,83 @@ namespace DLPCodeCreater
 
         }
 
-        // 開網頁
-        private void OpenUrl(string url)
+
+
+        private async Task line_message_to_group(string message)
+        {
+			//string messageText = "Hello！";  // 發送的訊息
+
+			if (string.IsNullOrEmpty(channelAccessToken) || string.IsNullOrEmpty(groupId) || !cbx_tab6_EnbleNotify.Checked) return;
+			//{
+			//	MessageBox.Show("Channel Access Token 或 group ID 未設定");
+			//	return;
+			//}
+
+			string apiUrl = "https://api.line.me/v2/bot/message/push";
+
+			using (var client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Add("Authorization", "Bearer " + channelAccessToken);
+
+				// 建立 JSON 內容
+				var postData = new
+				{
+					to = groupId,  // 發送 指定群組
+					messages = new[]
+					{
+					new { type = "text", text = message }
+				    }
+				};
+
+				string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(postData);
+				var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+				// 發送 HTTP POST 請求
+				var response = await client.PostAsync(apiUrl, content);
+				//string result = await response.Content.ReadAsStringAsync();
+				//MessageBox.Show("LINE API 回應: " + result);
+			}
+		}
+
+
+
+		private async Task SendMessage(string channelAccessToken, string userId, string message)
+		{
+			if (string.IsNullOrEmpty(channelAccessToken) || string.IsNullOrEmpty(userId))
+			{
+				MessageBox.Show("Channel Access Token 或 User ID 未設定");
+				return;
+			}
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", channelAccessToken);
+
+				var payload = new
+				{
+					to = userId,
+					messages = new[] {   new { type = "text", text = message }  }
+				};
+
+				var json = JsonConvert.SerializeObject(payload);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				HttpResponseMessage response = await client.PostAsync("https://api.line.me/v2/bot/message/push", content);
+
+				if (response.IsSuccessStatusCode)
+				{
+					MessageBox.Show("訊息發送成功");
+				}
+				else
+				{
+					MessageBox.Show($"發送失敗: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+				}
+			}
+		}
+
+
+		// 開網頁
+		private void OpenUrl(string url)
         {
             try
             {
@@ -4161,7 +4277,8 @@ namespace DLPCodeCreater
         {
             ResultMessageTab6(message);
             line_notify(message);
-            msg2top(message, "title");
+			line_message_to_group(message);
+			msg2top(message, "title");
         }
 
         #endregion

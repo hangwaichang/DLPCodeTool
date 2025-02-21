@@ -6,10 +6,10 @@
     <ROW Property="ARPCOMMENTS" Value="此 Installer 資料庫包含了安裝 [|ProductName] 所需的邏輯和資料。" ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="vxsur2k2h7001.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Lattek"/>
-    <ROW Property="ProductCode" Value="1028:{B61960BC-182D-4B2C-9E9E-C07F5177F3B3} " Type="16"/>
+    <ROW Property="ProductCode" Value="1028:{ACBCCAD0-3291-47CB-967D-B3EC60C501FD} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="DLPCodeCreater"/>
-    <ROW Property="ProductVersion" Value="1.0.20" Options="32"/>
+    <ROW Property="ProductVersion" Value="1.0.21" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{04F54573-9A85-4118-9C03-3C05718E0112}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

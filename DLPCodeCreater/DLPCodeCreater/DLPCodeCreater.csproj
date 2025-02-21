@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>vxsur-2k2h7-001.ico</ApplicationIcon>
-    <Version>2.0.0-2024112605</Version>
+    <Version>2.0.0-2025021901</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
